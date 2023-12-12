@@ -7,11 +7,9 @@ const loginC = {}
 
 //displayLogin
 loginC.displayLogin = (req,res)=>{
-    if(!req.session.userActive){
-        res.render('userLogin',{alert:null})
-    }else{
-      res.send("User is Active now")
-    }
+  
+  res.render('userLogin',{alert:null})
+    
 }
 
 
@@ -40,7 +38,7 @@ loginC.manageLogin = async (req,res)=>{
   }
 
   req.session.userActive = true
-  res.send('you are in home page')
+  res.redirect('/products')
 }catch (error) {
     res.render('userLogin',{alert:"An error occured please try again"})
     console.log(error.message);

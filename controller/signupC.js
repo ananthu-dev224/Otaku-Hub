@@ -146,7 +146,7 @@ signupC.manageOtp = async (req,res) =>{
 
        //clear the session 
        delete req.session.data
-       res.send("User saved to db")
+       res.redirect('/products')
 
        } catch (error) {
           console.log("error occured :",error.message);
