@@ -162,23 +162,31 @@
             <div class="card mb-4">
                 
 <!-- MODAL STARTS HERE -->
-<!-- <div class="modal fade" id="alert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Validation Error</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal-box">
+        
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content clearfix">
+                            <div class="modal-body">
+                                <div class="icon">
+                                    <i class="fas fa-trash"></i>
+                                </div>
+                                <h3 class="title">Lorem ipsum dolor sit amet, consec tetur adipi sicing elit. Eum digni ssimos</h3>
+                                <p class="description">Lorem ipsum dolor sit amet.</p>
+                                <button class="btn" data-dismiss="modal">ipsum</button>
+                                <button class="btn submit">Eum digni</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-        <p id="alert-content"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Sure</button>
-        </div>
-      </div>
     </div>
-  </div> -->
-  
+</div>
+   -->
 <!-- MODAL ENDS HERE -->
 
                 <div class="card-body">
@@ -189,11 +197,6 @@
                                 <label class="sr-only" for="inlineFormInput">Name of Product</label><br><br>
                                 <input type="text" class="form-control mb-2" id="name" name="name" placeholder="Product name">
                               </div><br>
-                              <!-- <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInput">Category</label><br><br>
-                                <input type="text" class="form-control mb-2" id="category" name="category" placeholder="Category">
-                              </div><br> -->
-                              
                               <div class="col-auto">
                                 <label class="sr-only" for="category">Category :</label>
                                 
@@ -212,45 +215,46 @@
                                 <textarea class="form-control" id="description" rows="3" name="description"></textarea>
                               </div><br>
                               
-                                <!-- <div id="clothesForm" style="display: none;">
+                                <div id="clothesForm" style="display: none;">
                                     <div class="row">
                                         <div class="col">
-                                          <input type="text" class="form-control" placeholder="First Size" name="size">
+                                          <h6>Small :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock 1" name="stock">
+                                          <input type="Number" class="form-control" placeholder="Stock for S" name="stocks[]">
                                         </div>
                                       </div>
                                       <div class="row">
                                         <div class="col">
-                                          <input type="text" class="form-control" placeholder="Second  Size" name="size">
+                                         <h6>Medium :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock 2" name="stock">
+                                          <input type="Number" class="form-control" placeholder="Stock for M" name="stocks[]">
                                         </div>
                                       </div>
                                       <div class="row">
                                         <div class="col">
-                                          <input type="text" class="form-control" placeholder="Third Size" name="size">
+                                         <h6>Large :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock 3" name="stock">
+                                          <input type="Number" class="form-control" placeholder="Stock for L" name="stocks[]">
                                         </div>
                                       </div>
-                                </div> -->
+                                      <div class="row">
+                                        <div class="col">
+                                         <h6>Extra Large :</h6>
+                                        </div>
+                                        <div class="col">
+                                          <input type="Number" class="form-control" placeholder="Stock for XL" name="stocks[]">
+                                        </div>
+                                      </div>
+                                </div>
 
 
-                              <div class="col-auto" id="otherForm">
+                              <div class="col-auto" id="otherForm" display="none">
                                 <label class="sr-only" for="inlineFormInput">Quantity :</label><br><br>
                               <label class="sr-only" for="inlineFormInput">Stock</label>
                               <input type="number" class="form-control mb-2" id="stock" name="stock" placeholder="Stock"><br>
-                              <label class="sr-only" for="inlineFormInput">Size</label>
-                              <select class="form-control" name="size">
-                                <option>null</option>
-                                <option>S</option>
-                                <option>M</option>
-                                <option>L</option>
-                              </select>
                               </div><br><br>
                            
                               <div class="col-auto">
@@ -327,21 +331,21 @@ document.getElementById('additional-img').addEventListener('change',function(eve
 //     fileInput.value = ''; // Clear the file input
 // });
 
-// document.getElementById('category').addEventListener('change', function () {
-//         var selectedCategory = this.value.trim()
-//         var clothesForm = document.getElementById('clothesForm');
-//         var otherForm = document.getElementById('otherForm');
-//         console.log(selectedCategory);
-//         if (selectedCategory.toLowerCase().indexOf('outfits') !== -1) {
-//             console.log("outfit form");
-//             clothesForm.style.display = 'block';
-//             otherForm.style.display = 'none';
-//         } else {
-//             console.log("other form");
-//             clothesForm.style.display = 'none';
-//             otherForm.style.display = 'block';
-//         }
-//     });
+document.getElementById('category').addEventListener('change', function () {
+        var selectedCategory = this.value.trim()
+        var clothesForm = document.getElementById('clothesForm');
+        var otherForm = document.getElementById('otherForm');
+        console.log(selectedCategory);
+        if (selectedCategory.toLowerCase().indexOf('outfits') !== -1) {
+            console.log("outfit form");
+            clothesForm.style.display = 'block';
+            otherForm.style.display = 'none';
+        } else {
+            console.log("other form");
+            clothesForm.style.display = 'none';
+            otherForm.style.display = 'block';
+        }
+    });
 
 </script>
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>

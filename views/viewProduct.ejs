@@ -22,6 +22,8 @@
     
 </head>
 <body>
+
+    <!-- Navbar starts here -->
     <div class="main-navbar shadow-sm sticky-top">
         <div class="top-navbar">
             <div class="container-fluid">
@@ -112,62 +114,7 @@
             </div>
         </nav>
     </div>     
-
-<!-- 
-    <div class = "main-wrapper">
-        <div class = "container">
-            <div class = "product-div">
-                <div class = "product-div-left">
-                    <div class = "img-container">
-                        <a href="/<%= product.mainimage%>" class="MagicZoom"  data-options="zoomWidth:100%"><img src = "/<%= product.mainimage%>"  class="img-fluid" style="height: 190px; width: 210px; object-fit: contain;" alt = "product-view"></a>
-                    </div>
-                    <div class = "hover-container">
-                        <% product.additionalimages.forEach((img) =>{%>
-                            <% if(img !== null){%>
-                        <div><a href="/<%= img%>" class="MagicZoom" data-options="zoomWidth:100%"><img src = "/<%= img%>" class="img-fluid"style="height: 100px; width: 100px; object-fit: contain;" ></a></div>
-                        <div><a href="/<%= product.mainimage%>" class="MagicZoom" data-options="zoomWidth:100%"><img src = "/<%= product.mainimage%>"class="img-fluid"style="height: 100px; width: 100px; object-fit: contain;"></a></a>div>
-                        <%}%> 
-                        <%})%> 
-                    </div>
-                </div>
-                <div class = "product-div-right">
-                    <% if (product.quantity && Array.isArray(product.quantity)) { %>
-                        <% var inStock = product.quantity.some(item => item.stock > 0); %>
-                        <% if (inStock) { %>
-                            <label class="label-stock bg-success rounded">In Stock</label>
-                        <% } else { %>
-                            <label class="label-stock bg-danger rounded">Out of Stock</label>
-                        <% } %>
-                    <% }%>
-                    <span class = "product-name"><%= product.name%></span>
-                    <p class="product-path">
-                        <%= product.category.name%> Category
-                    </p>
-                    <span class = "product-price">&#8377;<%= product.price%></span> <br>
-                    <% if(product.discount){%>
-                        <span class="original-price"><%= product.discount%> % Discount</span> <br>
-                        <%}%>
-                    <% product.quantity.forEach((sizeObj) => {%>%>
-                        <% if(sizeObj.size !== "null"){%>
-                            <li class="nav-item dropdown dropdownn">
-                                <p class="nav-link mx-2 dropdown-toggle dropdown-togglee dropdown-header" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                   Available Size:
-                                </p>
-                                <div class="dropdown-menu dropdown-menuu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item dropdown-itemm" href="" name="<%= sizeObj.size%>"><%= sizeObj.size%></a>
-                                </div>
-                              </li>
-                              <%}%>
-                              <%})%>
-                    <p class = "product-description"><%= product.description%></p>
-                    <div class = "btn-groups">
-                        <button type = "button" class = "add-cart-btn"><i class = "fas fa-shopping-cart"></i>Add to Cart</button>
-                        <button type = "button" class = "buy-now-btn"><i class = "fas fa-wallet"></i>Wishlist</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
+<!-- Navbar ends -->
 
     <div class="product_image_area">
 		<div class="container">
@@ -175,34 +122,27 @@
 				<div class="col-lg-4">
                     
 					<div class="s_Product_carousel">
-						<% product.additionalimages.forEach((img) =>{%>
-                            <% if(img !== null){%>
-							<div class="single-prd-item d-flex">
-                                <div class="single-prd-item d-flex">
-                                    <a href="/<%= product.mainimage %>" class="MagicZoom"
-                                        data-options="zoomWidth:100%"><img class="img-fluid"
-                                            style="height: 390px; width: 410px; object-fit: contain;"
-                                            src="/<%= product.mainimage%>" alt=""> </a>
-                                </div>    
-								<a href="/<%= img %>" class="MagicZoom"
-									data-options="zoomWidth:100%"><img class="img-fluid"
-										style="height: 390px; width: 410px; object-fit: contain;"
-										src="/<%= img%>" alt=""> </a>
+						<div class="single-prd-item d-flex" >
+                            <a href="/<%= product.mainimage %>" class="MagicZoom" id="jeans" data-options=" zoomPosition: inner"><img src="/<%= product.mainimage %>" class="img-fluid" style="height: 390px; width: 410px; object-fit: contain;"></a> 
+                        </div>
+							<div class="single-prd-item d-flex" style="border:none;">
+                                <% product.additionalimages.forEach((img) =>{%>
+                                    <% if(img !== null){%>     
+                                <a data-zoom-id="jeans" href="/<%= img %>" data-image="/<%= img %>" style="border: none;"><img src="/<%= img %>" class="img-fluid" style="height: 390px; width: 410px; object-fit: contain;"></a>  
+                                        <% } %>
+                                        <%})%>
 							</div>
-							<% } %>
-                            <%})%>
 					</div>
-                    
 				</div>
                 
 				<div class="col-lg-5 offset-lg-1">
-					<div class="s_product_text">
+					<div class="s_product_text" style="margin-left: 10px;">
 						<h3><%- product.name %></h3>
 						
 
                         <% if (product.discount) { %>
                             <% var discountedPrice = Math.floor(product.price - (product.price * (product.discount / 100))); %>
-                            <h2>&#x20B9;<%= discountedPrice%> Discount Price</h2>
+                            <h2 style="margin-top: 20px;">&#x20B9;<%= discountedPrice%> Discount Price</h2>
                             <h5>&#x20B9;<%= product.price%> Original Price</h5>
                           <% } else { %>
                             <h2>&#x20B9;<%= product.price%></h2>
@@ -210,23 +150,23 @@
             
 
                        <%if(product.discount){%>
-                        <h5 class="text-danger"><%- product.discount %>% Discount</h2>
+                        <h5 class="text-danger" style="margin-top: 20px;"><%- product.discount %>% Discount</h2>
                         <%}%>
-                        <% product.quantity.forEach((sizeObj) => { %>
-                            <% if (sizeObj.size !== "null") { %>
-                              <li class="nav-item dropdown dropdownn">
-                                <a class="nav-link mx-2 dropdown-toggle dropdown-headerr dropdown-togglee dropdown-header" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <h5>Choose Size :</h5>
-                                </a>
-                                <div class="dropdown-menu dropdown-menuu" aria-labelledby="navbarDropdown">
-                                  <a class="dropdown-item dropdown-itemm" href="#" name="<%= sizeObj.size %>"><h5><%= sizeObj.size %></h5></a>
-                                </div>
-                              </li>
-                            <% } %>
-                          <% }) %>
-                          
-                        <ul class="list">
-							<a class="active" href=""><span>Category</span> <%- product.category.name %></a>
+
+                        <% if (product.category.name === 'Outfits') {%>
+                        <h5 style="margin-top: 20px;">Choose Size :</h5>
+                                    <% product.quantity.forEach((sizeObj) => { %>
+                                        <% if (sizeObj.size !== "null") { %>
+                                  <button class="size-button"><a class="text-black" href="" name="<%= sizeObj.size %>"><%= sizeObj.size %></a></button>
+                                  <% } %>
+                                  <% }) %>
+                           <%}%>
+
+
+
+
+                        <ul class="list" style="margin-top: 20px;">
+							<span class="text-muted fw-bold"><span >Category</span> <%- product.category.name %></span>
 							
                                     <% if (product.quantity && Array.isArray(product.quantity)) { %>
                                         <% var inStock = product.quantity.some(item => item.stock > 0); %>
@@ -240,7 +180,7 @@
                         </ul>
 						<p><%= product.description %></p>
 
-						<div class="card_area d-flex align-items-center justify-content-center">
+						<div class="card_area d-flex align-items-center justify-content-center" style="padding-bottom: 10px;">
 					
 									<a class="primary-btn" href="" id="addToCart">Add to Cart</a>
 	
@@ -328,6 +268,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer Ends -->
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Handle click event on dropdown items

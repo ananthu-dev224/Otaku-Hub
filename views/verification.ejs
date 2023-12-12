@@ -54,7 +54,7 @@
                                       <label for="enteredOtp" class="form-label">Enter your OTP</label>
                                     </div>
                               <div class="d-grid">
-                                <button class="btn btn-success btn-lg" type="submit" onclick="startCountdown()">Verify</button>
+                                <button class="btn btn-success btn-lg" type="submit" onclick="startCountdown()" id="verify">Verify</button>
                               </div>
                             </div>
                           </div>
@@ -85,7 +85,7 @@
         </div>
       </section>
 
-    <script>
+<script>
 var isRunning = false 
 function startCountdown() {
       // Set the countdown time in seconds
@@ -114,6 +114,18 @@ function startCountdown() {
         }
       }, 1000); // Update every 1000 milliseconds (1 second)
     }
+
+
+ // Start the countdown when the window is loaded
+ window.onload = startCountdown;
+
+function countdownHandler(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    startCountdown();
+}
+document.getElementById('resent-otp').addEventListener('click',countdownHandler)
+
+
     
 function resendOtp(){
         // Making an ajax req to server to resent otp post method

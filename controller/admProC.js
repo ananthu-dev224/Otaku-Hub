@@ -52,7 +52,7 @@ ProductsC.upload = multer({
 
 //posting product data to db
 ProductsC.manageAddPro = async (req,res) =>{
-      const {name,category,description,stock,size,price,discount} = req.body
+      const {name,category,description,stock,stocks,price,discount} = req.body
       const existingPro = await productsdb.findOne({name})
 
 console.log('req.body:', req.body);
@@ -80,17 +80,32 @@ console.log('req.files:', req.files); //uploaded files
 try {
         let  mainImage = req.files['mainimage'][0].path // Store the path of the main image
         let  additionalImages = req.files['additionalimage'].map(file => file.path) // Store paths of additional images
+        let quantity = new Array()
+        if(category === "Outfits"){
+          const sizes = ["S","M","L","XL"]
+          for (let i = 0; i < sizes.length; i++) {
+            quantity.push({
+              size: sizes[i],
+              stock: stocks[i],
+            });
+            console.log(sizes[i])
+            console.log(stocks[i]);
+          }
+        }else{
+          quantity.push({
+            stock:stock
+          })
+        }
           const newProduct = new productsdb({
                 name:name,
                 category:categoryID,
                 description:description,
                 price:price,
                 discount:discount,
-                quantity:[{size:size,stock:stock}],
+                quantity:quantity,
                 mainimage:mainImage,
                 additionalimages:additionalImages,
           })
-
        const productSave = await newProduct.save()
        await categoriesdb.findOneAndUpdate(
          {_id:categoryID},
@@ -111,12 +126,73 @@ try {
 ProductsC.displayEditPro = async (req,res) =>{
   if(req.session.adminActive){
       const id = req.params.id
+      const categories = await categoriesdb.find()
       let product = await productsdb.findById(id).populate('category')
-      res.render('editProduct',{alert:null,product})
+      res.render('editProduct',{alert:null,product,categories})
   }else{
     res.redirect('/admin')
   }
 }
+
+ProductsC.manageEditPro = async (req,res) =>{
+  try {
+    const productId = req.params.id;
+    const { name, category, description, stock, stocks, price, discount } = req.body;
+
+    let updateFields = {};
+
+    if (name !== undefined && name !== "") updateFields.name = name;
+    if (description !== undefined && description !== "") updateFields.description = description;
+    if (price !== undefined && price !== "") updateFields.price = price;
+    if (discount !== undefined && discount !== "") updateFields.discount = discount;
+
+    if (category) {
+        const categoryName = await categoriesdb.findOne({ name: category });
+        const categoryID = categoryName._id;
+        updateFields.category = categoryID;
+    }
+    console.log(stocks);
+    if (stock || (stocks && Array.isArray(stocks) && stocks.length > 0)) {
+        let quantity = [];
+        if (category === "Outfits" && Array.isArray(stocks) && stocks.length > 0) {
+            const sizes = ["S", "M", "L", "XL"];
+            for (let i = 0; i < stocks.length && sizes.length; i++) {
+                quantity.push({
+                    size: sizes[i],
+                    stock: stocks[i],
+                });
+            }
+        } else {
+            quantity.push({
+                stock: stock,
+            });
+        }
+        updateFields.quantity = quantity;
+        console.log(updateFields.quantity);
+    }
+
+    if (req.files['mainimage'] && req.files['mainimage'][0]) {
+        updateFields.mainimage = req.files['mainimage'][0].path;
+    }
+
+    if (req.files['additionalimage']) {
+        updateFields.additionalimages = req.files['additionalimage'].map(file => file.path);
+    }
+
+    const updateProduct = await productsdb.findByIdAndUpdate(productId, { $set: updateFields });
+
+    if (updateProduct) {
+        res.redirect('/admin/products');
+    }
+
+} catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
+}
+
+}
+
+
 
 //Products restrict
 ProductsC.manageTogglePro = async (req,res) =>{
@@ -134,6 +210,18 @@ ProductsC.manageTogglePro = async (req,res) =>{
     console.log("An error occured",error.message);
     res.status(500).send("Internal Server Error")
  }
+}
+
+// Delete product
+ProductsC.removePro = async (req,res) =>{
+  try {
+    const productId = req.params.id
+    await productsdb.findByIdAndDelete(productId)
+    res.redirect('/admin/products')
+  } catch (error) {
+    res.status(500).send("Internal Server Error")
+    console.log(error.message);
+  }
 }
 
 

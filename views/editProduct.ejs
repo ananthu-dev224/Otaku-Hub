@@ -64,7 +64,7 @@
                         <span class="text">Payment Methods</span>
                     </a>
                     <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i> 
+                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
                             <span class="text">Logout</span>
                         </a>
                     </li>
@@ -162,60 +162,100 @@
             <div class="card mb-4">
                 
 <!-- MODAL STARTS HERE -->
-<!-- <div class="modal fade" id="alert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Validation Error</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-        <p id="alert-content"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Sure</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  
+
 <!-- MODAL ENDS HERE -->
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form action="/admin/products/edit/<%= product.id%>" method="post" enctype="multipart/form-data">
+                        <form action="/admin/products/edit/<%= product._id%>" method="post" enctype="multipart/form-data">
                             <div class="form-row align-items-center">
                               <div class="col-auto">
                                 <label class="sr-only" for="inlineFormInput">Name of Product</label><br><br>
                                 <input type="text" class="form-control mb-2" id="name" name="name" placeholder="<%= product.name%>">
                               </div><br>
                               <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInput">Category</label><br><br>
-                                <input type="text" class="form-control mb-2" id="category" name="category" placeholder="<%= product.category.name%>">
-                              </div><br>
+                                <label class="sr-only" for="category">Category :</label>
+                                
+                                <select class="form-select mb-2" id="category" name="category">
+                                    <option value="" selected disabled><%= product.category.name%></option>
+                                    <% categories.forEach((category)=> {%>
+                                    <option value="<%= category.name%>"><%= category.name%></option>
+                                    <%})%>
+                                </select>
+                                
+                            </div>
+                            
+                            
                               <div class="col-auto">
                                 <label for="Description">Description</label><br><br>
                                 <textarea class="form-control" id="description" rows="3" name="description" placeholder="<%= product.description%>"></textarea>
                               </div><br>
-                              <div class="col-auto">
+                    <% if(product.categories === 'Outfits')%>
+                                <div id="clothesForm" style="display: none;">
+                                    <div class="row">
+                                        <div class="col">
+                                          <h6>Small :</h6>
+                                        </div>
+                                        <div class="col">
+                                            <% if(product.category.name === 'Outfits' && product.quantity[0].stock !== null){%>
+                                          <input type="Number" class="form-control" placeholder="<%= product.quantity[0].stock%>" value="<%= product.quantity[0 ].stock%>" name="stocks[]">
+                                          <%}else{%>
+                                          <input type="Number" class="form-control" placeholder="Stock of Size S" name="stocks[]">
+                                          <%}%>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="col">
+                                         <h6>Medium :</h6>
+                                        </div>
+                                        <div class="col">
+                                            <% if(product.category.name === 'Outfits'  && product.quantity[0].stock !==  null ){%>
+                                                <input type="Number" class="form-control" value="<%= product.quantity[1].stock%>" placeholder="<%= product.quantity[1].stock%>" name="stocks[]">
+                                                <%}else{%>
+                                                <input type="Number" class="form-control" placeholder="Stock of Size M" name="stocks[]">
+                                                <%}%>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="col">
+                                         <h6>Large :</h6>
+                                        </div>
+                                        <div class="col">
+                                            <% if(product.category.name === 'Outfits'  && product.quantity[0].stock !==  null){%>
+                                                <input type="Number" class="form-control" value="<%= product.quantity[2].stock%>" placeholder="<%= product.quantity[2].stock%>" name="stocks[]">
+                                                <%}else{%>
+                                                <input type="Number" class="form-control" placeholder="Stock of Size L" name="stocks[]">
+                                                <%}%>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="col">
+                                         <h6>Extra Large :</h6>
+                                        </div>
+                                        <div class="col">
+                                            <% if(product.category.name === 'Outfits'  && product.quantity[0].stock !==  null){%>
+                                                <input type="Number" class="form-control" value="<%= product.quantity[3].stock%>" placeholder="<%= product.quantity[3].stock%>" name="stocks[]">
+                                                <%}else{%>
+                                                <input type="Number" class="form-control" placeholder="Stock of Size XL" name="stocks[]">
+                                                <%}%>
+                                        </div>
+                                      </div>
+                                </div>
+
+
+                              <div class="col-auto" id="otherForm" display="none">
                                 <label class="sr-only" for="inlineFormInput">Quantity :</label><br><br>
                               <label class="sr-only" for="inlineFormInput">Stock</label>
-                              <input type="number" class="form-control mb-2" id="stock" name="stock" placeholder="Stock"><br>
-                              <label class="sr-only" for="inlineFormInput">Size</label>
-                              <select class="form-control" name="size">
-                                <option>null</option>
-                                <option>S</option>
-                                <option>M</option>
-                                <option>L</option>
-                              </select>
+                              <input type="number" class="form-control mb-2" id="stock" name="stock" placeholder="<%= product.quantity[0].stock%>"><br>
                               </div><br><br>
+                           
                               <div class="col-auto">
                                 <label class="sr-only" for="price">Price</label><br><br>
-                                <input type="number" class="form-control mb-2" id="price" name="price" placeholder="&#8377;<%= product.price%>">
+                                <input type="number" class="form-control mb-2" id="price" name="price" placeholder="<%= product.price%>">
                               </div><br>
                               <div class="col-auto">
                                 <label class="sr-only" for="price">Discount</label><br><br>
-                                <input type="number" class="form-control mb-2" id="discount" name="discount" placeholder="<%= product.discount%>%">
+                                <input type="number" class="form-control mb-2" id="discount" name="discount" placeholder="<%= product.discount%>">
                               </div><br>
                               <div class="col-auto">
                                 <label class="sr-only" for="main-image">Main Image</label><br><br>
@@ -269,19 +309,32 @@ document.getElementById('additional-img').addEventListener('change',function(eve
     }
 })
 
-// Modal alert function
-// function openModal(msg){
-//     document.getElementById('alert-content').textContent = msg;
-//     // Trigger the Bootstrap modal
-//     var myModal = new bootstrap.Modal(document.getElementById('alert'));
-//     myModal.show();
-// }
+var clothesForm = document.getElementById('clothesForm');
+var otherForm = document.getElementById('otherForm');
+var productCategory = '<%= product.category.name%>'
+if(productCategory === "Outfits") {
+    console.log("outfit form");
+    clothesForm.style.display = 'block';
+    otherForm.style.display = 'none';
+}else{
+    console.log("other form");
+    clothesForm.style.display = 'none';
+    otherForm.style.display = 'block';
+}
 
-// document.getElementById('alert').addEventListener('hidden.bs.modal', function () {
-//     const fileInput = document.getElementById('additional-img');
-//     fileInput.disabled = false; // Enable the file input when the modal is closed
-//     fileInput.value = ''; // Clear the file input
-// });
+document.getElementById('category').addEventListener('change', function () {
+        var selectedCategory = this.value.trim()
+        console.log(selectedCategory);
+        if (selectedCategory.toLowerCase().indexOf('outfits') !== -1) {
+            console.log("outfit form");
+            clothesForm.style.display = 'block';
+            otherForm.style.display = 'none';
+        } else {
+            console.log("other form");
+            clothesForm.style.display = 'none';
+            otherForm.style.display = 'block';
+        }
+    });
 
 </script>
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>

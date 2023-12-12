@@ -4159,6 +4159,29 @@ label {
   border-radius: 5px;
   border: none; }
 
+  .size-button {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 4px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #000;
+    border-radius: 4px;
+    color: #000;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.size-button:hover {
+    background-color:#ffba00 ;
+}
+
+.size-button.active {
+    background-color: #007bff;
+    color: #fff;
+}
 /* End Single Product Area css
 ============================================================================================ */
 /* Cart Area css

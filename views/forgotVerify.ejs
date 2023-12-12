@@ -54,7 +54,7 @@
                                       <label for="enteredOtp" class="form-label">Enter your OTP</label>
                                     </div>
                               <div class="d-grid">
-                                <button class="btn btn-success btn-lg" type="submit" onclick="startCountdown()">Verify</button>
+                                <button class="btn btn-success btn-lg" type="submit" onclick="startCountdown()" id="verify">Verify</button>
                               </div>
                             </div>
                           </div>
@@ -127,6 +127,15 @@ function resendOtp(){
           })
           .catch(error => console.error('An error occured during resent', error.message));
         }
+
+ // Start the countdown when the window is loaded
+ window.onload = startCountdown;
+
+function countdownHandler(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    startCountdown();
+}
+document.getElementById('resent-otp').addEventListener('click',countdownHandler)
 
       setTimeout(() => {
     let alrt = document.getElementById('alrt')

@@ -76,7 +76,9 @@ router.get('/admin/products',admProC.displayPro)
 router.get('/admin/products/add',admProC.displayAddPro)
 router.post('/admin/products/add',admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageAddPro)
 router.get('/admin/products/edit/:id',admProC.displayEditPro)
+router.post('/admin/products/edit/:id',admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageEditPro)
 router.get('/admin/products/restrict/:id',admProC.manageTogglePro)
+router.get('/admin/products/remove/:id',admProC.removePro)
 
 
 

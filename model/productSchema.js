@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     },
     description:String,
     quantity:[{
-        size:{type:String,required:false},
+        size:{type:String,required:false,default:null},
         stock:{type:Number,min:0,required:true}
     }],
     price:Number,
