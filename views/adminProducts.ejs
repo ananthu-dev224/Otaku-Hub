@@ -252,30 +252,49 @@
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function confirmDelete(event){
-    event.preventDefault()
-    var url = event.currentTarget.getAttribute('href')
-    Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!"
-}).then((isProceed)=>{
-    if(isProceed){
-        window.location.href = url
-        Swal.fire({
-      title: "Deleted!",
-      text: "Product has been deleted.",
-      icon: "success"
-    })
-    }
-})
-}
+function confirmDelete(event) {
+  event.preventDefault();
+  var url = event.currentTarget.getAttribute('href');
 
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Proceed with the deletion
+      window.location.href = url;
+      
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // User clicked "Cancel" or closed the modal
+      Swal.fire({
+        title: "Cancelled",
+        text: "Your request has been cancelled.",
+        icon: "info",
+        customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+      });
+    } else {
+      // Handle other dismissals if needed
+      Swal.fire({
+        title: "Dismissed",
+        text: "Your request has been dismissed.",
+        icon: "info",
+        customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+      });
+    }
+  });
+}
 </script>
 </body>
-
 </html>

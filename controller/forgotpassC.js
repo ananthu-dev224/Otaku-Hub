@@ -169,7 +169,7 @@ forgotC.manageNew = async (req,res) =>{
     const email = req.session.data.email
     const user = await User.findOne({email:email})
     if(password !== confirmpassword){
-        res.render("newPassword",{alert:"Password is not correct"})
+        res.render("newPassword",{alert:"Password is not matching"})
     }
     try {
         if(password === confirmpassword){

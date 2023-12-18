@@ -7,7 +7,7 @@ const admUsersC ={}
 
 admUsersC.displayUsers = async  (req,res)=>{
     try {
-          if(req.session.adminActive){
+          if(req.admin){
           const users = await User.find()
           res.render('customers',{users,alert:null})
             

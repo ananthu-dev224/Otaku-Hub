@@ -16,6 +16,7 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <link href="/static/adminPro.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="dark">
@@ -167,7 +168,7 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form action="/admin/products/edit/<%= product._id%>" method="post" enctype="multipart/form-data">
+                        <form action="/admin/products/edit/<%= product._id%>" method="post" enctype="multipart/form-data" id="form">
                             <div class="form-row align-items-center">
                               <div class="col-auto">
                                 <label class="sr-only" for="inlineFormInput">Name of Product</label><br><br>
@@ -246,7 +247,7 @@
                               <div class="col-auto" id="otherForm" display="none">
                                 <label class="sr-only" for="inlineFormInput">Quantity :</label><br><br>
                               <label class="sr-only" for="inlineFormInput">Stock</label>
-                              <input type="number" class="form-control mb-2" id="stock" name="stock" placeholder="<%= product.quantity[0].stock%>"><br>
+                              <input type="number" class="form-control mb-2" id="stock" name="stock" placeholder="<%= product.quantity[0].stock%>" value="<%= product.quantity[0].stock%>"><br>
                               </div><br><br>
                            
                               <div class="col-auto">
@@ -269,7 +270,7 @@
                                  
                               </div><br>
                               <div class="col-auto">
-                             <center><button type="submit" class="btn btn-primary mb-2">Save Changes</button></center>   
+                             <center><button type="submit" class="btn btn-primary mb-2" onclick="saveChanges(event)">Save Changes</button></center>   
                               </div>
                             </div>
                           </form>
@@ -336,6 +337,28 @@ document.getElementById('category').addEventListener('change', function () {
         }
     });
 
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function saveChanges(event) {
+        event.preventDefault();
+        const selectedCategory = document.getElementById('category').value
+        if (selectedCategory) {
+            // Category is selected, proceed with form submission
+            const form = document.getElementById('form');
+            form.submit();
+        } else {
+            // Show SweetAlert if the category is not selected
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please choose the category before saving changes',
+                customClass: {
+                     title: 'sweetalertee-title', // Add a custom class to the title
+                 }
+            });
+        }
+    }
 </script>
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>

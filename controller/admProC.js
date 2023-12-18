@@ -10,9 +10,8 @@ const path = require('path')
 
 //Displaying admin product management page
 ProductsC.displayPro = async (req,res) =>{
-       if(req.session.adminActive){
+       if(req.admin){
         const products = await productsdb.find().populate('category')
-        console.log(products);
         res.render("adminProducts",{alert:null,products})
        }else{
         res.redirect('/admin')
@@ -22,7 +21,7 @@ ProductsC.displayPro = async (req,res) =>{
 //displaying add product page
 ProductsC.displayAddPro = async (req,res) =>{
     try {
-        if(req.session.adminActive){
+        if(req.admin){
             const categories = await categoriesdb.find()
             res.render("addProduct",{alert:null,categories})
            }else{
@@ -124,7 +123,7 @@ try {
 
 // Edit products
 ProductsC.displayEditPro = async (req,res) =>{
-  if(req.session.adminActive){
+  if(req.admin){
       const id = req.params.id
       const categories = await categoriesdb.find()
       let product = await productsdb.findById(id).populate('category')
@@ -162,7 +161,7 @@ ProductsC.manageEditPro = async (req,res) =>{
                     stock: stocks[i],
                 });
             }
-        } else {
+        } else  {
             quantity.push({
                 stock: stock,
             });

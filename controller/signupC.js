@@ -4,11 +4,21 @@ const User = require('../model/userSchema')
 const otpgenerator = require('generate-otp')
 const nodemailer = require('nodemailer')
 const bcrypt =  require('bcrypt')
+const jwt = require('jsonwebtoken')
 const signupC = {}
 
 //displaySignup
 signupC.displaySignup = (req,res)=>{
-    res.render('signUp',{alert:null})
+    try {
+    if(!req.session.userActive){
+        res.render('signUp',{alert:null})
+    }else{
+        res.redirect('/home')
+          } 
+    } catch (error) {
+        res.send("Internal Server Error")
+        console.log("An error occured while displaying signup page",error.message);
+    }
 }
 
 
@@ -142,11 +152,17 @@ signupC.manageOtp = async (req,res) =>{
 
         //create session variables
         req.session.userActive = true
-        req.session.userid =storeUser._id 
+        
 
-       //clear the session 
-       delete req.session.data
-       res.redirect('/products')
+     //clear the session 
+        delete req.session.data
+        delete req.session.isSignup
+     // Generate a JWT
+        const token = jwt.sign({ userId: storeUser._id }, process.env.SECRET_ID, { expiresIn: '24h' });
+     // Set the token in a cookie
+        console.log(token);
+       res.cookie('token', token, { httpOnly: true, secure: false });
+       res.redirect('/home')
 
        } catch (error) {
           console.log("error occured :",error.message);

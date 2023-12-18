@@ -6,7 +6,7 @@ const products = require('../model/productSchema')
 
 //displaying category page in admin panel
 CategoryC.displayCat = async(req,res) =>{
-   if(req.session.adminActive){
+   if(req.admin){
    const category = await categories.find()
     res.render('adminCategory',{alert:null,category})
    }else{
@@ -16,7 +16,7 @@ CategoryC.displayCat = async(req,res) =>{
 
 //displaying add category page in admin panel
 CategoryC.displayCatAdd = (req,res) =>{
-   if(req.session.adminActive){
+   if(req.admin){
       res.render('addCategory',{alert:null})
      }else{
       res.redirect('/admin')
@@ -45,8 +45,8 @@ CategoryC.manageCatAdd = async(req,res) =>{
 
 //displaying edit category page
 CategoryC.displayCatEdit = async (req,res)=>{
-   if(req.session.adminActive){
-      const id = req.params.id
+   if(req.admin){
+      const id = req.params.id 
       const category = await categories.findById(id)
       res.render('editCategory',{alert:null,category})
    }else{

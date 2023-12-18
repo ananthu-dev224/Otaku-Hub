@@ -12,10 +12,9 @@ const admDashC = require('./controller/admDashC')
 const admUsersC = require('./controller/admUsersC')
 const admCatC = require('./controller/admCatc')
 const admProC = require('./controller/admProC')
-
-
-
-
+//middleware
+const {verifyToken,checkBlocked} = require('./middlewares/userAuth.js')
+const adminAuth = require('./middlewares/adminAuth.js')
 
 
 // //Admin Login
@@ -24,11 +23,15 @@ router.get('/adminlog',admLoginC.manageadminLogout)
 router.post('/admin',admLoginC.manageadminLogin)
 
 // //Admin Dashboard
-router.get('/dashboard',admDashC.displayadminDash)
+router.get('/dashboard',adminAuth,admDashC.displayadminDash)
+//Home Page
+router.get('/home',verifyToken,checkBlocked,loginC.displayHome)
+
 
 //Login
 router.get('/login',loginC.displayLogin)
 router.post('/login',loginC.manageLogin)
+
 
 //Forgot Password
 router.get('/forgot-password',forgotC.displayForgot) 
@@ -48,37 +51,44 @@ router.get('/otp-verification',signupC.displayOtp)
 router.post('/otp-verification',signupC.manageOtp)
 router.post('/otp-verification/resent-otp',signupC.resentOtp)
 
-//Home Page
 
+// Profile Page
+router.get('/user-profile',verifyToken,checkBlocked,userProC.displayProfile)
+router.post('/edit-profile',verifyToken,checkBlocked,userProC.editProfile)
 
 
 //Products Page
-router.get('/products',userProC.displayPro) //All products 
-router.get('/:category',userProC.displayCat) //Category
-router.get('/product-view/:id',userProC.displayView) // view product
+router.get('/products',verifyToken,checkBlocked,userProC.displayPro) //All products 
+router.get('/:category',verifyToken,checkBlocked,userProC.displayCat) //Category
+router.get('/product-view/:id',verifyToken,checkBlocked,userProC.displayView) // view product
+router.get('/product-order/:order',verifyToken,checkBlocked,userProC.filterPro) // filter products
+router.get('/products/search',verifyToken,checkBlocked,userProC.displaySearch) // search products
+router.get('/user-profile/logout',userProC.logoutUser) //Logout user
+
+
 
 
 // //Admin Customers
-router.get('/admin/view-users',admUsersC.displayUsers)
-router.get('/admin/view-users/restrict/:id',admUsersC.manageToggleUser)
-router.get('/admin/view-users/search',admUsersC.searchUser)
+router.get('/admin/view-users',adminAuth,admUsersC.displayUsers)
+router.get('/admin/view-users/restrict/:id',adminAuth,admUsersC.manageToggleUser)
+router.get('/admin/view-users/search',adminAuth,admUsersC.searchUser)
 
 // //Admin Category of Products
-router.get('/admin/categories',admCatC.displayCat)
-router.get('/admin/categories/add',admCatC.displayCatAdd)
-router.post('/admin/categories/add',admCatC.manageCatAdd)
-router.get('/admin/categories/edit/:id',admCatC.displayCatEdit)
-router.post('/admin/categories/edit/:id',admCatC.manageCatEdit)
-router.get('/admin/categories/restrict/:id',admCatC.manageToggleCat)
+router.get('/admin/categories',adminAuth,admCatC.displayCat)
+router.get('/admin/categories/add',adminAuth,admCatC.displayCatAdd)
+router.post('/admin/categories/add',adminAuth,admCatC.manageCatAdd)
+router.get('/admin/categories/edit/:id',adminAuth,admCatC.displayCatEdit)
+router.post('/admin/categories/edit/:id',adminAuth,admCatC.manageCatEdit)
+router.get('/admin/categories/restrict/:id',adminAuth,admCatC.manageToggleCat)
 
 // //Admin Products Panel
-router.get('/admin/products',admProC.displayPro)
-router.get('/admin/products/add',admProC.displayAddPro)
-router.post('/admin/products/add',admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageAddPro)
-router.get('/admin/products/edit/:id',admProC.displayEditPro)
-router.post('/admin/products/edit/:id',admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageEditPro)
-router.get('/admin/products/restrict/:id',admProC.manageTogglePro)
-router.get('/admin/products/remove/:id',admProC.removePro)
+router.get('/admin/products',adminAuth,admProC.displayPro)
+router.get('/admin/products/add',adminAuth,admProC.displayAddPro)
+router.post('/admin/products/add',adminAuth,admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageAddPro)
+router.get('/admin/products/edit/:id',adminAuth,admProC.displayEditPro)
+router.post('/admin/products/edit/:id',adminAuth,admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageEditPro)
+router.get('/admin/products/restrict/:id',adminAuth,admProC.manageTogglePro)
+router.get('/admin/products/remove/:id',adminAuth,admProC.removePro)
 
 
 
