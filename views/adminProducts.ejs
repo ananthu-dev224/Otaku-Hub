@@ -199,7 +199,7 @@
                                                     <a href="/admin/products/edit/<%= product._id %>" id="edit" class="fw-bold text-primary" >
                                                           Edit
                                                     </a><hr>
-                                                    <a href="/admin/products/remove/<%= product._id %>" id="delete" class="">
+                                                    <a href="/admin/products/remove/<%= product._id %>" id="delete" onclick="confirmDelete(event)">
                                                         <img width="25" height="25" src="https://img.icons8.com/color/48/delete-forever.png" alt="delete-forever"/>
                                                   </a>
                                                 </td>                    
@@ -252,9 +252,9 @@
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
-document.getElementById('delete').addEventListener('click',function(event){
+function confirmDelete(event){
     event.preventDefault()
+    var url = event.currentTarget.getAttribute('href')
     Swal.fire({
   title: "Are you sure?",
   text: "You won't be able to revert this!",
@@ -263,20 +263,17 @@ document.getElementById('delete').addEventListener('click',function(event){
   confirmButtonColor: "#3085d6",
   cancelButtonColor: "#d33",
   confirmButtonText: "Yes, delete it!"
-}).then((result) => {
-  if (result.isConfirmed) {
-    Swal.fire({
+}).then((isProceed)=>{
+    if(isProceed){
+        window.location.href = url
+        Swal.fire({
       title: "Deleted!",
-      text: "Your file has been deleted.",
+      text: "Product has been deleted.",
       icon: "success"
-    }).then(()=>{
-        window.location.href = document.getElementById('delete').getAttribute('href');
     })
-  }
-});
+    }
 })
-
-
+}
 
 </script>
 </body>
