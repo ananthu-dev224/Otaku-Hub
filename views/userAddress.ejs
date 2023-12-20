@@ -2,231 +2,212 @@
 <html lang="zxx" class="no-js">
 
 <head>
-	<!-- Mobile Specific Meta -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Favicon-->
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.png">
-	<!-- Author Meta -->
-	<meta name="author" content="CodePixar">
-	<!-- Meta Description -->
-	<meta name="description" content="">
-	<!-- Meta Keyword -->
-	<meta name="keywords" content="">
-	<!-- meta character set -->
-	<meta charset="UTF-8">
-	<!-- Site Title -->
-	<title>Otaku Hub</title>
-    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
-	<!--
-			CSS
-			============================================= -->
-	<link rel="stylesheet" href="/static/user-assets/css/linearicons.css">
-	<link rel="stylesheet" href="/static/user-assets/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/static/user-assets/css/themify-icons.css">
-	<link rel="stylesheet" href="/static/user-assets/css/bootstrap.css">
-	<link rel="stylesheet" href="/static/user-assets/css/owl.carousel.css">
-	<link rel="stylesheet" href="/static/user-assets/css/nice-select.css">
-	<link rel="stylesheet" href="/static/user-assets/css/nouislider.min.css">
-	<link rel="stylesheet" href="/static/user-assets/css/ion.rangeSlider.css" />
-	<link rel="stylesheet" href="/static/user-assets/css/ion.rangeSlider.skinFlat.css" />
-	<link rel="stylesheet" href="/static/user-assets/css/main.css">
-	<link rel="stylesheet" href="/static/user-assets/css/magiczoom.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.23/dist/sweetalert2.min.css" rel="stylesheet">
+   <!-- Mobile Specific Meta -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <!-- Favicon-->
+   <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.png">
+   <!-- Author Meta -->
+   <meta name="author" content="CodePixar">
+   <!-- Meta Description -->
+   <meta name="description" content="">
+   <!-- Meta Keyword -->
+   <meta name="keywords" content="">
+   <!-- meta character set -->
+   <meta charset="UTF-8">
+   <!-- Site Title -->
+   <title>Otaku Hub</title> 
+   <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
 
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.23/dist/sweetalert2.all.min.js"></script>
-	<script src="/static/user-assets/js/magiczoom.js"></script>
-
-</head>
-<style>
-	.size-button {
-        background-color: inherit;
-        cursor: pointer; /* Set cursor to pointer for better user experience */
+   
+   <link rel="stylesheet" href="/static/user-assets/css/linearicons.css">
+   <link rel="stylesheet" href="/static/user-assets/css/owl.carousel.css">
+   <link rel="stylesheet" href="/static/user-assets/css/font-awesome.min.css">
+   <link rel="stylesheet" href="/static/user-assets/css/themify-icons.css">
+   <link rel="stylesheet" href="/static/user-assets/css/nice-select.css">
+   <link rel="stylesheet" href="/static/user-assets/css/nouislider.min.css">
+   <link rel="stylesheet" href="/static/user-assets/css/bootstrap.css">
+   <link rel="stylesheet" href="/static/user-assets/css/main.css">
+   <link rel="stylesheet" href="/static/user-assets/css/user-profile.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/css/bootstrap.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.23/dist/sweetalert2.all.min.js"></script>
+   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.23/dist/sweetalert2.min.css" rel="stylesheet">
+   <style>
+    /* Style for the card */
+    .card {
+       border: 1px solid #f3efef;
+       border-radius: 8px;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+       margin-bottom: 20px;
+       background: linear-gradient(to top, #c4c5c7 0%, #dcdddf 52%, #ebebeb 100%);
     }
-	.selected-size{
-		background-color:  #ffba00 !important;
-	}
-</style>
+
+
+    .card-text {
+       font-size: 14px;
+       color: #000000;
+    }
+
+
+    .card-header {
+       background-color: #f8f9fa;
+       font-weight: bold;
+       padding: 10px;
+       border-bottom: 1px solid #e5e5e5;
+    }
+
+    label {
+       font-size: 14px;
+       /* Label text size */
+       color: #000000;
+       /* Label text color */
+       margin-bottom: 10px;
+    }
+ </style>
+</head>
+
 <body>
 
-	<!-- Start Header Area -->
-	<header class="header_area sticky-header">
-		<div class="main_menu">
-			<nav class="navbar navbar-expand-lg navbar-light main_box"
-				style="border-radius: 25px;background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);">
-				<div class="container" >
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="/home">
+   <!-- Start Header Area -->
+   <header class="header_area sticky-header">
+      <div class="main_menu">
+         <nav class="navbar navbar-expand-lg navbar-light main_box" style="border-radius: 25px;  background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="/home">
 						<div class="" style="height: 80px;">
 							<h5 class="brand-name text-black" style="font-family: Satisfy; font-size: 35px;">Otaku <br> Hub</h5>
 						</div>
-					</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-						<ul class="nav navbar-nav d-flex align-items-center  menu_nav ml-auto">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                  <ul class="nav navbar-nav d-flex align-items-center  menu_nav ml-auto">
 							<li class="nav-item active"><a href="/home" class="profile-icon nav-link"><span
-										style="font-size: 22px; width: 30px; height: 30px; color: rgb(0, 0, 0);"
-										class="bi bi-house"></span></a></li>
+								style="font-size: 22px; width: 30px; height: 30px; color: rgb(0, 0, 0);"
+								class="bi bi-house"></span></a></li>
 							<li class="nav-item"><a href="/products" class="profile-icon nav-link"><span
-										style="font-size: 22px; width: 30px; height: 30px; color: black;"
-										class="bi bi-shop"></span></a></li>
+								style="font-size: 22px; width: 30px; height: 30px; color: black;"
+								class="bi bi-shop"></span></a></li>
 							<li class="nav-item"><a href="/my-profile" class="profile-icon nav-link"><span
-										style="font-size: 22px; width: 30px; height: 30px; color: black;"
+										style="font-size: 22px; width: 30px; height: 30px; color:  rgb(219, 134, 7);"
 										class="bi bi-person"></span></a></li>
 							<li class="nav-item"><a href="/cart" class="profile-icon nav-link"><span
 										style="font-size: 20px; width: 30px; height: 30px; color: black;"
 										class="bi bi-cart"></span>
-		
-										<span id="cartItemsCount"
-											class="badge  position-absolute top-0 start-50 translate-middle"> 
-                                        0</span>
-                                                                                                             <!-- cartItemsCount -->
-										
-								</a></li>
+                              <span id="cartItemsCount" class="badge  position-absolute top-0 start-50 translate-middle"> </span>
+                              <!-- Cart items count -->
+                           </a></li>
 							<li class="nav-item"><a href="/wishlist" class="profile-icon nav-link"><span
 										style="font-size: 20px; width: 30px; height: 30px; color: black; margin-right: 48px;"
 										class="bi bi-heart"></span></a></li>
 						</ul>
-					</div>
-				</div>
-			</nav>
-		</div>
-	</header>
-	<!-- End Header Area -->
+                </div>
+            </div>
+        </nav>
+      </div>
+   </header>
+<!-- End Header Area -->
 
-	<!-- Start Banner Area -->
-	<section class="">
-		<div class="container">
-			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-				<div class="col-first">
-				</div>
-			</div>
-		</div>
-	</section>
-	<section>
-		<div class="container">
-			<h1 class="text-center">PRODUCT DETAILS</h1>
-          
-		</div>
+   <!-- Start Banner Area -->
+   <section class="">
+    <div class="container">
+       <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 
-	</section>
-	<!-- End Banner Area -->
-
-	<!--================Single Product Area =================-->
-    <style>
-        .s_Product_carousel {
-            display: none; /* Hide the carousel initially */
-        }
-    
-        .s_Product_carousel img {
-            height: 390px;
-            width: 410px;
-            object-fit: contain;
-        }
-    </style>
-    
-	<div class="product_image_area">
-		<div class="container">
-			<div class="row s_product_inner"> 
-				<div class="col-lg-4">
-					<div class="s_Product_carousel">
-                        <div class="single-prd-item d-flex">
-                            <a href="/<%= product.mainimage %>" class="MagicZoom"
-                                data-options="zoomWidth:100%"><img class="img-fluid"
-                                    style="height: 390px; width: 410px; object-fit: contain;"
-                                    src="/<%= product.mainimage %>" alt="main-image"> </a>
-                        </div>
-                        
-                        <% product.additionalimages.forEach((img) =>{%>
-                            <% if(img !== null){%> 
-							<div class="single-prd-item d-flex">
-								<a href="/<%= img %>" class="MagicZoom"
-									data-options="zoomWidth:100%"><img class="img-fluid"
-										style="height: 390px; width: 410px; object-fit: contain;"
-										src="/<%= img %>" alt="additional-images"> </a>
-                                        
-							</div>
-                            <% } %>
-                            <%})%>  
-						
-					</div>
-                    <h6 class="mb-4 fw-normal text-secondary text-center pt-3">Note : Click/Scroll the button in the image to see more images</h6>
-				</div>
-                
-				<div class="col-lg-5 offset-lg-1">
-					<div class="s_product_text">
-						<h3><%- product.name %></h3>
-
-                        <% if (product.discount) { %>
-                            <% var discountedPrice = Math.floor(product.price - (product.price * (product.discount / 100))); %>
-                            <h2 style="margin-top: 20px;">&#x20B9;<%= discountedPrice%> Discount Price</h2>
-                            <h5>&#x20B9;<%= product.price%> Original Price</h5>
-                          <% } else { %>
-                            <h2>&#x20B9;<%= product.price%></h2>
-                          <% } %>
-
-                          <%if(product.discount){%>
-                            <h5 class="text-danger" style="margin-top: 20px;"><%- product.discount %>% Discount</h2>
-                            <%}%>
-                         
-                            <% if (product.category.name === 'Outfits') {%>
-                                <h5 style="margin-top: 20px;">Available Size :</h5>
-                                            <% product.quantity.forEach((sizeObj) => { %>
-                                                <% if (sizeObj.size !== "null" && sizeObj.stock > 0) { %>
-													<button class="btn  border border-info size-button"
-														onclick="selectSize(this, '<%= sizeObj.size %>');">
-													<%= sizeObj.size %>
-												</button> &nbsp;
-                                          <% } %>
-                                          <% }) %>
-                                   <%}%>
-                            
-<br><br>
-						<ul class="list">
-							<li><a class="active" href="/<%- product.category.name%>"><span>Category :</span> <%- product.category.name %></a></li>
-                            <% if (product.quantity && Array.isArray(product.quantity)) { %>
-                                <% var inStock = product.quantity.some(item => item.stock > 0); %>
-                                <% if (inStock) { %>
-                                    <li class="text-success">In Stock</li>
-                                <% } else { %>
-                                    <li class="text-danger">Out of Stock</li>
-                                <% } %>
-                            <% }%>
-            
-						</ul>
-						<p><%- product.description %></p>
-
-						<div class="card_area d-flex align-items-center justify-content-center">
-							
-									<a class="primary-btn" href="" id="addToCart">Add to Cart</a>
-					
-                                    <a class="icon_btn addtoWishlist" data-productId="<%=  product._id %>" href="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/></svg>
-                                    </a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--================End Single Product Area =================-->
-
-	<!--================Product Description Area =================-->
-	<section class="product_description_area">
-
-	</section>
-	<!--================End Product Description Area =================-->
-    <div class="container-fluid">
-        <h6 class="text-center">Free Shipping on orders 1000 and above. Additional discounts available during checkout. COD available on orders above 400 </h6>
-      
+       </div>
     </div>
-	<!-- start footer Area -->
+ </section>
+ <section>
+    <div class="container">
+       <h1 class="text-center">MY ADDRESS</h1>
+       <!-- Add this line -->
+    </div>
+ </section>
+ <!-- End Banner Area -->
+
+ <section class="checkout_area section_gap">
+    <div class="container">
+       <div class="row">
+          <div class="col-md-12">
+            <% if(user && Array.isArray(user.address) && user.address.length > 0){%>
+            <% user.address.forEach((address) => {%>
+                   <div class="card">
+                      <a href="/edit-address/<%- address._id%>" class="edit-icon"
+                         style="position: absolute; top: 10px; right: 10px; color: #000000; font-size: 20px;">
+                         <i class="fa fa-edit"></i> <!-- Assuming you're using Font Awesome for icons -->
+                      </a>
+                      <a href="/remove-address/<%- address._id%>" type="button" id="addressDeleteBtn" data-addressId="<%- address._id%>"
+                         class="delete-icon addressDeleteBtn"
+                         style="position: absolute; bottom: 10px; right: 10px; color: #000000; font-size: 20px;">
+                         <i class="fa fa-trash"></i> <!-- Delete Icon -->
+                      </a>
+                      <div class="card-body ">
+                         <p class="card-text">House Address : <%= address.houseaddress%></p>
+                         <p class="card-text">Street : <%= address.street%></p>
+                         <p class="card-text">City : <%= address.city%></p>
+                         <p class="card-text">State : <%= address.state%></p>
+                         <p class="card-text">Pin Code: <%= address.pincode%></p>
+                      </div>
+                   </div>
+                   <%})%>
+                <%}else{%>
+                         <div class="container">
+                           <div class="row justify-content-center mb-5">
+                              <div class="row justify-content-center mb-5">
+                                 <h4 style="color : #000000">No Address Found <img width="30" height="30" src="https://img.icons8.com/ios/50/nothing-found.png" alt="nothing-found"/></h4>
+                              </div>
+                           </div>
+                         </div>
+                         <%}%>
+          </div>
+       </div>
+       <div class="billing_details">
+          <div class="row">
+             <div class="col-lg-12">
+                <h3>Add Address</h3>
+                <!-- Add address form -->
+                <form class="row addAddress_form" id="addAddressForm" action="/add-address" method="post" novalidate="novalidate">
+                   <div class="col-md-12 form-group">
+                      <input type="text" class="form-control" id="address" name="houseaddress" placeholder="Address of your House">
+                      <p id="houseaddressError"></p>
+                   </div>
+                   <div class="col-md-12 form-group ">
+                     <input type="text" class="form-control" id="street" name="street" placeholder="Street">
+                     <p id="streetError"></p>
+                  </div>
+                   <div class="col-md-12 form-group ">
+                      <input type="text" class="form-control" id="city" name="city" placeholder="Town/City">
+                      <p id="cityError"></p>
+                   </div>
+                   <div class="col-md-12 form-group">
+                      <input type="text" class="form-control" id="pcode" name="pincode" placeholder="PIN code">
+                      <p id="pincodeError"></p>
+                   </div>
+                   <div class="col-md-12 form-group">
+                     <input type="text" class="form-control" id="state" name="state" placeholder="State">
+                     <p id="stateError"></p>
+                  </div>
+                   <div class="col-12 col-md-12 form-group justify-content-center d-flex">
+                      <button type="submit" class="btn btn-info">Add Address
+                      </button>
+                   </div>
+                </form>
+                <a class="btn btn-dark" href="/my-profile">Back to Profile</a>
+             </div>
+             
+          </div>
+       </div>
+    </div>
+ </section>
+
+
+<!-- start footer Area -->
 	<footer class="footer-area pt-5 pb-5" style="background-color: black;  border-radius: 20px 20px 0 0;">
 		<div class="container">
 			<div class="row  d-flex justify-content-between">
@@ -278,96 +259,115 @@
 			</div>
 		</div>
 	</footer>
-<!-- Footer Ends -->
+
+<!-- Additional script functions -->
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const sizeButtons = document.querySelectorAll('.size-button');
+// Add address
+    document.getElementById('addAddressForm').addEventListener('submit', async (event) => {
+       event.preventDefault()
 
-        function selectSize(button) {
-            // Reset the selected state for all sizes
-            sizeButtons.forEach(btn => btn.classList.remove('selected-size'));
-            // Find and select the clicked size button
-            button.classList.add('selected-size');
+      //  const isValid = addressValidate();
 
-        }
+      //  if (isValid) {
 
-        // Add click event listeners to all size buttons
-        sizeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                selectSize(this);
-            });
-        });
-    });
-</script>
+          const formData = {
+             houseaddress: event.currentTarget.houseaddress.value,
+             street: event.currentTarget.street.value,
+             city: event.currentTarget.city.value,
+             pincode: event.currentTarget.pincode.value,
+             state: event.currentTarget.state.value
+          }
 
+          const response = await fetch('/my-profile/add-address',{
+            method: 'post',
+            headers:{
+               'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
 
-<script>
-     // Add a script to show the carousel after all images are loaded
-     window.addEventListener('load', function () {
-        document.querySelector('.s_Product_carousel').style.display = 'block';
-    });
-</script>
-<!-- Add to Cart -->
+          const result = await response.json();
 
-<!-- Add to Wishlist -->
+          if (result.status === 'success') {
+             Swal.fire({
+                icon: 'success',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 3000
+             })
+             setTimeout(() => {
+                location.href = '/my-profile/address'
+             }, 2000);
+          } else {
+             Swal.fire({
+                icon: 'error',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 3000
+             })
+          }
+      //  }
+    })
+// Delete Address
+    const deleteButton = document.querySelectorAll('.addressDeleteBtn');
+    deleteButton.forEach(button => {
+       button.addEventListener('click', async (event) => {
+          event.preventDefault();
+          const addressId = event.currentTarget.getAttribute('data-addressId');
+          console.log(addressId)
+          const response = await Swal.fire({
+             title: "Remove",
+             text: "Are you sure ? Address will be deleted",
+             icon: "question",
+             showCancelButton: true,
+             confirmButtonColor: '#3085d6',
+             cancelButtonColor: '#990f0f',
+             confirmButtonText: 'Yes',
+             cancelButtonText: 'No !'
+          });
 
-	<script>
-		const addtoWhishlistBtn = document.querySelectorAll('.addtoWishlist')
+          if (response.isConfirmed) {
+             const response = await fetch(`/remove-address/${addressId}`);
+             const result = await response.json();
 
-		addtoWhishlistBtn.forEach((btn) => {
-			btn.addEventListener('click', async (event) => {
-				event.preventDefault();
-
-				const productId = event.currentTarget.getAttribute('data-productId')
-
-				if (productId) {
-					const response = await fetch(`/add-to-whishlist/?productId=${productId}`);
-					const result = await response.json()
-					if (result.status === 'success') {
-						Swal.fire({
-							icon: 'success',
-							title: result.message,
-							showConfirmButton: false,
-							timer: 1000
-						})
-
-					} else if (result.status === 'sessionError') {
-						Swal.fire({
-							icon: 'info',
-							title: result.message,
-							showConfirmButton: false,
-							timer: 1000
-						})
-						setTimeout(() => {
-							location.href = '/login'
-						}, 1500);
-					} else {
-						Swal.fire({
-							icon: 'info',
-							title: result.message,
-							showConfirmButton: false,
-							timer: 1000
-						})
-					}
-				}
-			})
-		})
-	</script>
-	<script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-		crossorigin="anonymous"></script>
-	<script src="/static/user-assets/js/vendor/bootstrap.min.js"></script>
-	<script src="/static/user-assets/js/jquery.ajaxchimp.min.js"></script>
-	<script src="/static/user-assets/js/jquery.nice-select.min.js"></script>
-	<script src="/static/user-assets/js/jquery.sticky.js"></script>
-	<script src="/static/user-assets/js/nouislider.min.js"></script>
-	<script src="/static/user-assets/js/jquery.magnific-popup.min.js"></script>
-	<script src="/static/user-assets/js/owl.carousel.min.js"></script>
-	<!--gmaps Js-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-	<script src="/static/user-assets/js/gmaps.min.js"></script>
-	<script src="/static/user-assets/js/main.js"></script>
+             if (result.status === 'success') {
+                Swal.fire({
+                   icon: 'success',
+                   title: result.message,
+                   showConfirmButton: false,
+                   timer: 3000
+                })
+                setTimeout(() => {
+                   location.href = '/my-profile/address'
+                }, 2000);
+             } else {
+                Swal.fire({
+                   icon: 'error',
+                   title: result.message,
+                   showConfirmButton: false,
+                   timer: 3000
+                })
+             }
+          }
+       })
+    })
+ </script>
+ <script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+    integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+    crossorigin="anonymous"></script>
+ <script src="/static/user-assets/js/vendor/bootstrap.min.js"></script>
+ <script src="/static/user-assets/js/jquery.ajaxchimp.min.js"></script>
+ <script src="/static/user-assets/js/jquery.nice-select.min.js"></script>
+ <script src="/static/user-assets/js/jquery.sticky.js"></script>
+ <script src="/static/user-assets/js/nouislider.min.js"></script>
+ <script src="/static/user-assets/js/jquery.magnific-popup.min.js"></script>
+ <script src="/static/user-assets/js/owl.carousel.min.js"></script>
+ <!--gmaps Js-->
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+ <script src="/static/user-assets/js/gmaps.min.js"></script>
+ <script src="/static/user-assets/js/main.js"></script>
+ <!-- <script src="/js/addressValidate.js"></script> --> 
 
 </body>
 

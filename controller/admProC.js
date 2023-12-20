@@ -10,12 +10,16 @@ const path = require('path')
 
 //Displaying admin product management page
 ProductsC.displayPro = async (req,res) =>{
-       if(req.admin){
-        const products = await productsdb.find().populate('category')
-        res.render("adminProducts",{alert:null,products})
-       }else{
-        res.redirect('/admin')
-       }
+      try {
+        if(req.admin){
+          const products = await productsdb.find().populate('category')
+          res.render("adminProducts",{alert:null,products})
+         }else{
+          res.redirect('/admin')
+         }
+      } catch (error) {
+         console.log("An error occured while loading product management page",error.message);
+      }
 }
 
 //displaying add product page
@@ -123,16 +127,22 @@ try {
 
 // Edit products
 ProductsC.displayEditPro = async (req,res) =>{
+ try {
   if(req.admin){
-      const id = req.params.id
-      const categories = await categoriesdb.find()
-      let product = await productsdb.findById(id).populate('category')
-      res.render('editProduct',{alert:null,product,categories})
+    const id = req.params.id
+    const categories = await categoriesdb.find()
+    let product = await productsdb.findById(id).populate('category')
+    res.render('editProduct',{alert:null,product,categories})
   }else{
-    res.redirect('/admin')
-  }
+  res.redirect('/admin')
+       } 
+ } catch (error) {
+  console.log("An error occured while displaying edit products page",error.message);
+ }
 }
 
+
+// Edit product submit
 ProductsC.manageEditPro = async (req,res) =>{
   try {
     const productId = req.params.id;

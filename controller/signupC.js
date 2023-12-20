@@ -111,10 +111,14 @@ signupC.manageSignup = async (req,res)=>{
 
 //displayOtp
 signupC.displayOtp = (req,res)=>{
-    if(req.session.isSignup){
-        res.render('verification',{alert:null})
-    }else{
-        res.redirect('/signup') 
+    try {
+        if(req.session.isSignup){
+            res.render('verification',{alert:null})
+        }else{
+            res.redirect('/signup') 
+        }
+    } catch (error) {
+        console.log("An error occured while loading otp page",error.message);
     }
 }
 

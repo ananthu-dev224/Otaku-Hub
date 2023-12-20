@@ -13,13 +13,13 @@ let userSchema = new mongoose.Schema({
         default:false,
     },
     phonenumber:Number,
-    address:{
+    address:[{
        houseaddress:String, 
        street:String,
        city:String,
        pincode:Number,
        state:String,
-    }
+    }]
 })
 
 const User = mongoose.model('User',userSchema)

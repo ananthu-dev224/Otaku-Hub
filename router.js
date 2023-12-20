@@ -12,7 +12,7 @@ const admDashC = require('./controller/admDashC')
 const admUsersC = require('./controller/admUsersC')
 const admCatC = require('./controller/admCatc')
 const admProC = require('./controller/admProC')
-//middleware
+//Middleware
 const {verifyToken,checkBlocked} = require('./middlewares/userAuth.js')
 const adminAuth = require('./middlewares/adminAuth.js')
 
@@ -53,17 +53,25 @@ router.post('/otp-verification/resent-otp',signupC.resentOtp)
 
 
 // Profile Page
-router.get('/user-profile',verifyToken,checkBlocked,userProC.displayProfile)
+router.get('/my-profile',verifyToken,checkBlocked,userProC.displayProfile)
 router.post('/edit-profile',verifyToken,checkBlocked,userProC.editProfile)
+router.post('/change-password',verifyToken,checkBlocked,userProC.changePass)
 
 
 //Products Page
 router.get('/products',verifyToken,checkBlocked,userProC.displayPro) //All products 
-router.get('/:category',verifyToken,checkBlocked,userProC.displayCat) //Category
 router.get('/product-view/:id',verifyToken,checkBlocked,userProC.displayView) // view product
-router.get('/product-order/:order',verifyToken,checkBlocked,userProC.filterPro) // filter products
-router.get('/products/search',verifyToken,checkBlocked,userProC.displaySearch) // search products
-router.get('/user-profile/logout',userProC.logoutUser) //Logout user
+router.get('/price',verifyToken,checkBlocked,userProC.filterPro) // filter products
+router.get('/search-products',verifyToken,checkBlocked,userProC.displaySearch) // search products
+router.get('/edit-address/:id',verifyToken,checkBlocked,userProC.displayEditAddress) // Edit address
+router.post('/edit-address/:id',verifyToken,checkBlocked,userProC.manageEditAddress) //
+router.get('/remove-address/:id',verifyToken,checkBlocked,userProC.manageDeleteAddress) // remove user address 
+router.get('/my-profile/address',verifyToken,checkBlocked,userProC.displayManageAddress) // show user address
+router.post('/my-profile/add-address',verifyToken,checkBlocked,userProC.manageAddAddress) // add new user address  
+router.get('/category',verifyToken,checkBlocked,userProC.displayCat) //Category
+router.get('/my-profile/logout',userProC.logoutUser) //Logout user
+
+
 
 
 
@@ -89,6 +97,10 @@ router.get('/admin/products/edit/:id',adminAuth,admProC.displayEditPro)
 router.post('/admin/products/edit/:id',adminAuth,admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageEditPro)
 router.get('/admin/products/restrict/:id',adminAuth,admProC.manageTogglePro)
 router.get('/admin/products/remove/:id',adminAuth,admProC.removePro)
+
+
+
+
 
 
 

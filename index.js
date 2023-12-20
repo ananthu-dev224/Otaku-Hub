@@ -6,6 +6,7 @@ const {v4:uuid} = require('uuid')
 const session = require('express-session')
 const crypto = require('crypto')
 const cookieParser = require('cookie-parser');
+const nocache = require('nocache')
 
 // Generate a random, secure session secret
 const secretID = crypto.randomBytes(32).toString('hex');
@@ -38,7 +39,7 @@ app.use(session({
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
-const nocache = require('nocache')
+
 //No cache
 app.use(nocache())
 

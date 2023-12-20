@@ -6,21 +6,29 @@ const products = require('../model/productSchema')
 
 //displaying category page in admin panel
 CategoryC.displayCat = async(req,res) =>{
-   if(req.admin){
-   const category = await categories.find()
-    res.render('adminCategory',{alert:null,category})
-   }else{
-    res.redirect('/admin')
+   try {
+     if(req.admin){
+         const category = await categories.find()
+          res.render('adminCategory',{alert:null,category})
+         }else{
+          res.redirect('/admin')
+     }
+   } catch (error) {
+      console.log("An error occured while displaying category page",error.message);
    }
 }
 
 //displaying add category page in admin panel
 CategoryC.displayCatAdd = (req,res) =>{
-   if(req.admin){
-      res.render('addCategory',{alert:null})
-     }else{
-      res.redirect('/admin')
-     }
+   try {
+      if(req.admin){
+         res.render('addCategory',{alert:null})
+        }else{
+         res.redirect('/admin')
+      }
+   } catch (error) {
+      console.log("An error occured while displaying Add category page",error.message);
+   }
 }
 
 //posting category add in db
@@ -45,13 +53,17 @@ CategoryC.manageCatAdd = async(req,res) =>{
 
 //displaying edit category page
 CategoryC.displayCatEdit = async (req,res)=>{
+  try {
    if(req.admin){
       const id = req.params.id 
       const category = await categories.findById(id)
       res.render('editCategory',{alert:null,category})
    }else{
       res.redirect('/admin')
-   }
+   }   
+  } catch (error) {
+   console.log("An error occured while displaying category edit page",error.message);
+  }
 }
 
 //posting edited category name
@@ -89,19 +101,5 @@ CategoryC.manageToggleCat = async (req,res) =>{
       res.status(500).send("Internal Server Error")
    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = CategoryC

@@ -130,7 +130,7 @@
 							<li class="nav-item"><a href="/products" class="profile-icon nav-link"><span
 								style="font-size: 22px; width: 30px; height: 30px; color: black;"
 								class="bi bi-shop"></span></a></li>
-							<li class="nav-item"><a href="/profile" class="profile-icon nav-link"><span
+							<li class="nav-item"><a href="/my-profile" class="profile-icon nav-link"><span
 										style="font-size: 22px; width: 30px; height: 30px; color:  rgb(219, 134, 7);"
 										class="bi bi-person"></span></a></li>
 							<li class="nav-item"><a href="/cart" class="profile-icon nav-link"><span
@@ -202,11 +202,11 @@
                <h5 class="modal-title" id="exampleModalLabel" style="color: #ffffff;">Change Password</h5>
             </div>
             <div class="modal-body">
-               <form id="changePasswordForm" method="post">
+               <form id="changePasswordForm">
                   <div class="form-group">
                      <label for="currentPassword">Current Password</label>
                      <div class="input-group">
-                        <input type="password" class="form-control" id="currentPassword">
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword">
                         <div class="input-group-append">
                            <span class="input-group-text">
                               <i class="bi bi-eye" id="currentPasswordToggle"></i>
@@ -218,7 +218,7 @@
                   <div class="form-group">
                      <label for="newPassword">New Password</label>
                      <div class="input-group">
-                        <input type="password" class="form-control" id="newPassword">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword">
                         <div class="input-group-append">
                            <span class="input-group-text">
                               <i class="bi bi-eye" id="newPasswordToggle"></i>
@@ -230,7 +230,7 @@
                   <div class="form-group">
                      <label for="confirmNewPassword">Confirm New Password</label>
                      <div class="input-group">
-                        <input type="password" class="form-control" id="confirmNewPassword">
+                        <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword">
                         <div class="input-group-append">
                            <span class="input-group-text">
                               <i class="bi bi-eye" id="confirmNewPasswordToggle"></i>
@@ -239,6 +239,7 @@
                      </div>
                      <p id="confirmNewPassError"></p>
                   </div>
+                  <input type="text" id="userId" hidden value="<%- user._id %>">
                   <div class="modal-footer">
                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                      <button type="submit" class="btn btn-primary" id="changePasswordBtn">Save changes</button>
@@ -270,9 +271,9 @@
          <div class="row justify-content-center ">
             <div class="card col-md-8 mr-2 mb-2 d-flex align-items-center">
                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                  <i class="bi bi-person-circle" style="font-size: 5rem; color: #343a40;"></i><br><br>
-                  <p>Name : <%- user.name%></p><br><br>
-                  <p>Email : <%- user.email%></p><br><br>
+                  <i class="bi bi-person-circle"  style="font-size: 5rem; color: #343a40;"></i><br><br>
+                  <p>Name : <%- user.name%></p><br>
+                  <p>Email : <%- user.email%></p><br>
                   <p>Mobile : <%- user.phonenumber%></p>
                   
                </div>
@@ -282,17 +283,15 @@
                   <h3 class="card-title">Management</h3>
                   <a href="" class="btn btn-outline-dark mb-3" data-toggle="modal" data-target="#myModal">Edit
                      Profile</a>
-                  <a href="/manage-address" class="btn btn-outline-dark mb-3">Manage Address</a>
+                  <a href="/my-profile/address" class="btn btn-outline-dark mb-3">Manage Address</a>
                   <a href="/list-orders" class="btn btn-outline-dark mb-3">Orders</a>
                   <a href="/change-password" class="btn btn-outline-dark mb-3" data-toggle="modal"
                      data-target="#changePasswordModal">Change Password</a>
                   <a href="/view-wallet" class="btn btn-outline-dark mb-3">View Wallet</a>
                   <hr>
-                  <a href="" id="userLogoutbtn" class="btn btn-outline-danger mb-3">Log Out</a>
+                  <a href="/my-profile/logout" id="userLogoutbtn" class="btn btn-outline-danger mb-3">Log Out</a>
                </div>
-            </div>
-
-         </div>
+            </div>         </div>
       </div>
 
    </section>
@@ -368,7 +367,7 @@
          });
 
          if (response.isConfirmed) {
-            location.href = '/user-profile/logout'
+            location.href = '/my-profile/logout'
          }
 
       })
@@ -526,6 +525,87 @@
          // }
       })
    
+   </script>
+ <!-- change Password form eye button-->
+ <script>
+   document.getElementById('currentPasswordToggle').addEventListener('click', function () {
+      const currentPasswordInput = document.getElementById('currentPassword');
+      currentPasswordInput.type = (currentPasswordInput.type === 'password') ? 'text' : 'password';
+   });
+
+   document.getElementById('newPasswordToggle').addEventListener('click', function () {
+      const newPasswordInput = document.getElementById('newPassword');
+      newPasswordInput.type = (newPasswordInput.type === 'password') ? 'text' : 'password';
+   });
+
+   document.getElementById('confirmNewPasswordToggle').addEventListener('click', function () {
+      const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+      confirmNewPasswordInput.type = (confirmNewPasswordInput.type === 'password') ? 'text' : 'password';
+   });
+
+</script>
+
+
+
+
+   <!-- Change password modal -->
+   <script>
+      document.getElementById('changePasswordForm').addEventListener('submit', async (event) => {
+         event.preventDefault()
+
+         // const isValid = changePasswordValidate();
+
+         // if (isValid) {
+            const formData = {
+               currentPassword: event.currentTarget.currentPassword.value,
+               newPassword: event.currentTarget.newPassword.value,
+               userId: event.currentTarget.userId.value
+            }
+
+            const response = await fetch('/change-password', {
+               method: 'post',
+               headers: {
+                  'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(formData)
+            })
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+               Swal.fire({
+                  icon: 'success',
+                  title: result.message,
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+
+               $('#changePasswordModal').modal('hide')
+               setTimeout(() => {
+                  location.href = location.href;
+               }, 1500);
+            } else if (result.status === 'sessionError') {
+               Swal.fire({
+                  icon: 'info',
+                  title: result.message,
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+               setTimeout(() => {
+                  location.href = '/login'
+               }, 1500);
+            }
+            else {
+               Swal.fire({
+                  icon: 'error',
+                  title: result.message,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            }
+         // }
+
+      })
    </script>
    <script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"

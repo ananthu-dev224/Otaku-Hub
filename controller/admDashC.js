@@ -2,11 +2,6 @@
 
 const admDashC = {}
 
-
-
-
-
-
 //displayadminDash
 admDashC.displayadminDash = (req,res) =>{
     try {
@@ -19,14 +14,9 @@ admDashC.displayadminDash = (req,res) =>{
             res.redirect('/admin')
         }
     } catch (error) {
-        console.log(error);
+        console.log("An error occured while loading admin dashboard",error.message);
     }
 }
-
-
-
-
-
 
 
 module.exports = admDashC

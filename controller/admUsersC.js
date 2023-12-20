@@ -4,7 +4,7 @@
 const User = require('../model/userSchema')
 const admUsersC ={}
 
-
+// User management page
 admUsersC.displayUsers = async  (req,res)=>{
     try {
           if(req.admin){
@@ -21,7 +21,7 @@ admUsersC.displayUsers = async  (req,res)=>{
     }
 }
 
-
+// Block and unblock user
 admUsersC.manageToggleUser = async(req,res) =>{
     try {
         const id = req.params.id
@@ -40,7 +40,7 @@ admUsersC.manageToggleUser = async(req,res) =>{
 }
 
 
-
+// Admin search users data
 admUsersC.searchUser = async (req,res )=>{
     const {name} = req.query
 
@@ -56,32 +56,6 @@ admUsersC.searchUser = async (req,res )=>{
         res.status(404).send("Internal Server Error")
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

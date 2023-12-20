@@ -8,7 +8,11 @@ const otpgenerator = require('generate-otp')
 
 
 forgotC.displayForgot = (req,res)=>{
+   try {
     res.render('forgotpass',{alert:null})
+   } catch (error) {
+    console.log("An error occured while loading forgotpass page",error.message);
+   }
 }
 
 //function for sending otp
@@ -94,11 +98,15 @@ forgotC.manageForgot = async (req,res) =>{
 
 //verification of otp
 forgotC.displayOtp = (req,res) =>{
+   try {
     if(req.session.isForgot){
         res.render('forgotVerify',{alert:null})
     }else{
         res.redirect('/forgot-password')
     }
+   } catch (error) {
+    console.log("An error occured while loading otp page",error.message);
+   }
 }
 
 
@@ -157,10 +165,14 @@ forgotC.resentOtp = async(req,res) =>{
 
 // new password patching
 forgotC.displayNew = (req,res) =>{
-    if(req.session.isVerify){
-        res.render('newPassword',{alert:null})
-    }else{
-        res.redirect('/forgot-password')
+    try {
+        if(req.session.isVerify){
+            res.render('newPassword',{alert:null})
+        }else{
+            res.redirect('/forgot-password')
+        }   
+    } catch (error) {
+        console.log("An error occured while displaying new password page",error.message);
     }
 }
 

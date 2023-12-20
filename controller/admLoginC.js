@@ -9,12 +9,15 @@ const admLoginC = {}
 
 // displayadminLogin
 admLoginC.displayadminLogin = async (req,res) =>{
+try {
       if(!req.session.adminActive){
         res.render('adminlogin',{alert:null})
       }else{
         res.redirect('/dashboard')
       }
-    
+} catch (error) {
+       console.log("An error occured while loading admin login page",error.message);
+     }
      }
     
 
