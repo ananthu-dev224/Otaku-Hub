@@ -271,10 +271,14 @@
          <div class="row justify-content-center ">
             <div class="card col-md-8 mr-2 mb-2 d-flex align-items-center">
                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                  <i class="bi bi-person-circle"  style="font-size: 5rem; color: #343a40;"></i><br><br>
+
+                  <img src="https://i.pinimg.com/564x/e7/10/4b/e7104ba58ef864d23dfd404fc6d8f408.jpg" alt="" width="175" height="" class="img-fluid"><br><br>
+
+                  
                   <p>Name : <%- user.name%></p><br>
                   <p>Email : <%- user.email%></p><br>
                   <p>Mobile : <%- user.phonenumber%></p>
+                  
                   
                </div>
             </div>
@@ -502,15 +506,15 @@
                setTimeout(() => {
                   location.href = location.href
                }, 1500);
-            } else if (result.status === 'sessionError') {
+            } else if (result.status === 'blocked') {
                Swal.fire({
                   icon: 'info',
-                  title: result.message,
+                  title: 'You have been blocked due to violations',
                   showConfirmButton: false,
                   timer: 1000
                })
                setTimeout(() => {
-                  location.href = '/login'
+                  location.href = '/login?blocked=true'
                }, 1500);
             } else {
                Swal.fire({
@@ -584,15 +588,15 @@
                setTimeout(() => {
                   location.href = location.href;
                }, 1500);
-            } else if (result.status === 'sessionError') {
+            } else  if (result.status === 'blocked') {
                Swal.fire({
                   icon: 'info',
-                  title: result.message,
+                  title: 'You have been blocked due to violations',
                   showConfirmButton: false,
                   timer: 1000
                })
                setTimeout(() => {
-                  location.href = '/login'
+                  location.href = '/login?blocked=true'
                }, 1500);
             }
             else {

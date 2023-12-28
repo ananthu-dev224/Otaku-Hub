@@ -85,7 +85,7 @@
 		
 										<span id="cartItemsCount"
 											class="badge  position-absolute top-0 start-50 translate-middle"> 
-                                        0</span>
+                                        </span>
                                                                                                              <!-- cartItemsCount -->
 										
 								</a></li>
@@ -100,7 +100,6 @@
 	</header>
 	<!-- End Header Area -->
 
-	<!-- Start Banner Area -->
 	<section class="">
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
@@ -116,9 +115,6 @@
 		</div>
 
 	</section>
-	<!-- End Banner Area -->
-
-	<!--================Single Product Area =================-->
     <style>
         .s_Product_carousel {
             display: none; /* Hide the carousel initially */
@@ -183,8 +179,9 @@
 														onclick="selectSize(this, '<%= sizeObj.size %>');">
 													<%= sizeObj.size %>
 												</button> &nbsp;
-                                          <% } %>
+                                          <% } %> 	 
                                           <% }) %>
+								<input type="hidden" id="selectedSize" name="selectedSize" value="">
                                    <%}%>
                             
 <br><br>
@@ -215,13 +212,9 @@
 			</div>
 		</div>
 	</div>
-	<!--================End Single Product Area =================-->
-
-	<!--================Product Description Area =================-->
 	<section class="product_description_area">
 
 	</section>
-	<!--================End Product Description Area =================-->
     <div class="container-fluid">
         <h6 class="text-center">Free Shipping on orders 1000 and above. Additional discounts available during checkout. COD available on orders above 400 </h6>
       
@@ -280,39 +273,112 @@
 	</footer>
 <!-- Footer Ends -->
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const sizeButtons = document.querySelectorAll('.size-button');
-
-        function selectSize(button) {
-            // Reset the selected state for all sizes
-            sizeButtons.forEach(btn => btn.classList.remove('selected-size'));
-            // Find and select the clicked size button
-            button.classList.add('selected-size');
-
-        }
-
-        // Add click event listeners to all size buttons
-        sizeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                selectSize(this);
-            });
-        });
-    });
-</script>
-
-
-<script>
      // Add a script to show the carousel after all images are loaded
      window.addEventListener('load', function () {
         document.querySelector('.s_Product_carousel').style.display = 'block';
     });
 </script>
-<!-- Add to Cart -->
+<!-- Add to Cart and Size selecting functions -->
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+    const sizeButtons = document.querySelectorAll('.size-button');
+    let selectedSizeElement = document.getElementById('selectedSize');
+    let selectedSize;
+	const productCategory = '<%- product.category.name %>';
 
+    function selectSize(button) {
+        // Reset the selected state for all sizes
+        sizeButtons.forEach(btn => btn.classList.remove('selected-size'));
+        // Find and select the clicked size button
+        button.classList.add('selected-size');
+        selectedSize = button.innerText;
+        selectedSizeElement.value = selectedSize;
+        console.log("Selected size:", selectedSize);
+    }
+
+    sizeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            selectSize(this);
+        });
+    });
+
+    document.getElementById('addToCart').addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        const productId = '<%- product._id %>';
+        console.log("Product to add to cart is ", productId);
+        console.log("Selected size to add to cart is", selectedSize);
+
+
+        if (!selectedSize && productCategory === 'Outfits') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Please select a size',
+                showConfirmButton: true,
+                timer: 2000
+            });
+            return;
+        }
+
+    let fetchUrl = `/add-to-cart/?productId=${productId}`;
+
+    if (productCategory === 'Outfits' && selectedSize) {
+        fetchUrl += `&size=${selectedSize}`;
+    }
+	    console.log(fetchUrl);
+        const response = await fetch(fetchUrl);
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+            document.getElementById('cartItemsCount').textContent = result.cartItemsCount;
+        } else if (result.status === 'blocked') {
+            Swal.fire({
+                icon: 'info',
+                title: 'You have been blocked due to violations',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            setTimeout(() => {
+                location.href = '/login?blocked=true';
+            }, 1500);
+        }else if (result.status === 'published') {
+            Swal.fire({
+                icon: 'error',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 1000
+            });
+            setTimeout(() => {
+                location.href = '/products';
+            }, 1500);
+        }else if (result.status === 'outofstock') {
+            Swal.fire({
+                icon: 'error',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 2000
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
+});
+
+</script>
 <!-- Add to Wishlist -->
-
 	<script>
-		const addtoWhishlistBtn = document.querySelectorAll('.addtoWishlist')
+		const addtoWishlistBtn = document.querySelectorAll('.addtoWishlist')
 
 		addtoWhishlistBtn.forEach((btn) => {
 			btn.addEventListener('click', async (event) => {
@@ -331,16 +397,16 @@
 							timer: 1000
 						})
 
-					} else if (result.status === 'sessionError') {
-						Swal.fire({
-							icon: 'info',
-							title: result.message,
-							showConfirmButton: false,
-							timer: 1000
-						})
-						setTimeout(() => {
-							location.href = '/login'
-						}, 1500);
+					} else if (result.status === 'blocked') {
+			  Swal.fire({
+                  icon: 'info',
+                  title: 'You have been blocked due to violations',
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+               setTimeout(() => {
+                  location.href = '/login?blocked=true'
+               }, 1500);
 					} else {
 						Swal.fire({
 							icon: 'info',

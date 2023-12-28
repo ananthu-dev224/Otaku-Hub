@@ -19,6 +19,10 @@ let userSchema = new mongoose.Schema({
        city:String,
        pincode:Number,
        state:String,
+       isDefault:{
+        type:Boolean,
+        default:false
+     }
     }]
 })
 

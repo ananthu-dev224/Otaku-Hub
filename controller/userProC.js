@@ -3,6 +3,7 @@ const userPro = {}
 const categoriesdb = require('../model/categorySchema')
 const productsdb = require('../model/productSchema')
 const usersdb = require('../model/userSchema')
+const cartdb = require('../model/cartSchema')
 const bcrypt = require('bcrypt')
 
 
@@ -38,7 +39,11 @@ userPro.displayView = async (req,res) =>{
          const id = req.params.id
          let product = await productsdb.findById(id).populate('category')
          let categories = await categoriesdb.find()
-         res.render('single-product',{categories,product})
+         if(product.isPublished){
+            res.render('single-product',{categories,product})
+         }else{
+            res.redirect('/products')
+         }
         } catch (error) {
          res.status(500).send("Internal Server Error")
          console.log(error.message);
@@ -184,7 +189,7 @@ userPro.manageAddAddress = async (req,res) =>{
          street:street,
          city:city,
          pincode:pincode,
-         state:state
+         state:state,
       }
 
       if(userAddress.length >= 5){
@@ -242,34 +247,45 @@ userPro.displayEditAddress = async (req,res) =>{
 
 
 
-
-
-
-
-
 // Edit exisiting address
 userPro.manageEditAddress = async (req,res) =>{
    try {
      const userId = req.userId
      const {addressId,houseaddress,street,state,city,pincode} = req.body
      const user = await usersdb.findById(userId)
+     const userAddress = user.address
 
    const address = user.address.find((address) => address._id.toString() === addressId);
    if(!address){
-   res.json({status:'error',message:'Address not found , please try again'})
+      res.json({status:'error',message:'Address not found , please try again'})
    }
 
-   address.houseaddress=houseaddress
-   address.street=street
-   address.state=state
-   address.city=city
-   address.pincode=pincode
-     
-   await user.save();
+ const matchingAddresses = userAddress.filter(
+   (userAddr) =>
+     userAddr.houseaddress === houseaddress &&
+     userAddr.street === street &&
+     userAddr.city === city &&
+     userAddr.pincode.toString().trim() === pincode.toString().trim() &&
+     userAddr.state === state &&
+     userAddr._id.toString() !== addressId // Exclude the current address being edited
+ );
 
-   res.json({status:'success',message:'Address edited successfully'})
+     console.log("Exisiting address is :",matchingAddresses);
+     if(matchingAddresses.length > 0){
+       return res.json({status:'error',message:"Same address already exists"})
+     }else{
+      address.houseaddress=houseaddress
+      address.street=street
+      address.state=state
+      address.city=city
+      address.pincode=pincode
+        
+      await user.save();
+   
+      res.json({status:'success',message:'Address edited successfully'})
+     }
    } catch (error) {
-     console.log("An error occured while loading edit address",error.message);
+     console.log("An error occured while submitting edit address",error.message);
    }
 }
 
@@ -295,7 +311,6 @@ userPro.manageDeleteAddress = async (req,res) =>{
       res.json({status:'error',message:'An error occured while deleting address, Please try again'})
    }
 }
-
 
 
 

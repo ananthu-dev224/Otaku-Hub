@@ -298,14 +298,25 @@
              setTimeout(() => {
                 location.href = '/my-profile/address'
              }, 2000);
-          } else {
-             Swal.fire({
-                icon: 'error',
-                title: result.message,
-                showConfirmButton: false,
-                timer: 3000
-             })
-          }
+          } else  if (result.status === 'blocked') {
+               Swal.fire({
+                  icon: 'info',
+                  title: 'You have been blocked due to violations',
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+               setTimeout(() => {
+                  location.href = '/login?blocked=true'
+               }, 1500);
+            } else {
+               Swal.fire({
+                  icon: 'info',
+                  title: result.message,
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+            }
+             
       //  }
     })
 // Delete Address
@@ -340,14 +351,24 @@
                 setTimeout(() => {
                    location.href = '/my-profile/address'
                 }, 2000);
-             } else {
-                Swal.fire({
-                   icon: 'error',
-                   title: result.message,
-                   showConfirmButton: false,
-                   timer: 3000
-                })
-             }
+             } else  if (result.status === 'blocked') {
+               Swal.fire({
+                  icon: 'info',
+                  title: 'You have been blocked due to violations',
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+               setTimeout(() => {
+                  location.href = '/login?blocked=true'
+               }, 1500);
+            } else{
+               Swal.fire({
+                  icon: 'info',
+                  title: result.message,
+                  showConfirmButton: false,
+                  timer: 1000
+               })
+            }
           }
        })
     })

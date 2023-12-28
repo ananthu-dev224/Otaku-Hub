@@ -30,8 +30,6 @@ const checkBlocked = async (req,res,next) =>{
    try {
        const id = req.userId
        const customer = await customersdb.findById(id)
-       console.log(id);
-       console.log(customer);
       if(customer.isBlocked){
         req.session.userActive = false
         res.clearCookie('token')
@@ -45,9 +43,27 @@ const checkBlocked = async (req,res,next) =>{
 }
 
 
+// Client side fetch middleware
+const checkBlockedFetch = async (req,res,next) =>{
+  try {
+      const id = req.userId
+      const customer = await customersdb.findById(id)
+     if(customer.isBlocked){
+       req.session.userActive = false
+       res.clearCookie('token')
+       res.json({status:'blocked'})
+     }else{
+       next()
+     }
+  } catch (error) { 
+     console.log(error.message);
+  }
+}
+
 
 
 module.exports = {
   verifyToken,
   checkBlocked,
+  checkBlockedFetch
 }

@@ -62,7 +62,7 @@
                 </li>
                 <li class="menu-item ">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Payment Methods</span>
+                        <span class="text">Coupons</span>
                     </a>
                     <li class="menu-item ">
                         <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
@@ -144,7 +144,7 @@
                             <table class="table table-bordered align-middle table-nowrap mb-0" >
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="align-middle" scope="col">Name</th>
+                                        <th class="align-middle" scope="col">Product</th>
                                         <th class="align-middle" scope="col">Category</th>
                                         <th class="align-middle" scope="col">Description</th>
                                         <th class="align-middle" scope="col">Size</th>
@@ -159,12 +159,15 @@
                                 <tbody>
                                         <% products.forEach(product => {%>
                                            <tr>
-                                                <td><%= product.name%></td>
+                                                <td><%= product.name%>
+                                                    <div style="height:100px; width: 100px;" class="d-flex">
+                                                        <img src="/<%= product.mainimage%>"
+                                                            alt=""> 
+                                                    </div></td>
 
                                                 <td><%= product.category.name%></td>
 
                                                 <td><%= product.description%></td>
-
                                                 <td>
                                                 <% for (let i = 0; i < product.quantity.length; i++) { %>
                                                     <% if(product.quantity[i].size !== null){ %>
@@ -197,7 +200,7 @@
 
                                                 <td>
                                                     <a href="/admin/products/edit/<%= product._id %>" id="edit" class="fw-bold text-primary" >
-                                                          Edit
+                                                          <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
                                                     </a><hr>
                                                     <a href="/admin/products/remove/<%= product._id %>" id="delete" onclick="confirmDelete(event)">
                                                         <img width="25" height="25" src="https://img.icons8.com/color/48/delete-forever.png" alt="delete-forever"/>
