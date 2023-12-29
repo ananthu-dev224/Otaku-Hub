@@ -3,6 +3,7 @@ const usersdb = require('../model/userSchema')
 const cartdb = require('../model/cartSchema')
 const ordersdb = require('../model/ordersSchema')
 const userPro = require('./userProC')
+const mongoose = require('mongoose')
 const userCart = {}
 
 
@@ -135,12 +136,60 @@ userCart.manageRemoveProduct = async (req,res) =>{
  
 
 // Increase and Decrease Quantity
+userCart.updateQuantity = async (req,res) =>{
+   try {
+      const userId = req.userId
+      const productId = req.body.proId
+      const count = req.body.count;
+      const currentValue = req.body.currentValue;
+
+      const cart = await cartdb.findOne({ userId: userId }).populate('products.productId'); //cart
+      const productToUpdate = cart.products.find(product => product.productId._id.toString() === productId.toString()); // product to update quantity
+
+      let stock;
+      if(productToUpdate && productToUpdate.size){
+        stock =  getProductStock (productToUpdate,productToUpdate.size) // if product is an outfit
+      }else{
+        stock = productToUpdate.productId.quantity[0].stock 
+      }
+      if(stock  < currentValue){
+         res.json({status:'error',message:'Out of Stock'});
+      }else{
+         const cart = await cartdb.findOneAndUpdate(
+            { 
+               userId: userId,
+               'products.productId':productId
+            },
+            { $inc: 
+               { 'products.$.quantity': count }
+            },
+            { new: true }
+         ).populate('products.productId');
+   
+         // Update total 
+         const updateProduct = cart.products.find(product=>product.productId._id.equals(productId))
+         let finalPrice
+         if(updateProduct.productId.discount){
+            finalPrice = Math.floor(updateProduct.productId.price - (updateProduct.productId.price * updateProduct.productId.discount / 100))
+         }else{
+            finalPrice = updateProduct.productId.price
+         }
+         updateProduct.total = finalPrice * updateProduct.quantity;
+         await cart.save()
+
+         // Finding the cart total items count
+
+
+         res.json({ status: 'success',message:'Quantity Updated'});
+      }
+   } catch (error) {
+      console.log("An error occured while updating quantity",error.message);
+      res.json({status:'error',message:'An error occured while updating quantity'})
+   }
+}
 
 
 
-
-
-// Checking stock
 // Checking stock function 
 function getProductStock (cartProduct,productSizeInCart){
    if(productSizeInCart){
@@ -153,7 +202,7 @@ function getProductStock (cartProduct,productSizeInCart){
    }
 }
 
-// use this function to check in checkout in cart as well as place order in checkout
+// Use this function to check stock when proceed to checkout as well as place order in checkout
 userCart.manageStock = async (req, res) => {
    try {
      const userId = req.userId;
@@ -257,7 +306,6 @@ userCart.displayCheckout = async (req,res) =>{
       console.log("An error occured while loading checkout page",error.message);
    }
 }
-
 
 
 

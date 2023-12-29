@@ -240,6 +240,7 @@ userPro.displayEditAddress = async (req,res) =>{
    }
    res.render('userEditAddress',{address})
    } catch (error) {
+      res.render('error')
       console.log("An error occured while loading edit address page",error.message);
    }
 }
@@ -322,6 +323,7 @@ userPro.logoutUser = async (req,res)=>{
      res.clearCookie('token');
      res.redirect('/login');
   } catch (error) {
+     res.render('error')
      console.log(error.message)
   }
 }

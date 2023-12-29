@@ -135,7 +135,7 @@
                                         </td>
                                         <td>
                                             <% if(products[i].size !== null){%>
-                                                <h5><%- products[i].size%></h5>
+                                                <h5 id="sizeOfPro"><%- products[i].size%></h5>
                                                 <%}%>
                                         </td>
                                         <td> 
@@ -305,7 +305,7 @@
             const data = {
                 proId: productId,
                 count: value,
-                currentValue: currentValue
+                currentValue: currentValue,
             };
 
             const response = await fetch('/update-quantity', {
@@ -327,7 +327,6 @@
                 })
                 return { status: 'error' }
             }
-            document.getElementById('cartItemsCount').textContent = result.cartItemsCount;
             return { status: 'success' }
         }
 
@@ -452,7 +451,7 @@
       });
     } else if (result.status === 'error') {
       Swal.fire({
-        icon: 'info',
+        icon: 'error',
         title: result.message,
         confirmButtonText: 'OK',
         confirmButtonColor: '#3085d6',
@@ -544,8 +543,8 @@
     <script src="/static/user-assets/js/jquery.magnific-popup.min.js"></script>
     <script src="/static/user-assets/js/owl.carousel.min.js"></script>
     <!--gmaps Js-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-    <script src="/static/user-assets/js/gmaps.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="/static/user-assets/js/gmaps.min.js"></script> -->
     <script src="/static/user-assets/js/main.js"></script>
 </body>
 

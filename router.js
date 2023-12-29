@@ -77,6 +77,8 @@ router.get('/my-profile/logout',userProC.logoutUser) //Logout user
 router.get('/cart',verifyToken,checkBlocked,userCartC.displayCart) //Cart
 router.get('/add-to-cart',verifyToken,checkBlockedFetch,userCartC.manageAddToCart) // Add to Cart
 router.get('/remove-product-cart',verifyToken,checkBlockedFetch,userCartC.manageRemoveProduct) // Remove from Cart
+router.post('/update-quantity',verifyToken,checkBlockedFetch,userCartC.updateQuantity) //Increase or Decrease quantity
+
 
 //This route is only used to check this conditions in proceed to checkout and place order
 router.get('/checkstock',verifyToken,checkBlocked,userCartC.manageStock)
