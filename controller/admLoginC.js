@@ -11,11 +11,12 @@ const admLoginC = {}
 admLoginC.displayadminLogin = async (req,res) =>{
 try {
       if(!req.session.adminActive){
-        res.render('adminlogin',{alert:null})
+        res.render('adminlogin')
       }else{
         res.redirect('/dashboard')
       }
 } catch (error) {
+       res.render('error')
        console.log("An error occured while loading admin login page",error.message);
      }
      }
@@ -29,13 +30,13 @@ admLoginC.manageadminLogin = async (req,res) =>{
         const dbAdmin = await Admin.findOne({email})
 
         if(!dbAdmin){
-          return  res.render('adminlogin',{alert:"Admin email not found"})
+          return  res.json({status:'error',message:'Please provide admin email'})
         }
 
        const dbPass = await bcrypt.compare(password,dbAdmin.password)
 
        if(!dbPass){
-          return  res.render('adminlogin',{alert:"Please check the password again"})
+          return  res.json({status:'error',message:'Please check the password again'})
         }
         req.session.adminActive = true
         // Generate a JWT
@@ -43,9 +44,10 @@ admLoginC.manageadminLogin = async (req,res) =>{
         // Set the token in a cookie
         res.cookie('tokenadmin', tokenadmin, { httpOnly: true, secure: false });
         console.log("Admin JWT",tokenadmin);
-        res.redirect('/dashboard')  //to admin dashboard
+        res.json({status:'success'}) //to admin dashboard
     } catch (error) {
-      console.log("error occured",error.message);
+      res.json({status:'error',message:'An error occured please try again'})
+      console.log("error occured at admin login manage",error.message);
     }
 
 }
@@ -57,8 +59,8 @@ admLoginC.manageadminLogout = (req,res) =>{
   res.clearCookie('tokenadmin');
   res.redirect('/admin')
  } catch (error) {
-  res.status(500).send('Internal Server Error')
   console.log("An error occcured while admin logout",error.message);
+  res.render('error')
  }
 }
 

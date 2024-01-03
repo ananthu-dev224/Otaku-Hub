@@ -7,7 +7,13 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>
     <link rel="stylesheet" href="/static/verification.css">
     <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+  .swal {
+    color: #000000 !important; 
+  }
+  </style>
 <body>
     <section class="bg-black p-3 p-md-4 p-xl-5">
         <div class="container">
@@ -39,14 +45,10 @@
                           <div class="col-12">
                             <div class="d-flex gap-3 flex-column">
                               </a>
-                              <% if(alert){%>
-                            </div>
-                            <p class="text-center text-danger" id="alrt"><%= alert%></p>
-                          </div>
-                          <%}%>
+                              
                         </div>
           
-                        <form action="/otp-verification" method="post">
+                        <form action="/otp-verification" method="post" id="otpForm">
                           <div class="row gy-3 overflow-hidden">
                                 <d class="col-12">
                                     <div class="form-floating mb-3">
@@ -54,7 +56,7 @@
                                       <label for="enteredOtp" class="form-label">Enter your OTP</label>
                                     </div>
                               <div class="d-grid">
-                                <button class="btn btn-success btn-lg" type="submit" onclick="startCountdown()" id="verify">Verify</button>
+                                <button class="btn btn-success btn-lg" type="submit"  id="verify">Verify</button>
                               </div>
                             </div>
                           </div>
@@ -65,7 +67,7 @@
                             <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
 
                                  <!-- resent otp -->
-                                <form method="post" action="/otp-verification/resent-otp">
+                                <form method="post" action="/otp-verification/resent-otp" id="resentOtpForm">
                                     <p class="resend text-muted mb-0" >
                                       Didn't receive code? <button  id="resent-otp"  onclick="resendOtp()" style="text-decoration: none; border: none; color: green; background-color: #fff;" type="submit">Resend Now</button>
                                     </p>
@@ -139,13 +141,66 @@ function resendOtp(){
           })
           .catch(error => console.error('An error occured during resent', error.message));
         }
-
-      setTimeout(() => {
-    let alrt = document.getElementById('alrt')
-    if(alrt){
-      alrt.remove()
-    }
-  }, 2000);
     </script>
+
+<script>
+  document.getElementById('otpForm').addEventListener('submit', async (event) => {
+         event.preventDefault()
+  
+      //    const isValid = addressValidate();
+  
+      //    if (isValid) {
+  
+            const formData = {
+               enteredOtp:event.currentTarget.enteredOtp.value,                       
+            }
+  
+            const response = await fetch('/otp-verification', {
+               method: 'post',
+               headers: {
+                  'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(formData)
+            })
+  
+            const result = await response.json();
+  
+            if (result.status === 'success') {
+              Swal.fire({
+                    icon: 'success',
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    customClass:{
+                      title:'swal'
+                    }
+                 })
+                setTimeout(() => {
+                  window.location.href = '/home'
+                }, 2500);
+            } else if (result.status === 'error') {
+                 Swal.fire({
+                    icon: 'error',
+                    title: result.message,
+                    showConfirmButton: true,
+                    timer: 2000,
+                    customClass:{
+                      title:'swal'
+                    }
+                 })
+            } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000,
+                    customClass:{
+                      title:'swal'
+                    }
+                 })
+            }
+      //    }
+      })
+      </script>    
 </body>
 </html>

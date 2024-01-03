@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -61,7 +61,7 @@
                 </li>
                 <li class="menu-item ">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Payment Methods</span>
+                        <span class="text">Coupons</span>
                     </a>
                     <li class="menu-item ">
                         <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i> 
@@ -219,7 +219,7 @@
                                                     <%= user.phonenumber %>
                                                 </td>
                                                  <td>
-                                                    <p   style="color: <%= user.isBlocked ? 'rgb(173, 12, 12)' : 'green' %>" class="fw-bold"><%= user.isBlocked ? 'Inactive' : 'Active'%></p>
+                                                    <p  class ="<%= user.isBlocked ? 'badge badge-pill badge-soft-danger' :  'badge badge-pill badge-soft-success' %>" ><%= user.isBlocked ? 'Inactive' : 'Active'%></p>
                                                 </td>
                                                 <td>
                                                     <a href="/admin/view-users/restrict/<%= user._id %>" id="restrict" title="<%= user.isBlocked ? 'Unblock' : 'Block' %>"

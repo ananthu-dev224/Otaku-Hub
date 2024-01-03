@@ -27,6 +27,8 @@ require('dotenv').config();
 //Port 
 const PORT = process.env.PORT || 3005
 
+//No cache
+app.use(nocache())
 
 //session
 app.use(session({
@@ -40,8 +42,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
 
-//No cache
-app.use(nocache())
 
 
 //Static files

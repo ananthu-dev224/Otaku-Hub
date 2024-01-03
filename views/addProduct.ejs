@@ -16,8 +16,13 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
+<style>
+    .swal {
+      color: #000000 !important; 
+    }
+    </style>
 <body class="dark">
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
@@ -50,7 +55,7 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -191,7 +196,7 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form action="/admin/products/add" method="post" enctype="multipart/form-data">
+                        <form action="/admin/products/add" method="post" enctype="multipart/form-data" id="addProductForm">
                             <div class="form-row align-items-center">
                               <div class="col-auto">
                                 <label class="sr-only" for="inlineFormInput">Name of Product</label><br><br>
@@ -312,7 +317,15 @@
 document.getElementById('additional-img').addEventListener('change',function(event){
     const selectedFiles = event.target.files
     if(selectedFiles.length > 4){
-      alert("You can Only choose maximum 4 images")
+        Swal.fire({
+                      icon: 'info',
+                      title: "You can only choose maximum 4 files",
+                      showConfirmButton: true,
+                      timer: 2000,
+                      customClass:{
+                        title:'swal'
+                      }
+                   })
         event.target.value = "" //removing the chosen files
     }
 })
@@ -348,6 +361,66 @@ document.getElementById('category').addEventListener('change', function () {
     });
 
 </script>
+<script>
+    document.getElementById('addProductForm').addEventListener('submit', async (event) => {
+           event.preventDefault()
+    
+        //    const isValid = addressValidate();
+    
+        //    if (isValid) {
+    
+              const formData = {
+                 name: event.currentTarget.name.value,
+                 categoryId: event.currentTarget.categoryId.value
+              }
+    
+              const response = await fetch(`/admin/categories/edit/${categoryId}`, {
+                 method: 'post',
+                 headers: {
+                    'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify(formData)
+              })
+    
+              const result = await response.json();
+    
+              if (result.status === 'success') {
+                 Swal.fire({
+                    icon: 'success',
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    customClass:{
+                        title:'swal'
+                      }
+                 })
+                 setTimeout(() => {
+                    location.href = '/admin/categories'
+                 }, 2000);
+              } else if (result.status === 'error') {
+                   Swal.fire({
+                      icon: 'error',
+                      title: result.message,
+                      showConfirmButton: false,
+                      timer: 2000,
+                      customClass:{
+                        title:'swal'
+                      }
+                   })
+              } else {
+                Swal.fire({
+                      icon: 'info',
+                      title: result.message,
+                      showConfirmButton: false,
+                      timer: 2000,
+                      customClass:{
+                        title:'swal'
+                      }
+                   })
+              }
+        //    }
+        })
+        </script>
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/vendors/select2.min.js"></script>

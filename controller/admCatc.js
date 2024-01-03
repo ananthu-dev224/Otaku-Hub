@@ -7,46 +7,45 @@ const products = require('../model/productSchema')
 //displaying category page in admin panel
 CategoryC.displayCat = async(req,res) =>{
    try {
-     if(req.admin){
          const category = await categories.find()
-          res.render('adminCategory',{alert:null,category})
-         }else{
-          res.redirect('/admin')
-     }
+         res.render('adminCategory',{alert:null,category})
    } catch (error) {
       console.log("An error occured while displaying category page",error.message);
+      res.render('error')
    }
 }
 
 //displaying add category page in admin panel
 CategoryC.displayCatAdd = (req,res) =>{
    try {
-      if(req.admin){
-         res.render('addCategory',{alert:null})
-        }else{
-         res.redirect('/admin')
-      }
+       res.render('addCategory')
    } catch (error) {
       console.log("An error occured while displaying Add category page",error.message);
+      res.render('error')
    }
 }
 
 //posting category add in db
 CategoryC.manageCatAdd = async(req,res) =>{
    const {name} = req.body
-   const existingCat = await categories.findOne({name})
+   const existingCat = await categories.findOne({
+      $or: [
+          { name: name }, // Case-sensitive check for the exact name
+          { name: { $regex: new RegExp('^' + name + '$', 'i') } }, // Case-insensitive check
+      ]
+  });
    if(existingCat){
-      res.render('addCategory',{alert:"Category already exists"})
+      return res.json({status:'error',message:'Category already exists'})
    }
    try {
       const newCat = new categories({
          name,
       })
       await newCat.save()
-      res.redirect('/admin/categories')
+      res.json({status:'success',message:'Category added successfully'})
    } catch (error) {
-      res.status(500).send("Internal Server Error")
       console.log("An error occured",error.message);
+      res.json({status:'error',message:'An error occured please try again'})
    }
    
 }
@@ -54,33 +53,33 @@ CategoryC.manageCatAdd = async(req,res) =>{
 //displaying edit category page
 CategoryC.displayCatEdit = async (req,res)=>{
   try {
-   if(req.admin){
       const id = req.params.id 
       const category = await categories.findById(id)
-      res.render('editCategory',{alert:null,category})
-   }else{
-      res.redirect('/admin')
-   }   
+      res.render('editCategory',{category})
   } catch (error) {
    console.log("An error occured while displaying category edit page",error.message);
+   res.render('error')
   }
 }
 
 //posting edited category name
 CategoryC.manageCatEdit = async (req,res)=>{
-   const {name} = req.body
-   const id = req.params.id
-   const category = await categories.findById(id)
-   const existingCat = await categories.findOne({name})
+   const {name,id} = req.body
+   const existingCat = await categories.findOne({
+      $or: [
+          { name: name }, // Case-sensitive check for the exact name
+          { name: { $regex: new RegExp('^' + name + '$', 'i') } }, // Case-insensitive check
+      ]
+  });
    if(existingCat){
-     return res.render("editCategory",{alert:"Category already exists",category})
+     return res.json({status:'error',message:'Category Already Exists'})
    }
    try {
       await categories.findByIdAndUpdate(id, { name:name }, { new: true })
-           res.redirect('/admin/categories')
+      res.json({status:'success',message:'Category Updated Successfully'})
    } catch (error) {
-      res.status(500).send("Internal Server Error")
       console.log("An error occured",error.message);
+      res.json({status:'error',message:'An error occured please try again'})
    }
 }
 
@@ -98,7 +97,7 @@ CategoryC.manageToggleCat = async (req,res) =>{
       }
    } catch (error) {
       console.log("An error occured",error.message);
-      res.status(500).send("Internal Server Error")
+      res.render('error')
    }
 }
 

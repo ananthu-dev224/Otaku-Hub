@@ -44,12 +44,12 @@
                         <span class="text">Customers</span>
                     </a>
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item ">
                     <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-store"></i>
                         <span class="text">Categories</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item  active">
                     <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
@@ -64,7 +64,7 @@
                         <span class="text">Coupons</span>
                     </a>
                     <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
+                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i> 
                             <span class="text">Logout</span>
                         </a>
                     </li>
@@ -131,16 +131,14 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">Product Categories</h2>
-                    <% if(alert){ %>
-                        <p id="alert-area"><%= alert%></p>
-                        <%}%>
+                    <h2 class="content-title card-title">Orders</h2>
+                   
 
                     
                 </div>
-                <div>
-                    <a href="/admin/categories/add" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Category</a>
-                </div>
+                <!-- <div>
+                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Customer</a>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-lg-3">
@@ -161,10 +159,27 @@
                     
             <div class="card mb-4">
                 <header class="card-header">
-                    <h4 class="card-title">Categories List :</h4>
+                    <h4 class="card-title">Orders Data :</h4>
                     <div class="row align-items-center">
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-            
+                            <form action="/admin/order-details/search" method="get">
+                                <input type="text" class="form-control"  id="search"  placeholder="Search order " name="name" required>
+                        </div>
+                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                            <button href="/admin/order-details/search" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
+                        </div>
+                    </form>
+                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                            <!-- <div class="custom_select">
+                                <select class="form-select">
+                                    <option selected>Status</option>
+                                    <option>All</option>
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                    <option>Blocked</option>
+                                    <option>Unblocked</option>
+                                </select>
+                            </div> -->
                         </div>
                     </div>
                 </header>
@@ -174,43 +189,72 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0  >
+                            <table class="table align-middle table-nowrap mb-0" >
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="align-middle" scope="col">Name</th>
+                                        <th class="align-middle" scope="col">ID</th>
+                                        <th class="align-middle" scope="col">Products</th>
+                                        <th class="align-middle" scope="col">Shipping Address</th>
+                                        <th class="align-middle" scope="col">Date</th>
+                                        <th class="align-middle" scope="col">Delivered Date</th>
+                                        <th class="align-middle" scope="col">Total</th>
+                                        <th class="align-middle" scope="col">Payment Method</th>
                                         <th class="align-middle" scope="col">Status</th>
-                                        <th class="align-middle" scope="col">Restrict</th>
-                                        <th class="align-middle" scope="col">Actions</th>
+                                        <th class="align-middle" scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                         
-                                    <% category.forEach(category=> { %>
-                                        <tr>
-                                            <td>
-                                                <%= category.name%>
-                                            </td>
-                                            <td>
-                                                <p   class ="<%= category.isPublished ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>"><%= category.isPublished ? 'Active' : 'Inactive' %></p>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/categories/restrict/<%= category._id %>" id="restrict" title="<%= category.isPublished ? 'Unpublish' : 'Publish' %>"
-                                                    class="fw-bold text-warning" >
-                                                      <%= category.isPublished ? 'Unpublish' : 'Publish' %>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/categories/edit/<%= category._id %>" id="edit" class="fw-bold text-primary" >
-                                                    <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
-                                                </a><br><br>
-                                                <!-- <a href="/admin/categories/remove/<%= category._id %>" id="edit" class="fw-bold text-danger" >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30">
-                                                        <path d="M 14.984375 2.4863281 A 1.0001 1.0001 0 0 0 14 3.5 L 14 4 L 8.5 4 A 1.0001 1.0001 0 0 0 7.4863281 5 L 6 5 A 1.0001 1.0001 0 1 0 6 7 L 24 7 A 1.0001 1.0001 0 1 0 24 5 L 22.513672 5 A 1.0001 1.0001 0 0 0 21.5 4 L 16 4 L 16 3.5 A 1.0001 1.0001 0 0 0 14.984375 2.4863281 z M 6 9 L 7.7929688 24.234375 C 7.9109687 25.241375 8.7633438 26 9.7773438 26 L 20.222656 26 C 21.236656 26 22.088031 25.241375 22.207031 24.234375 L 24 9 L 6 9 z"></path>
-                                                    </svg>
-                                              </a> -->
-                                            </td>
-                                        </tr>
-                                        <% }); %>
+                                        <% orders.forEach(order=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= order.trackingId %>
+                                                </td>
+                                                <td>
+                                                    <% order.products.forEach((pro) => {%>
+                                                        <% if(pro.size !== null){%>
+                                                           <p><%- pro.productId.name%> with size <%- pro.size%></p>
+                                                           <p> Quantity X <%- pro.quantity%></p>   
+                                                            <%}else{%> <br>
+                                                            <p><%- pro.productId.name%></p>
+                                                            <p> Quantity X <%- pro.quantity%></p
+                                                                <%}%>
+                                                        <%})%>
+                                                </td>
+                                                 <td>
+                                                    <% Object.keys(order.address).forEach(function(key) { %>
+                                                        <%= order.address[key] %> <br>
+                                                      <% }); %>
+                                                </td>
+                                                <td>
+                                                    <%- order.date.toDateString()%>
+                                                </td>
+                                                <td>
+                                                    <% if(order.deliveredDate !== null){%>
+                                                        <%- order.deliveredDate.toDateString()%>
+                                                        <%}%>
+                                                </td>
+                                                <td>
+                                                   &#x20B9;<%- order.totalAmount%>
+                                                </td>
+                                                <td>
+                                                    <%- order.paymentMethod%>
+                                                </td>
+                                                <td>
+                                                    <p class ="<%= order.orderStatus === 'Delivered' ? 'badge badge-pill badge-soft-success' :
+                                                    order.orderStatus === 'Processing' ? 'badge badge-pill badge-soft-warning' :
+                                                    order.orderStatus === 'Shipped' ? 'badge badge-pill badge-soft-info' :
+                                                    order.orderStatus === 'Pending' ? 'badge badge-pill badge-soft-primary' :
+                                                    order.orderStatus === 'Cancelled' ? 'badge badge-pill badge-soft-danger' :
+                                                    'badge badge-pill badge-soft-danger' %>"><%- order.orderStatus%></p>
+                                                </td>
+                                                <td>
+                                                    <a href="/admin/change-status/?orderId=<%= order._id %>" id="edit" class="fw-bold text-primary" >
+                                                        <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
                                 </tbody>
                             </table>
                     </div>

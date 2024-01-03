@@ -11,12 +11,8 @@ const path = require('path')
 //Displaying admin product management page
 ProductsC.displayPro = async (req,res) =>{
       try {
-        if(req.admin){
           const products = await productsdb.find().populate('category')
           res.render("adminProducts",{alert:null,products})
-         }else{
-          res.redirect('/admin')
-         }
       } catch (error) {
          console.log("An error occured while loading product management page",error.message);
       }
@@ -25,12 +21,8 @@ ProductsC.displayPro = async (req,res) =>{
 //displaying add product page
 ProductsC.displayAddPro = async (req,res) =>{
     try {
-        if(req.admin){
             const categories = await categoriesdb.find()
             res.render("addProduct",{alert:null,categories})
-           }else{
-            res.redirect('/admin')
-           }
     } catch (error) {
         console.log("Error in fetching data",error.message);
         res.status(500).send("Internal Server Error")
@@ -66,7 +58,7 @@ console.log('req.files:', req.files); //uploaded files
       }
 
       try {
-    var categoryName = await categoriesdb.findOne({name:category})
+    var categoryName = await categoriesdb.findOne({name:category}) 
     var categoryID = categoryName._id
       console.log(categoryID);
       } catch (error) {
@@ -128,14 +120,10 @@ try {
 // Edit products
 ProductsC.displayEditPro = async (req,res) =>{
  try {
-  if(req.admin){
     const id = req.params.id
     const categories = await categoriesdb.find()
     let product = await productsdb.findById(id).populate('category')
-    res.render('editProduct',{alert:null,product,categories})
-  }else{
-  res.redirect('/admin')
-       } 
+    res.render('editProduct',{alert:null,product,categories}) 
  } catch (error) {
   console.log("An error occured while displaying edit products page",error.message);
  }

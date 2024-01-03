@@ -16,8 +16,13 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
+<style>
+    .swal {
+      color: #000000 !important; 
+    }
+    </style>
 <body class="dark">
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
@@ -64,7 +69,7 @@
                         <span class="text">Coupons</span>
                     </a>
                     <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
+                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i> 
                             <span class="text">Logout</span>
                         </a>
                     </li>
@@ -131,15 +136,10 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">Product Categories</h2>
-                    <% if(alert){ %>
-                        <p id="alert-area"><%= alert%></p>
-                        <%}%>
-
-                    
+                    <h2 class="content-title card-title">Edit Order Status</h2>
                 </div>
                 <div>
-                    <a href="/admin/categories/add" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Category</a>
+                    <a href="/admin/order-details" class="btn btn-primary">Back to Orders</a>
                 </div>
             </div>
             <div class="row">
@@ -160,75 +160,42 @@
                 <div class="col-xl-8 col-lg-12">
                     
             <div class="card mb-4">
-                <header class="card-header">
-                    <h4 class="card-title">Categories List :</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-            
-                        </div>
-                    </div>
-                </header>
+                
 
 
                 <!-- Table for recent orders starts here -->
 
                 <div class="card-body">
                     <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0  >
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="align-middle" scope="col">Name</th>
-                                        <th class="align-middle" scope="col">Status</th>
-                                        <th class="align-middle" scope="col">Restrict</th>
-                                        <th class="align-middle" scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                        
-                                    <% category.forEach(category=> { %>
-                                        <tr>
-                                            <td>
-                                                <%= category.name%>
-                                            </td>
-                                            <td>
-                                                <p   class ="<%= category.isPublished ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>"><%= category.isPublished ? 'Active' : 'Inactive' %></p>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/categories/restrict/<%= category._id %>" id="restrict" title="<%= category.isPublished ? 'Unpublish' : 'Publish' %>"
-                                                    class="fw-bold text-warning" >
-                                                      <%= category.isPublished ? 'Unpublish' : 'Publish' %>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/categories/edit/<%= category._id %>" id="edit" class="fw-bold text-primary" >
-                                                    <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
-                                                </a><br><br>
-                                                <!-- <a href="/admin/categories/remove/<%= category._id %>" id="edit" class="fw-bold text-danger" >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30">
-                                                        <path d="M 14.984375 2.4863281 A 1.0001 1.0001 0 0 0 14 3.5 L 14 4 L 8.5 4 A 1.0001 1.0001 0 0 0 7.4863281 5 L 6 5 A 1.0001 1.0001 0 1 0 6 7 L 24 7 A 1.0001 1.0001 0 1 0 24 5 L 22.513672 5 A 1.0001 1.0001 0 0 0 21.5 4 L 16 4 L 16 3.5 A 1.0001 1.0001 0 0 0 14.984375 2.4863281 z M 6 9 L 7.7929688 24.234375 C 7.9109687 25.241375 8.7633438 26 9.7773438 26 L 20.222656 26 C 21.236656 26 22.088031 25.241375 22.207031 24.234375 L 24 9 L 6 9 z"></path>
-                                                    </svg>
-                                              </a> -->
-                                            </td>
-                                        </tr>
-                                        <% }); %>
-                                </tbody>
-                            </table>
+                        <form action="/admin/change-status/<%= order._id %>" method="post" id="editStatusForm">
+                            <div class="col-auto">
+                                <input type="text" id="orderId" value="<%- order._id %>" hidden>
+                                <label class="sr-only" for="category">Choose Status :</label>
+                                
+                                <select class="form-select mb-2" id="category" name="status">
+                                    <option value="" selected disabled><%- order.orderStatus%></option>
+                                   
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">Processing</option>
+                                    <option value="Shipped">Shipped</option>
+                                    <option value="Delivered">Delivered</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                   
+                                </select>
+                                
+                            </div>
+                            
+                            <div class="col-auto">
+                              <center><button type="submit" class="btn btn-primary mb-2">Save changes</button></center>
+                            </div>
+                          </form>
                     </div>
                 </div>
             </div>
  <!-- Table ends here -->
 
             <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
+                
             </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
@@ -246,6 +213,66 @@
             </div>
         </footer>
     </main>
+    <script>
+        document.getElementById('editStatusForm').addEventListener('submit', async (event) => {
+               event.preventDefault()
+        
+            //    const isValid = addressValidate();
+        
+            //    if (isValid) {
+        
+                  const formData = {
+                     status: event.currentTarget.status.value,
+                     orderId: event.currentTarget.orderId.value
+                  }
+        
+                  const response = await fetch(`/admin/change-status/${orderId}`, {
+                     method: 'post',
+                     headers: {
+                        'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify(formData)
+                  })
+        
+                  const result = await response.json();
+        
+                  if (result.status === 'success') {
+                     Swal.fire({
+                        icon: 'success',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        customClass:{
+                            title:'swal'
+                          }
+                     })
+                     setTimeout(() => {
+                        location.href = '/admin/order-details'
+                     }, 2000);
+                  } else if (result.status === 'error') {
+                       Swal.fire({
+                          icon: 'error',
+                          title: result.message,
+                          showConfirmButton: false,
+                          timer: 2000,
+                          customClass:{
+                            title:'swal'
+                          }
+                       })
+                  } else {
+                    Swal.fire({
+                          icon: 'info',
+                          title: result.message,
+                          showConfirmButton: false,
+                          timer: 2000,
+                          customClass:{
+                            title:'swal'
+                          }
+                       })
+                  }
+            //    }
+            })
+            </script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

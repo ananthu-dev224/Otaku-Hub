@@ -288,7 +288,7 @@
                   <a href="" class="btn btn-outline-dark mb-3" data-toggle="modal" data-target="#myModal">Edit
                      Profile</a>
                   <a href="/my-profile/address" class="btn btn-outline-dark mb-3">Manage Address</a>
-                  <a href="/list-orders" class="btn btn-outline-dark mb-3">Orders</a>
+                  <a href="/orders" class="btn btn-outline-dark mb-3">Orders</a>
                   <a href="/change-password" class="btn btn-outline-dark mb-3" data-toggle="modal"
                      data-target="#changePasswordModal">Change Password</a>
                   <a href="/view-wallet" class="btn btn-outline-dark mb-3">View Wallet</a>
@@ -511,11 +511,11 @@
                   icon: 'info',
                   title: 'You have been blocked due to violations',
                   showConfirmButton: false,
-                  timer: 1000
+                  timer: 2000
                })
                setTimeout(() => {
                   location.href = '/login?blocked=true'
-               }, 1500);
+               }, 2000);
             } else {
                Swal.fire({
                   title: result.message,

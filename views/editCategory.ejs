@@ -16,8 +16,13 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
+<style>
+    .swal {
+      color: #000000 !important; 
+    }
+    </style>
 <body class="dark">
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
@@ -50,7 +55,7 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -132,9 +137,7 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Edit Category</h2>
-                    <% if(alert){ %>
-                        <p id="alert-area"><%= alert%></p>
-                        <%}%>
+                    
 
                     
                 </div>
@@ -167,9 +170,10 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form action="/admin/categories/edit/<%= category.id%>" method="post">
+                        <form action="/admin/categories/edit/<%= category.id%>" method="post" id="editCategoryForm">
                             <div class="form-row align-items-center">
                               <div class="col-auto">
+                                <input type="text" id="categoryId" value="<%- category.id %>" hidden>
                                 <label class="sr-only" for="inlineFormInput">Name of Category:</label><br><br>
                                 <input type="text" class="form-control mb-2" id="inlineFormInput" name="name" placeholder="<%= category.name%>">
                               </div><br>
@@ -202,6 +206,66 @@
             </div>
         </footer>
     </main>
+    <script>
+        document.getElementById('editCategoryForm').addEventListener('submit', async (event) => {
+               event.preventDefault()
+        
+            //    const isValid = addressValidate();
+        
+            //    if (isValid) {
+        
+                  const formData = {
+                     name: event.currentTarget.name.value,
+                     categoryId: event.currentTarget.categoryId.value
+                  }
+        
+                  const response = await fetch(`/admin/categories/edit/${categoryId}`, {
+                     method: 'post',
+                     headers: {
+                        'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify(formData)
+                  })
+        
+                  const result = await response.json();
+        
+                  if (result.status === 'success') {
+                     Swal.fire({
+                        icon: 'success',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        customClass:{
+                            title:'swal'
+                          }
+                     })
+                     setTimeout(() => {
+                        location.href = '/admin/categories'
+                     }, 2000);
+                  } else if (result.status === 'error') {
+                       Swal.fire({
+                          icon: 'error',
+                          title: result.message,
+                          showConfirmButton: false,
+                          timer: 2000,
+                          customClass:{
+                            title:'swal'
+                          }
+                       })
+                  } else {
+                    Swal.fire({
+                          icon: 'info',
+                          title: result.message,
+                          showConfirmButton: false,
+                          timer: 2000,
+                          customClass:{
+                            title:'swal'
+                          }
+                       })
+                  }
+            //    }
+            })
+            </script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

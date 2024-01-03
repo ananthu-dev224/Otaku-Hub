@@ -17,346 +17,202 @@
     <!-- Site Title -->
     <title>Otaku Hub</title>
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+
     <link rel="stylesheet" href="/static/user-assets/css/linearicons.css">
     <link rel="stylesheet" href="/static/user-assets/css/owl.carousel.css">
-    <link rel="stylesheet" href="/static/user-assets/css/themify-icons.css">
     <link rel="stylesheet" href="/static/user-assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/user-assets/css/themify-icons.css">
     <link rel="stylesheet" href="/static/user-assets/css/nice-select.css">
     <link rel="stylesheet" href="/static/user-assets/css/nouislider.min.css">
     <link rel="stylesheet" href="/static/user-assets/css/bootstrap.css">
     <link rel="stylesheet" href="/static/user-assets/css/main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-     
-  .swal {
-    color: #000000 !important; 
-  }
- 
-        /* Style for the card */
-        .card {
-            border: 1px solid #f3efef;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-            background: linear-gradient(to top, #c4c5c7 0%, #dcdddf 52%, #ebebeb 100%);
-        }
-
-        /* Style for the radio button and label */
-        .radion_btn {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .radion_btn input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        /* Style for the card text */
-        .card-text {
-            font-size: 14px;
-            color: #000000;
-        }
-
-        /* Optional: Style for the card header (if needed) */
-        .card-header {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            padding: 10px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .addAddress_form p {
-            color: red;
-        }
-
-        /* Style the radio button */
-        .radio_btn {
-            appearance: none;
-            /* Remove the default radio button appearance */
-            width: 15px;
-            /* Adjust the width of the radio button */
-            height: 15px;
-            /* Adjust the height of the radio button */
-            border: 1px solid #09b01a;
-            /* Border color */
-            border-radius: 10%;
-            /* Make it round */
-            outline: none;
-            /* Remove the outline when focused */
-            cursor: pointer;
-            /* Add a pointer cursor */
-            vertical-align: middle;
-            /* Center it vertically with the label */
-            margin-right: 10px;
-            /* Add some spacing between the radio button and label */
-        }
-
-        /* Style the radio button when checked */
-        .radio_btn:checked {
-            background-color: #09b01a;
-            /* Background color when checked */
-        }
-
-        /* Style the radio button label */
-        label {
-            font-size: 14px;
-            /* Label text size */
-            color: #000000;
-            /* Label text color */
-            margin-bottom: 10px;
-        }
-
-        .custom-div {
-            border: 1px solid #ccc;
-            padding: 10px;
-            background-color: #aeaeae;
-            border-radius: 5px;
-        }
-
-        .btn-custom-success {
-            background-color: #28a745;
-            /* Your custom approved color */
-            border-color: #28a745;
-            color: #000000;
-            /* Text color */
-        }
-
-        .btn-custom-success:hover {
-            background-color: #218838;
-            /* Hover color */
-            border-color: #218838;
-        }
-
-        .dummy-data {
-            color: #333;
-            /* Set the color you want */
-            font-size: 16px;
-            /* Set the font size you want */
-            /* Add any other styles you want for the dummy data */
-        }
-
-        .bg-light-green {
-            background-color: #e0f3e0;
-            /* You can adjust the color code to your desired shade of light green */
-        }
-    </style>
 </head>
-
 <body>
-
-    <!-- Start Header Area -->
-    <header class="header_area sticky-header">
-        <div class="main_menu">
-           <nav class="navbar navbar-expand-lg navbar-light main_box" style="border-radius: 25px;  background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);">
-              <div class="container">
-                  <!-- Brand and toggle get grouped for better mobile display -->
-                  <a class="navbar-brand logo_h" href="/home">
-                          <div class="" style="height: 80px;">
-                              <h5 class="brand-name text-black" style="font-family: Satisfy; font-size: 35px;">Otaku <br> Hub</h5>
-                          </div>
-                  </a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse"
-                      data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                      aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                  </button>
-                  <!-- Collect the nav links, forms, and other content for toggling -->
-                  <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav d-flex align-items-center  menu_nav ml-auto">
-                              <li class="nav-item active"><a href="/home" class="profile-icon nav-link"><span
-                                  style="font-size: 22px; width: 30px; height: 30px; color: rgb(0, 0, 0);"
-                                  class="bi bi-house"></span></a></li>
-                              <li class="nav-item"><a href="/products" class="profile-icon nav-link"><span
-                                  style="font-size: 22px; width: 30px; height: 30px; color: black;"
-                                  class="bi bi-shop"></span></a></li>
-                              <li class="nav-item"><a href="/my-profile" class="profile-icon nav-link"><span
-                                          style="font-size: 22px; width: 30px; height: 30px; color: black"
-                                          class="bi bi-person"></span></a></li>
-                              <li class="nav-item"><a href="/cart" class="profile-icon nav-link"><span
-                                          style="font-size: 20px; width: 30px; height: 30px; color:  rgb(219, 134, 7);"
-                                          class="bi bi-cart"></span>
-                                <span id="cartItemsCount" class="badge  position-absolute top-0 start-50 translate-middle"> </span>
-                                <!-- Cart items count -->
-                             </a></li>
-                              <li class="nav-item"><a href="/wishlist" class="profile-icon nav-link"><span
-                                          style="font-size: 20px; width: 30px; height: 30px; color: black; margin-right: 48px;"
-                                          class="bi bi-heart"></span></a></li>
-                          </ul>
-                  </div>
+ <!-- Start Header Area -->
+ <header class="header_area sticky-header">
+    <div class="main_menu">
+       <nav class="navbar navbar-expand-lg navbar-light main_box" style="border-radius: 25px;  background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);">
+          <div class="container">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <a class="navbar-brand logo_h" href="/home">
+                      <div class="" style="height: 80px;">
+                          <h5 class="brand-name text-black" style="font-family: Satisfy; font-size: 35px;">Otaku <br> Hub</h5>
+                      </div>
+              </a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse"
+                  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                  aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                <ul class="nav navbar-nav d-flex align-items-center  menu_nav ml-auto">
+                          <li class="nav-item active"><a href="/home" class="profile-icon nav-link"><span
+                              style="font-size: 22px; width: 30px; height: 30px; color: rgb(0, 0, 0);"
+                              class="bi bi-house"></span></a></li>
+                          <li class="nav-item"><a href="/products" class="profile-icon nav-link"><span
+                              style="font-size: 22px; width: 30px; height: 30px; color: black;"
+                              class="bi bi-shop"></span></a></li>
+                          <li class="nav-item"><a href="/my-profile" class="profile-icon nav-link"><span
+                                      style="font-size: 22px; width: 30px; height: 30px; color: black"
+                                      class="bi bi-person"></span></a></li>
+                          <li class="nav-item"><a href="/cart" class="profile-icon nav-link"><span
+                                      style="font-size: 20px; width: 30px; height: 30px; color:  rgb(219, 134, 7);"
+                                      class="bi bi-cart"></span>
+                            <span id="cartItemsCount" class="badge  position-absolute top-0 start-50 translate-middle"> </span>
+                            <!-- Cart items count -->
+                         </a></li>
+                          <li class="nav-item"><a href="/wishlist" class="profile-icon nav-link"><span
+                                      style="font-size: 20px; width: 30px; height: 30px; color: black; margin-right: 48px;"
+                                      class="bi bi-heart"></span></a></li>
+                      </ul>
               </div>
-          </nav>
-        </div>
-     </header>
-    <!-- End Header Area -->
+          </div>
+      </nav>
+    </div>
+ </header>
+<!-- End Header Area -->
 
-    <!-- Start Banner Area -->
-    <section class="">
-        <div class="container">
-            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-
+<section class="">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
             </div>
         </div>
-    </section>
-    <section>
-        <div class="container">
-            <h1 class="text-center">CHECKOUT</h1>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <h1 class="text-center">ORDER DETAILS</h1>
+    </div>
+</section>
+<!-- Order details area -->
+<section class="order_details section_gap">
+    <div class="container">
+        <div class="row order_d_inner">
+            <div class="col-lg-6 col-12 mb-2">
+                <div class="details_item">
+                    <h4>Order Info</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Order number</span>: <%- orderDetails.trackingId %></a></li>
+                        <li><a href="#"><span>Date</span> : <%- orderDetails.date.toDateString() %></a></li>
+                        <li><a href="#"><span>Total</span> : &#x20B9; <%- orderDetails.totalAmount %></a></li>
+                        <li><a href="#"><span>Payment method</span> : <%- orderDetails.paymentMethod %></a></li>
+                        <li><a href="#"><span>Status</span> : <%- orderDetails.orderStatus %></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="details_item">
+                    <h4>Shipping Address</h4>
+                    <ul class="list">
+                        <li><a href=""><span>Name</span> : <%- orderDetails.address.name %></a></li>
+                        <li><a href=""><span>Mobile</span> : <%- orderDetails.address.mobile %></a></li>
+                        <li><a href=""><span>Home Address</span> : <%- orderDetails.address.houseaddress %></a></li>
+                        <li><a href=""><span>City </span> : <%- orderDetails.address.city %></a></li>
+                        <li><a href=""><span>Street </span> : <%- orderDetails.address.street %></a></li>
+                        <li><a href=""><span>State </span> : <%- orderDetails.address.state %></a></li>
+                        <li><a href=""><span>Pin Code </span> : <%- orderDetails.address.pincode %></a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </section>
-<!-- End Banner Area -->
-<!-- Checkout zone -->
-    <!-- modal -->
-    <!-- Coupons modal here -->
-    <section class="checkout_area section_gap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <% if(user && Array.isArray(user.address) && user.address.length > 0){%>
-                        <div class="row">
-                            <% user.address.forEach((address) => { %>
-                                <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <div>
-                        
-                                                        <input class="radio_btn" type="radio" id="<%- address._id %>"
-                                                            name="address-option" value="<%- address._id %>" checked>
-                                                            <label for="f-option5-1"></label>
-                                                            <div class="check"></div>
-                                            </div>
-                                            <p class="card-text">Name : <%- user.name %></p>
-                                            <p class="card-text">Mobile Number : <%- user.phonenumber %></p>
-                                            <p class="card-text">Address : <%- address.houseaddress %></p>
-                                            <p class="card-text">City : <%- address.city %></p>
-                                            <p class="card-text">Street : <%- address.street %></p>
-                                            <p class="card-text">State : <%- address.state %></p>
-                                            <p class="card-text">PIN Code : <%- address.pincode %></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% }) %>
-                        </div>
-                        <% } else { %>
-                            <div class="row justify-content-center mb-5">
-                                <h1 style="color : #ff0000">Address Needed</h1>
-                            </div>
+        <div class="order_details_table">
+            <h2>Order Details</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for( let i=0; i < orderDetails.products.length; i++ ) { %>
+                            <tr>
+                                <td>
+                                    <p><%- orderDetails.products[i].productId.name %></p>
+                                    <% if(orderDetails.products[i].size !== null){%>
+                                        <p> of Size : <%-orderDetails.products[i].size %></p>
+                                        <%}%>
+                                </td>
+                                <td>
+                                    <h5>x <%- orderDetails.products[i].quantity %></h5>
+                                </td>
+                                
+                                <td>
+                                    <p>&#x20B9; <%- orderDetails.products[i].total %></p>
+                                </td>
+                            </tr>
                             <% } %>
-                </div>
-
-            </div>
-            <div class="billing_details">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <!-- Coupon div  -->
-                        <div class="col-md-12 mb-3 custom-div shadow">
-                            <label for="couponCode" class="form-label">Coupon Code</label>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="couponCode"
-                                        placeholder="Enter your coupon code" aria-label="Coupon Code"
-                                        aria-describedby="applyCouponBtn">
-                                    <input type="text" id="couponId" hidden>
-                                </div>
-                                <button class="btn btn-primary" type="button" id="applyCouponBtn">Apply</button>
-                            </div>
-                            <p id="couponCodeError" style="color: #ff0000;"></p>
-
-                            <div class="text-center mt-2">
-                                <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#addCouponModal">Add Coupon</button>
-                            </div>
-                        </div>
-
-                        <h3>Add Address</h3>
-                        <form class="row addAddress_form" id="addAddressForm" action="/add-address" method="post" novalidate="novalidate">
-                            <div class="col-md-12 form-group">
-                               <input type="text" class="form-control" id="address" name="houseaddress" placeholder="Address of your House">
-                               <p id="houseaddressError"></p>
-                            </div>
-                            <div class="col-md-12 form-group ">
-                              <input type="text" class="form-control" id="street" name="street" placeholder="Street">
-                              <p id="streetError"></p>
-                           </div>
-                            <div class="col-md-12 form-group ">
-                               <input type="text" class="form-control" id="city" name="city" placeholder="Town/City">
-                               <p id="cityError"></p>
-                            </div>
-                            <div class="col-md-12 form-group">
-                               <input type="text" class="form-control" id="pcode" name="pincode" placeholder="PIN code">
-                               <p id="pincodeError"></p>
-                            </div>
-                            <div class="col-md-12 form-group">
-                              <input type="text" class="form-control" id="state" name="state" placeholder="State">
-                              <p id="stateError"></p>
-                           </div>
-                            <div class="col-12 col-md-12 form-group justify-content-center d-flex">
-                               <button type="submit" class="btn btn-info">Add Address
-                               </button>
-                            </div>
-                         </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="order_box">
-                            <h2>Your Order</h2>
-                            <ul class="list">
-                                <li><a href="#">Product <span>Total</span></a></li>
-                                <% if (products.length> 0) { %>
-                                    <%  products.forEach((product) => {  %>
-                                        <li><a href="#"><%- product.productId.name %><span
-                                                        class="middle">x <%- product.quantity %></span> <span
-                                                        class="last"> &#x20B9; <%- product.total %></span></a>
-                                        </li>
-                                        <% }) %>
-                                            <% } %>
-
-                            </ul>
-
-                            <ul class="list list_2">
-                                <li><a href="#">Total <span id="total">
-                                            &#x20B9;<%- grandTotal %> </span></a></li>
-                            </ul>
-                            <ul class="list list_2">
-                                <li><a href="#" class="text-success">Grand Total <span class="text-success"
-                                            id="cartTotal" data-cartTotal="<%- grandTotal %>">
-                                            &#x20B9; <%- grandTotal %></span></a></li>
-                            </ul>
-                            <div class="payment_item">
-                                <div class="payment_radio">
-                                    <input type="radio" id="COD" name="payment-method" checked>
-                                    <label for="f-option5">Cash on Delivery</label>
-                                    <div class="check"></div>
-                                </div>
-                                <p>Kindly ensure that the exact cash amount is available for payment upon delivery. Thank you!
-                                </p>
-                                <div class="payment_radio">
-                                    <input type="radio" id="WALLET" name="payment-method">
-                                    <label for="f-option5">Wallet</label>
-                                    <div class="check"></div>
-                                </div>
-                                <p> You wallet amount is : &#x20B9; <span class="text-success"></span>
-                                </p>
-                                <div class="payment_radio">
-                                    <input type="radio" id="RAZORPAY" name="payment-method">
-                                    <label for="f-option5">Razorpay</label>
-                                    <div class="check"></div>
-                                </div>
-                                <p> More easy to manage
-                                </p>
-                            </div>
-                            <a class="primary-btn" id="placeOrder" data-addressCount="<%- user.address.length %>"
-                                href="">Place order</a>
-                        </div>
-                    </div>
-                </div>
+                                <tr>
+                                    <td>
+                                        <h4>Total</h4>
+                                    </td>
+                                    <td>
+                                        <h5></h5>
+                                    </td>
+                                    <td>
+                                        <h5></h5>
+                                    </td>
+                                    <td>
+                                        <p> &#x20B9; <%- orderDetails.totalAmount %></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Discount</h4>
+                                    </td>
+                                    <td>
+                                        <h5></h5>
+                                    </td>
+                                    <td>
+                                        <h5></h5>
+                                    </td>
+                                    <td>
+                                        <p> &#x20B9; Coupon Discount</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4>Grand Total</h4>
+                                    </td>
+                                    <td>
+                                        <h5></h5>
+                                    </td>
+                                    <td>
+                                        <h5></h5>
+                                    </td>
+                                    <td>
+                                        <p style="font-weight: bold; color: rgb(34, 74, 34);"> &#x20B9; <%-
+                                                orderDetails.totalAmount %></p>
+                                    </td>
+                                </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </section>
-<!-- Checkout zone end -->
+        <% if( orderDetails.orderStatus !== 'Cancelled'){%>
+        <div class="row mt-2 justify-content-center">
+            <a href="/cancel-order/?orderId=<%- orderDetails._id%>" class="btn col-md-6" id="cancelOrder"  style="background-color: rgb(177, 20, 15); text-decoration: none; color: white; font-size: 18px;">Cancel Order</a>
+        </div>
+        <div class="row mt-2 justify-content-center">
+            <p>Order will be Delivered within 7 days , Our delivery partners will contact you. Thank You!</p>
+         </div>
+        <%}%>
+            <div class="row mt-2 justify-content-center">
+                <a href="/orders" class="btn col-md-6"  style="background-color: green; text-decoration: none; color: white; font-size: 18px;">Back to Orders</a>
+            </div>
+           
+        </div>
+</section>
+
 
 <!-- footer Area -->
 <footer class="footer-area pt-5 pb-5" style="background-color: black;  border-radius: 20px 20px 0 0;">
@@ -410,187 +266,69 @@
         </div>
     </div>
 </footer>
-    <!-- Address form  -->
-    <script>
-        document.getElementById('addAddressForm').addEventListener('submit', async (event) => {
-       event.preventDefault()
+<script>
+// Cancel Order
+document.getElementById('cancelOrder').addEventListener('click', async (event) => {
+  event.preventDefault();
 
-      //  const isValid = addressValidate();
+  try {
 
-      //  if (isValid) {
+              const orderId = '<%- orderDetails._id%>'
+              console.log(orderId);
 
-          const formData = {
-             houseaddress: event.currentTarget.houseaddress.value,
-             street: event.currentTarget.street.value,
-             city: event.currentTarget.city.value,
-             pincode: event.currentTarget.pincode.value,
-             state: event.currentTarget.state.value
-          }
+               if(orderId){
+                const response = await Swal.fire({
+                        title: "Are you Sure ? ",
+                        text: "The order will be cancelled",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#990f0f',
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No'
+                    });
 
-          const response = await fetch('/my-profile/add-address',{
-            method: 'post',
-            headers:{
-               'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(formData)
-          })
+                    if (response.isConfirmed) {
+                        const response = await fetch(`/cancel-order/?orderId=${orderId}`);
+                        const result = await response.json();
 
-          const result = await response.json();
-
-          if (result.status === 'success') {
-             Swal.fire({
-                icon: 'success',
-                title: result.message,
-                showConfirmButton: false,
-                timer: 3000,
-                customClass:{
-                      title:'swal'
+                        if (result.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            setTimeout(() => {
+                                location.href = location.href
+                            }, 1500)
+                        }
+                        else if (result.status === 'blocked') {
+                            Swal.fire({
+                                icon: 'info',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            setTimeout(() => {
+                                location.href = '/login?blocked=true'
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        }
                     }
-             })
-             setTimeout(() => {
-                location.href = '/checkout'
-             }, 2000);
-          } else  if (result.status === 'blocked') {
-               Swal.fire({
-                  icon: 'info',
-                  title: 'You have been blocked due to violations',
-                  showConfirmButton: false,
-                  timer: 1000,
-                  customClass:{
-                      title:'swal'
-                    }
-               })
-               setTimeout(() => {
-                  location.href = '/login?blocked=true'
-               }, 1500);
-            } else {
-               Swal.fire({
-                  icon: 'info',
-                  title: result.message,
-                  showConfirmButton: false,
-                  timer: 1000,
-                  customClass:{
-                      title:'swal'
-                    }
-               })
-            }
-             
-      //  }
-    })
-    </script>
-<!-- Order placing with Payment option -->
-    <script>
-        document.getElementById('placeOrder').addEventListener('click', async (event) => {
-            event.preventDefault();
-            // Taking address id 
-            const radioButtons = document.getElementsByName('address-option');
-            let selectedRadioButtonId = null;
-            for (const radioButton of radioButtons) {
-                if (radioButton.checked) {
-                    selectedRadioButtonId = radioButton.id;
-                    break;
                 }
-            }
-            console.log("selected address id :",selectedRadioButtonId);
-            const total = '<%- grandTotal %>'
-            const paymentMethod = document.querySelector('input[name="payment-method"]:checked').id;
-            console.log("Selected payment method name :",paymentMethod);
-
-                const data = {
-                    totalAmount: total,
-                    paymentMethod: paymentMethod,
-                    addressId: selectedRadioButtonId,
-                }
-                
-                
-    const response = await fetch('/checkstock', {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch');
-    }
-
-    const result = await response.json();
-     if (result.status === 'error') {
-      Swal.fire({
-        icon: 'info',
-        title: result.message,
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#3085d6',
-        timer: 3000,
-        showConfirmButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: true,
-      });
-      setTimeout(() => {
-                        location.href = '/cart'
-                    }, 3000);
-            } else {
-                const responseOrder = await fetch('/place-order', {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-
-                const resultOrder = await responseOrder.json()
-
-                if (resultOrder.status === 'COD') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Order Placed',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        customClass:{
-                      title:'swal'
-                    }
-                    })
-                    setTimeout(() => {
-                        location.href = '/orders'
-                    }, 1500);
-
-                }else if (resultOrder.status === 'blocked') {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'You have been blocked due to violations',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        customClass:{
-                      title:'swal'
-                    }
-                    })
-                    setTimeout(() => {
-                        location.href = '/login?blocked=true'
-                    }, 2000);
-                } 
-                else if (resultOrder.status === 'error') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: resultOrder.message,
-                        showConfirmButton: false,
-                        timer: 2000,
-                        customClass:{
-                      title:'swal'
-                    }
-                    })
-                    
-                }else {
-                    Swal.fire({
-                        icon: 'info',
-                        title: result.message,
-                        showConfirmButton: false,
-                        timer: 2000,
-                        customClass:{
-                      title:'swal'
-                    }
-                    })
-                }
-            }
-        }) 
-    </script>
+               
+  } catch (error) {
+    console.error('Error during fetch:', error);
+  }
+});
+</script>
 
     <script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"

@@ -17,8 +17,8 @@ loginC.displayLogin = (req,res)=>{
       res.redirect('/home')
     }
   } catch (error) {
-    res.send("Internal Server Error")
     console.log("An error occured while displaying login page",error.message);
+    res.render('error')
   } 
 }
 
@@ -30,23 +30,23 @@ loginC.manageLogin = async (req,res)=>{
   const customer = await User.findOne({email})
 
   if(!customer){
-    return res.render('userLogin',{alert:"No user found , Please Sign up"})  //handling if user not exist in db
+    return res.json({status:'error',message:"No user found , Please Sign up"})  //handling if user not exist in db
   }
 
   console.log(customer._id);
   try {
     const comparePassword = await bcrypt.compare(password, customer.password);
     if (!comparePassword) {
-       return res.render('userLogin', { alert: "Password is wrong" });
+      return res.json({status:'error',message:"Password is wrong"})
     }
  } catch (error) {
     console.error("An error occurred while comparing passwords:", error.message);
-    return res.render('userLogin', { alert: "An error occurred, please try again" });
+    return res.json({status:'error',message:"An error occured please try again"})
  }
    
   //handling if user is blocked
   if(customer.isBlocked){
-    return res.render('userLogin',{alert:"For security reasons, your account has been temporarily blocked. Please contact our support team for assistance in resolving this issue"})
+    return res.json({status:'blocked',message:" For security reasons, your account has been temporarily blocked. Please contact our support team for assistance in resolving this issue"})
   }
 
 
@@ -57,10 +57,10 @@ loginC.manageLogin = async (req,res)=>{
    req.session.userActive = true;
 
    res.cookie('token', token, { httpOnly: true, secure: false });
-   res.redirect('/home')
+   res.json({status:'success'})
   
 }catch (error) {
-    res.render('userLogin',{alert:"An error occured please try again"})
+    res.json({status:'error',message:"An error occured please try again"})
     console.log(error.message);
   }
   
@@ -74,8 +74,8 @@ loginC.displayHome = async (req,res) =>{
        res.render('home',{products:latestProducts})
     
    } catch (error) {
-    res.send('Internal Server Error')
-    console.log(error.message);
+    res.render('error')
+    console.log(" An error occured while loading home page",error.message);
    }
 }
 

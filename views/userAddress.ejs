@@ -301,13 +301,13 @@
           } else  if (result.status === 'blocked') {
                Swal.fire({
                   icon: 'info',
-                  title: 'You have been blocked due to violations',
+                  title: result.message,
                   showConfirmButton: false,
-                  timer: 1000
+                  timer: 4000
                })
                setTimeout(() => {
-                  location.href = '/login?blocked=true'
-               }, 1500);
+                  location.href = '/login'
+               }, 4000);
             } else {
                Swal.fire({
                   icon: 'info',
@@ -356,11 +356,11 @@
                   icon: 'info',
                   title: 'You have been blocked due to violations',
                   showConfirmButton: false,
-                  timer: 1000
+                  timer: 2000
                })
                setTimeout(() => {
                   location.href = '/login?blocked=true'
-               }, 1500);
+               }, 2000);
             } else{
                Swal.fire({
                   icon: 'info',

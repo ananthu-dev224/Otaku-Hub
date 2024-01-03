@@ -14,18 +14,20 @@ const admDashC = require('./controller/admDashC')
 const admUsersC = require('./controller/admUsersC')
 const admCatC = require('./controller/admCatc')
 const admProC = require('./controller/admProC')
+const admOrderC = require('./controller/adminOrderController.js')
 //Middleware
 const {verifyToken,checkBlocked,checkBlockedFetch} = require('./middlewares/userAuth.js')
 const adminAuth = require('./middlewares/adminAuth.js')
 
 
-// //Admin Login
+// //Admin Login and Logout
 router.get('/admin',admLoginC.displayadminLogin)
 router.get('/adminlog',admLoginC.manageadminLogout)
 router.post('/admin',admLoginC.manageadminLogin)
 
 // //Admin Dashboard
 router.get('/dashboard',adminAuth,admDashC.displayadminDash)
+
 //Home Page
 router.get('/home',verifyToken,checkBlocked,loginC.displayHome)
 
@@ -60,7 +62,7 @@ router.post('/edit-profile',verifyToken,checkBlockedFetch,userProC.editProfile)
 router.post('/change-password',verifyToken,checkBlockedFetch,userProC.changePass)
 
 
-//Products Page
+//Products and Profile page
 router.get('/products',verifyToken,checkBlocked,userProC.displayPro) // All products 
 router.get('/product-view/:id',verifyToken,checkBlocked,userProC.displayView) // view product
 router.get('/price',verifyToken,checkBlocked,userProC.filterPro) // filter products
@@ -80,15 +82,19 @@ router.get('/remove-product-cart',verifyToken,checkBlockedFetch,userCartC.manage
 router.post('/update-quantity',verifyToken,checkBlockedFetch,userCartC.updateQuantity) //Increase or Decrease quantity
 
 
-//This route is only used to check this conditions in proceed to checkout and place order
-router.get('/checkstock',verifyToken,checkBlocked,userCartC.manageStock)
+
+//This route is only used to check the stock  in proceed to checkout and place order
+router.get('/checkstock',verifyToken,userCartC.manageStock)
 
 
 // Checkout
 router.get('/checkout',verifyToken,checkBlocked,userCartC.displayCheckout) // checkout page
 
 // Place Order
-router.post('/place-order',verifyToken,checkBlockedFetch,userOrderC.placeOrder) //placing order 
+router.post('/place-order',verifyToken,checkBlockedFetch,userOrderC.placeOrder)
+router.get('/orders',verifyToken,checkBlocked,userOrderC.displayOrders)
+router.get('/order-details',verifyToken,checkBlocked,userOrderC.displaySingleOrder)
+router.get('/cancel-order',verifyToken,checkBlockedFetch,userOrderC.cancelOrder)
 
 
 // //Admin Customers
@@ -112,6 +118,11 @@ router.get('/admin/products/edit/:id',adminAuth,admProC.displayEditPro)
 router.post('/admin/products/edit/:id',adminAuth,admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageEditPro)
 router.get('/admin/products/restrict/:id',adminAuth,admProC.manageTogglePro)
 router.get('/admin/products/remove/:id',adminAuth,admProC.removePro)
+
+// //Admin Order Management
+router.get('/admin/order-details',adminAuth,admOrderC.displayOrdersAdmin)
+router.get('/admin/change-status',adminAuth,admOrderC.displayChangeOrderStatus)
+router.post('/admin/change-status/:id',adminAuth,admOrderC.changeOrderStatus)
 
 
 

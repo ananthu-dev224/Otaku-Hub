@@ -7,14 +7,8 @@ const admUsersC ={}
 // User management page
 admUsersC.displayUsers = async  (req,res)=>{
     try {
-          if(req.admin){
           const users = await User.find()
           res.render('customers',{users,alert:null})
-            
-        }else{
-            res.redirect('/admin')
-        }
-
     } catch (error) {
       console.log('An error occured',error.message) 
       res.status(500).send("Internel Server Error")

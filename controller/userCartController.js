@@ -1,8 +1,6 @@
 const productsdb = require('../model/productSchema')
 const usersdb = require('../model/userSchema')
 const cartdb = require('../model/cartSchema')
-const ordersdb = require('../model/ordersSchema')
-const userPro = require('./userProC')
 const mongoose = require('mongoose')
 const userCart = {}
 
@@ -11,7 +9,7 @@ const userCart = {}
 userCart.displayCart = async (req,res) =>{
     try {
        let userId = req.userId
-       const cart = await cartdb.find({userId:userId}).populate('products.productId') 
+       let cart = await cartdb.find({userId:userId}).populate('products.productId') 
        let products
        if (!cart || cart.length === 0) {
          // If user has no cart, create a new cart
@@ -34,6 +32,7 @@ userCart.displayCart = async (req,res) =>{
          products = [];
          totalCart = 0;
        }
+       req.session.isCheckout = true
        res.render('cart',{products,totalCart})
     } catch (error) {
        console.log("An error occured while displaying cart page",error.message);
@@ -51,6 +50,21 @@ userCart.displayCart = async (req,res) =>{
          await newCart.save()
          cart = newCart
        }
+  
+      console.log("cart is",cart);
+      console.log("product id is",productId);
+      let productInCart;
+      let quantity;
+      if(cart.products.length > 0){
+         productInCart = cart.products.find((product) => product.productId._id.toString() === productId.toString())
+         if(productInCart){
+          console.log("product is",productInCart);
+          quantity = productInCart.quantity;
+          console.log("quantity is",quantity);
+         }
+      }
+      
+
        const product = await productsdb.findById(productId).populate('category')
        if(!product.isPublished){
          return res.json({status:'published',message:'Currently the product is not available'})
@@ -60,12 +74,12 @@ userCart.displayCart = async (req,res) =>{
          size = req.query.size
          let selectedSizeStock = product.quantity.find(entry => entry.size === size);
          selectedSizeStock = selectedSizeStock.stock
-         if(selectedSizeStock <= 0){
+         if(selectedSizeStock <= 0 || selectedSizeStock <= quantity){
             return res.json({status:'outofstock',message:"Currently the item is Out of Stock"})
          }
        }else{ // If product is from other Category
           selectedSizeStock = product.quantity[0].stock
-          if(selectedSizeStock <= 0){
+          if(selectedSizeStock <= 0 || selectedSizeStock <= quantity){
             return res.json({status:'outofstock',message:"Currently the item is Out of Stock"})
           }
        }
@@ -100,10 +114,10 @@ userCart.displayCart = async (req,res) =>{
      
        // Update the cart in the database
        await cart.save();
-       res.json({status:'success' ,message: "Product added to the cart successfully" });
+        res.json({status:'success' ,message: "Product added to the cart successfully" });
     } catch (error) {
        console.log("An error occured while adding product to cart",error.message);
-       res.json({message:"An error occured please try again"})
+        res.json({message:"An error occured please try again"})
     }
  }
  
@@ -142,6 +156,7 @@ userCart.updateQuantity = async (req,res) =>{
       const productId = req.body.proId
       const count = req.body.count;
       const currentValue = req.body.currentValue;
+      console.log(count,currentValue);
 
       const cart = await cartdb.findOne({ userId: userId }).populate('products.productId'); //cart
       const productToUpdate = cart.products.find(product => product.productId._id.toString() === productId.toString()); // product to update quantity
@@ -149,11 +164,13 @@ userCart.updateQuantity = async (req,res) =>{
       let stock;
       if(productToUpdate && productToUpdate.size){
         stock =  getProductStock (productToUpdate,productToUpdate.size) // if product is an outfit
+        console.log(stock);
       }else{
         stock = productToUpdate.productId.quantity[0].stock 
+        console.log(stock);
       }
       if(stock  < currentValue){
-         res.json({status:'error',message:'Out of Stock'});
+        res.json({status:'error',message:'Out of Stock'});
       }else{
          const cart = await cartdb.findOneAndUpdate(
             { 
@@ -260,7 +277,11 @@ userCart.manageStock = async (req, res) => {
      }
  
      // If there are products with unpublished products, display an alert
-     if (unpublishedProducts.length === cart.products.length) {
+     if(cart.products.length === 0){
+      alertMessage = "Cart is Empty"
+      console.log(alertMessage);
+      return res.json({status:'error',message:alertMessage}) 
+     }else if (unpublishedProducts.length === cart.products.length) {
       alertMessage = "All products in the cart are not available"
       console.log(alertMessage);
       return res.json({status:'error',message:alertMessage}) 
@@ -293,6 +314,7 @@ userCart.manageStock = async (req, res) => {
 // Proceed to Checkout
 userCart.displayCheckout = async (req,res) =>{
    try {
+     if(req.session.isCheckout){
       const userId = req.userId
       const user = await usersdb.findById(userId)
       const cart = await cartdb.findOne({userId:userId}).populate('products.productId')
@@ -302,6 +324,9 @@ userCart.displayCheckout = async (req,res) =>{
       },0);
        const grandTotal = cart.total
        res.render('checkout',{user,products,grandTotal})
+     }else{
+       res.redirect('/cart')
+     }
    } catch (error) {
       console.log("An error occured while loading checkout page",error.message);
    }

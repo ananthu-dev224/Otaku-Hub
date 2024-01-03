@@ -9,8 +9,9 @@ const otpgenerator = require('generate-otp')
 
 forgotC.displayForgot = (req,res)=>{
    try {
-    res.render('forgotpass',{alert:null})
+    res.render('forgotpass')
    } catch (error) {
+    res.render('error')
     console.log("An error occured while loading forgotpass page",error.message);
    }
 }
@@ -62,13 +63,9 @@ async function mail(email,otp){
 forgotC.manageForgot = async (req,res) =>{
     req.session.isForgot = false
     const {email} = req.body
-    if(!email){
-        res.render('forgotpass',{alert:"Enter your email"})
-    }
-    
     const user = await User.findOne({email:email})
     if(!user){
-        res.render('forgotpass',{alert:"Enter a valid email"})
+       return res.json({status:'error',message:'Enter the email registered for your account'})
     }
         //generate otp
         const otpln = 6
@@ -88,10 +85,10 @@ forgotC.manageForgot = async (req,res) =>{
     try {
         await mail(email,otp)
         req.session.isForgot = true //to check whether email  is sent
-        res.redirect('/forgot-password/verify')   
+        res.json({status:'success',message:'Otp sent to your email'})   
     } catch (error) {
-        console.log("An error occured",error.message);
-        res.send("Internal Server Error")
+        res.json({status:'error',message:'An error occured please try again'})
+        console.log("An error occured in sending otp at forgot password",error.message);
     }
 
 }
@@ -105,6 +102,7 @@ forgotC.displayOtp = (req,res) =>{
         res.redirect('/forgot-password')
     }
    } catch (error) {
+    res.render('error')
     console.log("An error occured while loading otp page",error.message);
    }
 }
@@ -117,24 +115,21 @@ forgotC.manageOtp = (req,res) =>{
     const {otp , expireOtp , timestamp}= data
     //Check if otp expired
     const isExpired = Date.now() - timestamp > expireOtp
-    if(!enteredOtp){
-        res.render("forgotVerify",{alert:"Enter the 6 Digits OTP to Verify"})
-    }
     if(enteredOtp !== otp){
-        res.render("forgotVerify",{alert:"OTP is Wrong"})
+        res.json({status:'error',message:'OTP is wrong'})
     }
     if(isExpired){
-        res.render("forgotVerify",{alert:"OTP has been expired"})
+        res.json({message:'OTP has been expired'})
     }
 try {
     // Checking both otp is correct
     if(enteredOtp === otp){
         req.session.isVerify = true
-        res.redirect('/new-password')
+        res.json({status:'success',message:'OTP verified successfully'})
     }
 } catch (error) {
     console.log("An error occured",error.message);
-    res.send("Internal Server Error")
+    res.json({status:'error',message:'An error occured please try again'})
 }
 }
 
@@ -156,9 +151,8 @@ forgotC.resentOtp = async(req,res) =>{
        req.session.isForgot = true
        res.redirect('/forgot-password/verify')
     } catch (error) {
-      res.status(500).send("Internal Server Error")
-      console.log("Error occured",error.message);
-       
+      console.log("Error occured during resent otp at forgot password",error.message);
+      res.render('error') 
     }
    }
 
@@ -167,12 +161,13 @@ forgotC.resentOtp = async(req,res) =>{
 forgotC.displayNew = (req,res) =>{
     try {
         if(req.session.isVerify){
-            res.render('newPassword',{alert:null})
+            res.render('newPassword')
         }else{
             res.redirect('/forgot-password')
         }   
     } catch (error) {
         console.log("An error occured while displaying new password page",error.message);
+        res.render('error')
     }
 }
 
@@ -181,7 +176,7 @@ forgotC.manageNew = async (req,res) =>{
     const email = req.session.data.email
     const user = await User.findOne({email:email})
     if(password !== confirmpassword){
-        res.render("newPassword",{alert:"Password is not matching"})
+        return res.json({status:'error',message:'Password is not matching'})
     }
     try {
         if(password === confirmpassword){
@@ -190,11 +185,11 @@ forgotC.manageNew = async (req,res) =>{
             user.password = hashedPassword
             await user.save()
             delete req.session.data
-            res.redirect('/login')
+            res.json({status:'success',message:'Password changed successfully'})
         }
     } catch (error) {
         console.log("An error occured",error.message);
-        res.send('Internal Server Error')
+        res.json({status:'error',message:'An error occured please try again'})
     }
    
 }

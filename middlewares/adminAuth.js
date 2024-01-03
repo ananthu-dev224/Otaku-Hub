@@ -15,7 +15,8 @@ console.log('Secret Key of Admin:', process.env.SECRET_ID_ADMIN);
 
 const admin =  jwt.verify(tokenadmin, process.env.SECRET_ID_ADMIN)
 req.admin = admin.adminId;
-console.log(req.admin);
+req.session.adminActive = true
+console.log("Admin id :",req.admin);
 next();
 }
    } catch (error) {
@@ -25,8 +26,6 @@ next();
       res.redirect('/admin')
    }
 }
-
-
 
 
 

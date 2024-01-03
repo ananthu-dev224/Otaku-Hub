@@ -38,7 +38,7 @@ const checkBlocked = async (req,res,next) =>{
         next()
       }
    } catch (error) { 
-      console.log(error.message);
+      console.log("error occured in checkBlocked",error.message);
    }
 }
 
@@ -56,7 +56,7 @@ const checkBlockedFetch = async (req,res,next) =>{
        next()
      }
   } catch (error) { 
-     console.log(error.message);
+     console.log("error occured in checkBlocked fetch",error.message);
   }
 }
 

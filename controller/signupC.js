@@ -11,13 +11,13 @@ const signupC = {}
 signupC.displaySignup = (req,res)=>{
     try {
     if(!req.session.userActive){
-        res.render('signUp',{alert:null})
+        res.render('signUp')
     }else{
         res.redirect('/home')
           } 
     } catch (error) {
-        res.send("Internal Server Error")
         console.log("An error occured while displaying signup page",error.message);
+        res.render('error')
     }
 }
 
@@ -69,11 +69,12 @@ async function mail(email,otp){
 
 //manageSignup
 signupC.manageSignup = async (req,res)=>{
+    console.log("Entered ");
         const{name,email,phonenumber,password,confirmpassword} = req.body
         const duplicateuser =  await User.findOne({email})
 
         if(duplicateuser){
-          return  res.render('signUp',{alert:"Email already exists"}) //if email already exist in db
+          return  res.json({status:'error',message:'Email already exists'}) //if email already exist in db
         }
         
         //generate otp
@@ -82,7 +83,7 @@ signupC.manageSignup = async (req,res)=>{
         const expireOtp = 5 * 60 * 1000 //5 minute in milliseconds
 
         if(password !== confirmpassword){
-           return res.render('signUp',{alert:"Password is not correct"})
+           return res.json({status:'error',message:'Password is not matching'})
         }
 
         //store signup data temporary in session
@@ -100,10 +101,11 @@ signupC.manageSignup = async (req,res)=>{
         try{
             await mail(email,otp) //calling mail function and sending otp through mail
             req.session.isSignup =  true
-            res.redirect('/otp-verification')
+            res.json({status:'success',message:'Otp sent to your Email'})
     
      } catch (error) {
-        console.log("Error occured",error.message)
+        res.json({status:'error',message:'An error occured please try again'})
+        console.log("Error occured while managing sign up",error.message)
      }
 }
 
@@ -132,8 +134,7 @@ signupC.manageOtp = async (req,res) =>{
     //expire the otp
     const isExpired = Date.now() - timestamp > expireOtp
     if(isExpired){
-        res.render('signUp',{alert:'Otp has been expired'})
-        return
+        return res.json({status:'error',message:'Otp expired'})
     }
 
 // verifying the otp entered by user and the otp that has sent
@@ -166,16 +167,16 @@ signupC.manageOtp = async (req,res) =>{
      // Set the token in a cookie
         console.log(token);
        res.cookie('token', token, { httpOnly: true, secure: false });
-       res.redirect('/home')
+       res.json({status:'success',message:'Otp verified successfully'})
 
        } catch (error) {
-          console.log("error occured :",error.message);
-          res.render('signUp',{alert:"An error occured please try again"})
+          console.log("error occured in verifying otp:",error.message);
+          res.json({status:'error',message:'An error occured please try again'})
        }
 
 
     }else{
-        res.render('verification',{alert:"Otp is not correct"})
+        res.json({status:'error',message:'Otp not correct , please resend'})
     }
 }
 
@@ -200,10 +201,9 @@ signupC.resentOtp = async(req,res) =>{
     await mail(email,otpNew) //calling mail function and sending otp through mail
     res.redirect('/otp-verification')
  } catch (error) {
-   res.status(500).send("Internal Server Error")
-   console.log("Error occured",error.message);
-    
- }
+   res.render('error')
+   console.log("Error occured in resend otp",error.message);
+}
 }
 
 
