@@ -54,34 +54,47 @@
                       <div class="row gy-3 overflow-hidden">
                         <div class="col-12">
                           <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="username" required>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="username"  maxlength="35" required>
                             <label for="name" class="form-label">Username</label>
+                            <small id="nameError" class="text-danger"></small>
                           </div>
                         </div>
+                        
+
                         <div class="col-12">
                           <div class="form-floating mb-3">
                             <input type="email" class="form-control" name="email" id="email" value="" placeholder="name@example.com" required>
                             <label for="email" class="form-label">Email</label>
+                            <small id="emailError" class="text-danger"></small>
                           </div>
                         </div>
+                        
+
                         <div class="col-12">
                             <div class="form-floating mb-3">
                               <input type="phonenumber" class="form-control" name="phonenumber" id="phonenumber" value="" placeholder="phonenumber" required>
                               <label for="phonenumber" class="form-label">Phone Number</label>
+                              <small id="phonenumberError" class="text-danger"></small>
                             </div>
                           </div>
+                          
+
                           <div class="col-12">
                             <div class="form-floating mb-3">
                               <input type="password" class="form-control" name="password" id="password" value="" placeholder="password" required>
                               <label for="password" class="form-label">Password</label>
+                              <small id="passwordError" class="text-danger"></small>
                             </div>
                           </div>
+                         
+
                           <div class="col-12">
                             <div class="form-floating mb-3">
                               <input type="password" class="form-control" name="confirmpassword" id="confirmpassword" value="" placeholder="confirmpassword" required>
                               <label for="confirmpassword" class="form-label">Confirm Password</label>
                             </div>
                           </div>
+
                         <div class="col-12">
                           <div class="d-grid">
                            <button class="btn btn-success btn-lg" type="submit">Sign Up</button>
@@ -111,9 +124,9 @@
   document.getElementById('signupForm').addEventListener('submit', async (event) => {
          event.preventDefault()
   
-      //    const isValid = addressValidate();
+         const isValid = signupValidation();
   
-      //    if (isValid) {
+         if (isValid) {
   
             const formData = {
                name:event.currentTarget.name.value,
@@ -167,7 +180,8 @@
                     }
                  })
             }
-      //    }
+         }
       })
       </script>
+      <script src="/static/js/signupValidation.js"></script>
 </html>

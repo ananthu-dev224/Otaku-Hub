@@ -140,29 +140,29 @@
                 <form class="row addAddress_form" id="editAddressForm" action="" method="post"
                    novalidate="novalidate">
                    <div class="col-md-12 form-group">
-                      <input type="text" class="form-control" value="<%- address.houseaddress %>" id="houseaddress"
-                         name="houseaddress" placeholder="Address">
-                      <p id="addressError"></p>
+                      <input type="text" class="form-control" placeholder="<%- address.houseaddress %>" id="address"
+                         name="houseaddress" maxlength="40" >
+                      <p id="houseaddressError" class="text-danger"></p>
                    </div>
                    <div class="col-md-12 form-group ">
-                      <input type="text" class="form-control" value="<%- address.city %>" id="city" name="city"
-                         placeholder="Town/City">
-                      <p id="cityError"></p>
+                      <input type="text" class="form-control" placeholder="<%- address.city %>" id="city" name="city"
+                      maxlength="20" >
+                      <p id="cityError" class="text-danger"></p>
                    </div>
                    <div class="col-md-12 form-group ">
-                      <input type="text" class="form-control" value="<%- address.street %>" id="street"
-                         name="street" placeholder="Street">
-                      <p id="streetError"></p>
+                      <input type="text" class="form-control" placeholder="<%- address.street %>" id="street"
+                         name="street" maxlength="40" >
+                      <p id="streetError" class="text-danger"></p>
                    </div>
                    <div class="col-md-12 form-group ">
-                    <input type="text" class="form-control" value="<%- address.state %>" id="state"
-                       name="state" placeholder="State">
-                    <p id="stateError"></p>
+                    <input type="text" class="form-control" placeholder="<%- address.state %>" id="state"
+                       name="state" maxlength="20">
+                    <p id="stateError" class="text-danger"></p>
                  </div>
                    <div class="col-md-12 form-group">
-                      <input type="text" class="form-control" value="<%- address.pincode %>" id="pincode"
-                         name="pincode" placeholder="PIN code">
-                      <p id="pcodeError"></p>
+                      <input type="text" class="form-control" placeholder="<%- address.pincode %>" id="pcode"
+                         name="pincode" maxlength="6">
+                      <p id="pincodeError" class="text-danger"></p>
                    </div>
                    <input type="text" id="addressId" value="<%- address._id %>" hidden>
                    <div class="col-12 col-md-12 form-group justify-content-center d-flex">
@@ -232,16 +232,16 @@
     document.getElementById('editAddressForm').addEventListener('submit', async (event) => {
        event.preventDefault()
 
-    //    const isValid = addressValidate();
+       const isValid = addressValidation();
 
-    //    if (isValid) {
+       if (isValid) {
 
           const formData = {
-             houseaddress: event.currentTarget.houseaddress.value,
+             houseaddress: event.currentTarget.address.value,
              city: event.currentTarget.city.value,
              street: event.currentTarget.street.value,
              state: event.currentTarget.state.value,
-             pincode: event.currentTarget.pincode.value,
+             pincode: event.currentTarget.pcode.value,
              addressId: event.currentTarget.addressId.value
           }
 
@@ -283,11 +283,11 @@
                   timer: 1000
                })
           }
-    //    }
+       }
     })
 
  </script>
-
+<script src="/static/js/addressValidation.js"></script>
 
  <script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"

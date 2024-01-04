@@ -7,11 +7,10 @@ const userOrder = {}
 // Place Order
 userOrder.placeOrder = async (req,res) =>{
     try {
-        console.log("Entered into place order route");
-        const {totalAmount,
+        const {
             paymentMethod,
             addressId} = req.body;
-        // console.log(totalAmount,paymentMethod,addressId);
+        // console.log(paymentMethod,addressId);
         if(!addressId){
             return res.json({status:'error',message:'Please add an address'})
         }
@@ -19,7 +18,11 @@ userOrder.placeOrder = async (req,res) =>{
         const user = await usersdb.findById(userId)
         const cart = await cartdb.findOne({userId:userId}).populate('products.productId')
         const addressToShip = user.address.find((address) => address._id.toString() === addressId.toString()) 
-        // console.log(addressToShip);
+        let products = cart.products
+        cart.total = products.reduce((total,product)=>{
+         return total + product.total;
+        },0);
+        const grandTotal = cart.total
 
         // address saving in order details
         const shippingAddress = {
@@ -35,7 +38,7 @@ userOrder.placeOrder = async (req,res) =>{
         // order document
         const newOrder = new ordersdb({
             userId:userId,
-            totalAmount:totalAmount,
+            totalAmount:grandTotal,
             paymentMethod:paymentMethod,
             products:cart.products,
             address:shippingAddress,

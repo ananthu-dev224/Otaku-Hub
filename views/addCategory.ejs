@@ -174,8 +174,9 @@
                             <div class="form-row align-items-center">
                               <div class="col-auto">
                                 <label class="sr-only" for="inlineFormInput">Name of Category:</label><br><br>
-                                <input type="text" class="form-control mb-2" id="inlineFormInput" name="name" placeholder="Category">
+                                <input type="text" class="form-control mb-2" id="category" name="name" placeholder="Category" maxlength="25">
                               </div><br>
+                              <p id="categoryError" class="text-danger"></p>
                               <div class="col-auto">
                              <center><button type="submit" class="btn btn-primary mb-2">Add</button></center>   
                               </div>
@@ -209,9 +210,9 @@
 document.getElementById('addCategoryForm').addEventListener('submit', async (event) => {
        event.preventDefault()
 
-    //    const isValid = addressValidate();
+       const isValid = categoryValidation();
 
-    //    if (isValid) {
+       if (isValid) {
 
           const formData = {
              name: event.currentTarget.name.value,
@@ -261,9 +262,10 @@ document.getElementById('addCategoryForm').addEventListener('submit', async (eve
                   }
                })
           }
-    //    }
+       }
     })
     </script>
+    <script src="/static/js/categoryValidation.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.23/dist/sweetalert2.all.min.js"></script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>

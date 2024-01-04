@@ -175,8 +175,9 @@
                               <div class="col-auto">
                                 <input type="text" id="categoryId" value="<%- category.id %>" hidden>
                                 <label class="sr-only" for="inlineFormInput">Name of Category:</label><br><br>
-                                <input type="text" class="form-control mb-2" id="inlineFormInput" name="name" placeholder="<%= category.name%>">
+                                <input type="text" class="form-control mb-2" id="category" name="name" placeholder="<%= category.name%>" maxlength="25">
                               </div><br>
+                              <p id="categoryError" class="text-danger"></p>
                               <div class="col-auto">
                              <center><button type="submit" class="btn btn-primary mb-2">Save changes</button></center>   
                               </div>
@@ -210,9 +211,9 @@
         document.getElementById('editCategoryForm').addEventListener('submit', async (event) => {
                event.preventDefault()
         
-            //    const isValid = addressValidate();
+               const isValid = categoryValidation();
         
-            //    if (isValid) {
+               if (isValid) {
         
                   const formData = {
                      name: event.currentTarget.name.value,
@@ -263,9 +264,10 @@
                           }
                        })
                   }
-            //    }
+               }
             })
             </script>
+            <script src="/static/js/categoryValidation.js"></script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

@@ -47,11 +47,7 @@
                       <div class="col-12">
                         <div class="d-flex gap-3 flex-column">
                           </a>
-                          <% if(alert){%>
-                          </div>
-                          <p class="text-center text-danger" id="alrt" ><%= alert%></p>
-                        </div>
-                        <%}%>
+                         
                     </div>
       
                     <form action="/login" method="post" id="loginForm">
@@ -60,13 +56,17 @@
                           <div class="form-floating mb-3">
                             <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
                             <label for="email" class="form-label">Email</label>
+                            <small id="emailError" class="text-danger"></small>
                           </div>
+                          
                         </div>
                         <div class="col-12">
                           <div class="form-floating mb-3">
                             <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
                             <label for="password" class="form-label">Password</label>
+                            <small id="passwordError" class="text-danger"></small>
                           </div>
+                          
                         </div>
                         <div class="col-12">
                           <div class="d-grid">
@@ -97,9 +97,9 @@
   document.getElementById('loginForm').addEventListener('submit', async (event) => {
          event.preventDefault()
   
-      //    const isValid = addressValidate();
+         const isValid = loginValidation();
   
-      //    if (isValid) {
+         if (isValid) {
   
             const formData = {
                email: event.currentTarget.email.value,
@@ -151,7 +151,8 @@
                     }
                  })
             }
-      //    }
+         }
       })
       </script>
+      <script src="/static/js/loginValidation.js"></script>
 </html>
