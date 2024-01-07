@@ -2,7 +2,12 @@ const usersdb = require('../model/userSchema')
 const cartdb = require('../model/cartSchema')
 const productsdb = require('../model/productSchema')
 const ordersdb = require('../model/ordersSchema')
+const walletdb = require('../model/walletSchema')
+const razorpayHelper = require('../helpers/razorpayHelper')
+const mongoose = require('mongoose')
 const userOrder = {}
+
+
 
 // Place Order
 userOrder.placeOrder = async (req,res) =>{
@@ -44,8 +49,11 @@ userOrder.placeOrder = async (req,res) =>{
             address:shippingAddress,
         })
 
-        const orderPlaced = await newOrder.save();
+        
 
+        
+        // Cash on Delivery
+        if(paymentMethod === 'COD'){
         // Reduce the stock
         let stockToReduce
         for (const product of cart.products) {
@@ -69,21 +77,158 @@ userOrder.placeOrder = async (req,res) =>{
                       }
             }
         };
-    
-        // Cash on Delivery
-        if(orderPlaced.paymentMethod === 'COD'){
             cart.products = []
             await cart.save()  //Clear the cart and save
             req.session.isCheckout = false;
+            let orderPlaced = await newOrder.save();
             res.json({status:'COD',placedOrderId:orderPlaced._id})             
         }
+
+
+        // Razorpay
+        if(paymentMethod === 'Razorpay'){
+            let placedOrder = await newOrder.save()
+            placedOrder.orderStatus = 'Failed'
+            await placedOrder.save()
+            const orderId = placedOrder._id;
+            const total = grandTotal;
+           razorpayHelper.generatePaymentOrder(orderId,total).then((response)=>{
+            res.json({status:"Razorpay",response})
+           })
+        }
+
+
+        // Wallet
+        if(paymentMethod === 'Wallet'){;
+           let wallet = await walletdb.findOne({userId:userId})
+
+           if(!wallet){
+               wallet = new walletdb({userId:userId})
+               await wallet.save()
+           }
+
+           const amount = wallet.amount // amount in user wallet
+           const totalInAmount = grandTotal;
+
+           if(amount < totalInAmount){
+             return  res.json({status:'error',message:'You have no sufficient amount in your wallet'})
+           }else{
+            wallet.amount = amount - totalInAmount;
+            const transaction = (-1 * grandTotal);
+            wallet.transactionHistory.push(transaction) // recent transaction as debit in history
+            await wallet.save();
+            orderPlaced = await newOrder.save();
+            console.log("Wallet after transaction",wallet);
+ 
+ 
+         // Reduce the stock
+         let stockToReduce
+         for (const product of cart.products) {
+             if(product.size !== null){
+                 stockToReduce = product.productId.quantity.find((entry) => entry.size === product.size);
+                    if (stockToReduce) {
+                     stockToReduce.stock -= product.quantity;
+                     await product.productId.save();
+                     console.log("stock reduced in product with size",stockToReduce.stock);
+                       }else{
+                         console.log('Cannot get the stock for size present products');
+                       }
+             }else{
+                 stockToReduce = product.productId.quantity[0]
+                 if (stockToReduce) {
+                     stockToReduce.stock -= product.quantity;
+                     await product.productId.save();
+                     console.log("stock reduced in product without size",stockToReduce.stock);
+                       }else{
+                         console.log('Cannot get the stock for  products without size');
+                       }
+             }
+         };
+             // Clearing the cart and reducing the product quantity
+             cart.products = []
+             await cart.save()  //Clear the cart and save
+             orderPlaced = await newOrder.save();
+             req.session.isCheckout = false;
+             return res.json({status:'Wallet',placedOrderId:orderPlaced._id})
+         }
+           }
        
     } catch (error) {
         res.json({status:'error',message:'An error occured while placing order please try again'})
         console.log("An error occured while placing order",error.message);
     }
 }
-                
+     
+// Verify the Online payment from Razorpay and Update the payment status
+userOrder.verifyPaymentAndStatus = async (req,res) =>{
+        console.log("Entered into verify payment route");
+        const userId = req.userId;
+        const data = req.body;
+        const receipt = data.order.receipt;
+        const cart = await cartdb.findOne({userId:userId}).populate('products.productId') 
+
+         razorpayHelper.verifyOnlinePayment(data).then(() => {
+            console.log("Resolved verifyOnlinePayment from helper");
+
+            if(data.from === 'Wallet'){  // so we have to recharge money to wallet
+                const amount = (data.order.amount)/100 // converting paise to inr 
+                walletdb.findOneAndUpdate({userId:userId},{$inc:{amount:amount},$push:{transactionHistory:amount}},{new:true}).then((isUpdated) => {
+                    console.log("Wallet recharged ",isUpdated);
+                    res.json({status:'rechargeSuccess',message:'Wallet Updated'});
+                }).catch((err)=>{
+                    console.log("Wallet not recharged",err.message);
+                    res.json({status:'error',message:'An error occured, Wallet not updated'});
+                })
+            }else{ // so it is direct payment from razorpay
+                let paymentSuccess = true;
+                const updateStock = async () =>{ //if the payment is success only the cart is updating as empty and clearing stock
+                // Reduce the stock
+                let stockToReduce
+     for (const product of cart.products) {
+     if(product.size !== null){
+                 stockToReduce = product.productId.quantity.find((entry) => entry.size === product.size);
+        if (stockToReduce) {
+            stockToReduce.stock -= product.quantity;
+            await product.productId.save();
+            console.log("stock reduced in product with size",stockToReduce.stock);
+              }else{
+                console.log('Cannot get the stock for size present products');
+              }
+                 }else{
+        stockToReduce = product.productId.quantity[0]
+                  if (stockToReduce) {
+            stockToReduce.stock -= product.quantity;
+            await product.productId.save();
+            console.log("stock reduced in product without size",stockToReduce.stock);
+              }else{
+                console.log('Cannot get the stock for  products without size');
+              }
+              }         
+             };
+            
+                     // Clearing the cart and reducing the product quantity
+                     cart.products = []
+                     await cart.save()  //Clear the cart and save
+            }
+                     updateStock(); 
+                 req.session.isCheckout = false;
+                     razorpayHelper.updatePaymentStatus(receipt,paymentSuccess).then(() => {
+                    console.log("updated payment success of razorpay online payment");
+                    res.json({status:"paymentSuccess",placedOrderId:receipt})
+                })
+            }
+         }).catch((error) => {
+            console.log("Rejected verifyOnlinePayment from helper",error.message);
+            let paymentSuccess = false;
+                    razorpayHelper.updatePaymentStatus(receipt,paymentSuccess).then(() => {
+                    console.log("updated payment failure of razorpay online payment")
+                    res.json({status:"paymentFailed",placedOrderId:receipt})
+                })
+         })
+
+}
+
+
 // Orders
 userOrder.displayOrders = async (req,res) =>{
     try {
@@ -111,11 +256,47 @@ userOrder.displaySingleOrder = async (req,res) =>{
 // Cancel Order
 userOrder.cancelOrder = async (req,res) =>{
     try {
+      const userId = req.userId;
       const orderId = req.query.orderId;
-      const order = await ordersdb.findById(orderId)
+      const order = await ordersdb.findById(orderId).populate('products.productId')
       if(order.orderStatus !== 'Delivered'){
         order.orderStatus = "Cancelled"
+
+        // If order cancelled put the stock back
+        let stockToIncrease
+        for (const product of order.products) {
+            if(product.size !== null){
+                stockToIncrease = product.productId.quantity.find((entry) => entry.size === product.size);
+                   if (stockToIncrease) {
+                    stockToIncrease.stock += product.quantity;
+                    await product.productId.save();
+                    console.log("stock added back in product with size",stockToIncrease.stock);
+                      }else{
+                        console.log('Cannot get the stock for size present products');
+                      }
+            }else{
+                stockToIncrease = product.productId.quantity[0]
+                if (stockToIncrease) {
+                    stockToIncrease.stock += product.quantity;
+                    await product.productId.save();
+                    console.log("stock added back in product without size",stockToIncrease.stock);
+                      }else{
+                        console.log('Cannot get the stock for  products without size');
+                      }
+            }
+        };
         await order.save()
+        if(order.paymentMethod !== 'COD'){
+            const wallet = await walletdb.findOne({userId:userId})
+            if(!wallet){
+              wallet = new walletdb({userId:userId})
+              await wallet.save()
+            }
+            const amount = order.totalAmount;
+            wallet.amount += amount;
+            wallet.transactionHistory.push(amount)
+            await wallet.save()
+        }
         res.json({status:'success',message:"Order Cancelled successfully"})
       }else{
         res.json({status:'error',message:'Order already Delivered'})  
@@ -125,5 +306,6 @@ userOrder.cancelOrder = async (req,res) =>{
         res.json({status:'error',message:'An error occured while cancelling order Please Try Again'})  
     }
 }
+
 
 module.exports = userOrder

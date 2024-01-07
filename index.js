@@ -10,7 +10,7 @@ const nocache = require('nocache')
 
 // Generate a random, secure session secret
 const secretID = crypto.randomBytes(32).toString('hex');
-console.log(secretID);
+
 
 //Database require
 const db = require('./model/db')

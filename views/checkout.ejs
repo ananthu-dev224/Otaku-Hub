@@ -334,14 +334,14 @@
                                 <p>Kindly ensure that the exact cash amount is available for payment upon delivery. Thank you!
                                 </p>
                                 <div class="payment_radio">
-                                    <input type="radio" id="WALLET" name="payment-method">
+                                    <input type="radio" id="Wallet" name="payment-method">
                                     <label for="f-option5">Wallet</label>
                                     <div class="check"></div>
                                 </div>
-                                <p> You wallet amount is : &#x20B9; <span class="text-success"></span>
+                                <p> You wallet amount is : &#x20B9; <span class="text-success"><%- wallet.amount%> </span>
                                 </p>
                                 <div class="payment_radio">
-                                    <input type="radio" id="RAZORPAY" name="payment-method">
+                                    <input type="radio" id="Razorpay" name="payment-method">
                                     <label for="f-option5">Razorpay</label>
                                     <div class="check"></div>
                                 </div>
@@ -479,6 +479,7 @@
     })
     </script>
 <!-- Order placing with Payment option -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         document.getElementById('placeOrder').addEventListener('click', async (event) => {
             event.preventDefault();
@@ -549,7 +550,21 @@
                     setTimeout(() => {
                         location.href = '/orders'
                     }, 1500);
-
+                }else if(resultOrder.status === 'Razorpay'){
+                    generatePaymentOrder(resultOrder.response)
+                }else if(resultOrder.status === 'Wallet'){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        customClass:{
+                      title:'swal'
+                    }
+                    })
+                    setTimeout(() => {
+                        location.href = '/orders'
+                    }, 1500);
                 }else if (resultOrder.status === 'blocked') {
                     Swal.fire({
                         icon: 'info',
@@ -588,6 +603,97 @@
                 }
             }
         }) 
+function generatePaymentOrder(order) {
+        var options = {
+    "key": "rzp_test_ew94ejxTfrrbZy", // Enter the Key ID generated from the Dashboard
+    "amount": order.totalAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Otaku Hub", //your business name
+    "description": "Test Transaction",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response) {
+    try {
+        console.log("Response received:", response);
+
+        if (response.razorpay_payment_id) {
+            // Payment success
+            console.log("Payment successful. ID:", response.razorpay_payment_id);
+            verifyPayment(response, order);
+        } else {
+            // Payment failed
+            console.log("Payment failed. Error:", response.error);
+            // Add additional logging or debugging steps here
+        }
+    } catch (error) {
+        console.error("Error in handler:", error);
+    }
+    },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+
+    };
+            console.log("options :",options);
+           var razorpay = new Razorpay(options);
+               razorpay.open();
+     }
+
+async function verifyPayment(payment, order) {
+    console.log("verify payment function entered");
+    console.log(payment,order);
+    const data ={
+            payment,
+            order,
+         }
+const response = await fetch('/payment-verification', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+})
+        if (!response.ok) {
+            console.error('Non-OK response from payment verification:', response);
+            throw new Error('Failed to verify payment');
+        }
+const result = await response.json();
+
+if (result.status === 'paymentSuccess') {
+    Swal.fire({
+        icon: 'success',
+        title: 'Payment Successfull and Order Placed',
+        showConfirmButton: false,
+        timer: 2500
+    })
+    setTimeout(() => {
+        location.href = '/orders'
+    }, 2500);
+} else if (result.status === 'paymentFailed') {
+    Swal.fire({
+        icon: 'error',
+        title: 'Payment Failed',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    setTimeout(() => {
+        location.href = '/cart'
+    }, 1500);
+} else {
+    Swal.fire({
+        icon: 'error',
+        title: 'Some thing went wrong',
+        showConfirmButton: false,
+        timer: 1500
+    })
+}
+}    
+
+
     </script>
 <script src="/static/js/addressValidation.js"></script>
     <script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>

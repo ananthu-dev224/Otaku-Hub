@@ -1,6 +1,7 @@
 const productsdb = require('../model/productSchema')
 const usersdb = require('../model/userSchema')
 const cartdb = require('../model/cartSchema')
+const walletdb = require('../model/walletSchema')
 const mongoose = require('mongoose')
 const userCart = {}
 
@@ -323,7 +324,12 @@ userCart.displayCheckout = async (req,res) =>{
          return total + product.total;
       },0);
        const grandTotal = cart.total
-       res.render('checkout',{user,products,grandTotal})
+       let wallet = await walletdb.findOne({userId:userId})
+       if(!wallet){
+         wallet = new walletdb({userId:userId})
+         await wallet.save()
+       }
+       res.render('checkout',{user,products,grandTotal,wallet})
      }else{
        res.redirect('/cart')
      }

@@ -2,7 +2,9 @@
 
 const bcrypt = require('bcrypt')
 const User = require('../model/userSchema')
-let productsDb = require('../model/productSchema')
+const productsDb = require('../model/productSchema')
+const walletdb = require('../model/walletSchema')
+const razorpayHelper = require('../helpers/razorpayHelper')
 const jwt = require('jsonwebtoken')
 const loginC = {}
 
@@ -78,6 +80,59 @@ loginC.displayHome = async (req,res) =>{
     console.log(" An error occured while loading home page",error.message);
    }
 }
+
+
+// display wallet
+loginC.displayWallet = async (req,res) =>{
+  try {
+    const userId = req.userId;
+    let userWallet = await walletdb.findOne({userId:userId})
+    if(!userWallet){
+        userWallet = new walletdb({userId:userId})
+        await userWallet.save()
+    }
+    res.render("wallet",{userWallet})
+  } catch (error) {
+    console.log("An error occured while displaying wallet page",error.message);
+    res.render('error')
+  }
+}
+
+// Recharge wallet amount
+loginC.rechargeWallet = async(req,res) =>{
+  try {
+    let {amount} = req.body;
+    amount = Number(amount)
+    const orderId = ""+Date.now()
+   
+    razorpayHelper.generatePaymentOrder(orderId,amount).then((response) => {
+      res.json({status:'Razorpay',response})
+    })
+
+  } catch (error) {
+    console.log("An error occured while recharging wallet",error.message);
+    res.render('error')
+  }
+}
+
+// Clear transaction history
+loginC.clearHistory = async (req,res) =>{
+  try {
+    const userId = req.userId;
+    const wallet = await walletdb.findOne({userId:userId})
+    if(wallet.transactionHistory.length === 0){
+      return res.json({status:'error',message:'Nothing to clear'})
+    }else{
+      wallet.transactionHistory = [];
+      await wallet.save()
+      res.json({status:'success',message:'Transaction history cleared'})
+    }
+  } catch (error) {
+    console.log("An error occured while clearing transaction history");
+    res.json({status:'failed',message:'An error occured please try again'})
+  }
+}
+
 
 
 

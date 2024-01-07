@@ -95,6 +95,14 @@ router.post('/place-order',verifyToken,checkBlockedFetch,userOrderC.placeOrder)
 router.get('/orders',verifyToken,checkBlocked,userOrderC.displayOrders)
 router.get('/order-details',verifyToken,checkBlocked,userOrderC.displaySingleOrder)
 router.get('/cancel-order',verifyToken,checkBlockedFetch,userOrderC.cancelOrder)
+router.post('/payment-verification',verifyToken,checkBlockedFetch,userOrderC.verifyPaymentAndStatus)
+
+// Wallet
+router.get('/wallet',verifyToken,checkBlocked,loginC.displayWallet)
+router.post('/recharge-wallet',verifyToken,checkBlockedFetch,loginC.rechargeWallet)
+router.get('/clear-history',verifyToken,checkBlockedFetch,loginC.clearHistory)
+
+
 
 
 // //Admin Customers

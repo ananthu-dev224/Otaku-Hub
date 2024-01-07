@@ -29,7 +29,7 @@ function profileValidation(){
         isValid = false;
     }
     if(!validateName(name)){
-        document.getElementById('nameError').textContent = 'First letter should be capital'
+        document.getElementById('nameError').textContent = 'First letter only should be capital'
         setTimeout(() => {
             document.getElementById('nameError').textContent = ''    
         }, 4000);

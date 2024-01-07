@@ -134,9 +134,7 @@
                     <h2 class="content-title card-title">Dashboard</h2>
                     <p>Overview of your business here.</p>
                     <br><br>
-                    <% if(alert){ %>
-                    <p id="alert-area"><%= alert%></p>
-                    <%}%>
+               
                 </div>
                 <div>
                     <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Print Report</a>
@@ -149,7 +147,7 @@
                             <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                             <div class="text">
                                 <h6 class="mb-1 card-title">Revenue</h6>
-                                <span>₹0.00</span>
+                                <span>₹<%- totalRevenue%></span>
                                 <span class="text-sm">
                                     Total earned
                                 </span>
@@ -162,7 +160,7 @@
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Orders</h6> <span>0</span>
+                                <h6 class="mb-1 card-title">Orders</h6> <span><%= totalOrders ? totalOrders : '0'  %></span>
                                 <span class="text-sm">
                                     Total orders in all Categories
                                 </span>
@@ -175,9 +173,9 @@
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Products</h6> <span>1000</span>
+                                <h6 class="mb-1 card-title">Products</h6> <span><%= totalProducts ? totalProducts : '0'  %></span>
                                 <span class="text-sm">
-                                    In 3 Categories 
+                                    In <%= totalCategory ? totalCategory : '0'  %> Categories 
                                 </span>
                             </div>
                         </article>

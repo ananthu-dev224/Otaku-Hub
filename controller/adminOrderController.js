@@ -5,7 +5,11 @@ const adminOrder = {}
 // display orders in admin 
 adminOrder.displayOrdersAdmin = async (req,res) => {
     try {
-       const orders = await ordersdb.find().populate('products.productId')
+        const orders = await ordersdb.find()
+        .populate('products.productId')
+        .sort({ date: -1 })
+        .exec();   // sorting in descending order so that the latest orders appears first;
+ 
        if(orders){
         res.render('adminOrders',{orders})
        }else{

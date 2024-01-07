@@ -198,7 +198,7 @@
                 </table>
             </div>
         </div>
-        <% if( orderDetails.orderStatus !== 'Cancelled'){%>
+        <% if( orderDetails.orderStatus !== 'Cancelled' && orderDetails.orderStatus !== 'Failed'){%>
         <div class="row mt-2 justify-content-center">
             <a href="/cancel-order/?orderId=<%- orderDetails._id%>" class="btn col-md-6" id="cancelOrder"  style="background-color: rgb(177, 20, 15); text-decoration: none; color: white; font-size: 18px;">Cancel Order</a>
         </div>
