@@ -18,9 +18,7 @@
 	<title>Otaku Hub</title>
 	<link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
 
-	<!--
-            CSS
-            ============================================= -->
+
 	<link rel="stylesheet" href="/static/user-assets/css/linearicons.css">
 	<link rel="stylesheet" href="/static/user-assets/css/owl.carousel.css">
 	<link rel="stylesheet" href="/static/user-assets/css/font-awesome.min.css">
@@ -102,7 +100,7 @@
 										class="bi bi-cart"></span>
 									
 										<span id="cartItemsCount"
-											class="badge badge-danger position-absolute top-0 start-50 translate-middle"></span>
+											class="badge badge-danger position-absolute top-0 start-50 translate-middle"><%- cartCount ? cartCount : '0' %></span>
 											                                                            <!-- cart items count above -->
 										
 								</a></li>
@@ -220,7 +218,7 @@
 													</div>
 													<div class="prd-bottom" style="margin-top: 0px;">
 														<a type="button" href="" data-productId="<%-product._id  %>"
-															class="social-info addtoWhishlist">
+															class="social-info addToWishlist">
 															<span class="bi bi-heart"></span>
 														</a>
 														<a href="/product-view/<%= product._id%>" class="social-info">
@@ -229,12 +227,9 @@
 													</div>
 													<% }else{ %>
 														<div class="prd-bottom">
-															<!-- <a type="button" href="" data-productId="<%-product._id  %>"
-																class="social-info addToCart">
-																<span class="bi bi-cart"></span>
-															</a> -->
-															<a type="button" href="" data-productId="<%-product._id  %>"
-																class="social-info addtoWhishlist">
+										
+															<a type="button" href="" id="addToWishlist" data-productId="<%-product._id  %>"
+																class="social-info addToWishlist">
 																<span class="bi bi-heart"></span>
 															</a>
 															<a href="/product-view/<%= product._id%>" class="social-info">
@@ -265,82 +260,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Start related-product Area -->
-
-
-	<!-- Modal Quick Product View -->
-	<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="container relative">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<div class="product-quick-view">
-					<div class="row align-items-center">
-						<div class="col-lg-6">
-							<div class="quick-view-carousel">
-								<div class="item">
-									<img src="../public/accessorieB.png" alt="" srcset="">
-
-								</div>
-								<div class="item" style="background: url(../public/accessorieB.png);">
-
-								</div>
-								<div class="item" style="background: url(/static/accessorieB.png);">
-
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="quick-view-content">
-								<div class="top">
-									<h3 class="head">Mill Oil 1000W Heater, White</h3>
-									<div class="price d-flex align-items-center"><span class="lnr lnr-tag"></span> <span
-											class="ml-10">$149.99</span></div>
-									<div class="category">Category: <span>Household</span></div>
-									<div class="available">Availibility: <span>In Stock</span></div>
-								</div>
-								<div class="middle">
-									<p class="content">Mill Oil is an innovative oil filled radiator with the most modern
-										technology. If you are
-										looking for something that can make your interior look awesome, and at the same time give
-										you the pleasant
-										warm feeling during the winter.</p>
-									<a href="#" class="view-full">View full Details <span class="lnr lnr-arrow-right"></span></a>
-								</div>
-								<div class="bottom">
-									<div class="color-picker d-flex align-items-center">Color:
-										<span class="single-pick"></span>
-										<span class="single-pick"></span>
-										<span class="single-pick"></span>
-										<span class="single-pick"></span>
-										<span class="single-pick"></span>
-									</div>
-									<div class="quantity-container d-flex align-items-center mt-15">
-										Quantity:
-										<input type="text" class="quantity-amount ml-15" value="1" />
-										<div class="arrow-btn d-inline-flex flex-column">
-											<button class="increase arrow" type="button" title="Increase Quantity"><span
-													class="lnr lnr-chevron-up"></span></button>
-											<button class="decrease arrow" type="button" title="Decrease Quantity"><span
-													class="lnr lnr-chevron-down"></span></button>
-										</div>
-
-									</div>
-									<div class="d-flex mt-20">
-										<a href="#" class="view-btn color-2"><span>Add to Cart</span></a>
-										<a href="#" class="like-btn"><span class="lnr lnr-layers"></span></a>
-										<a href="#" class="like-btn"><span class="lnr lnr-heart"></span></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
 
 	<!-- start footer Area -->
 
@@ -396,54 +315,10 @@
 		</div>
 	</footer>
 
-	<!-- Add to cart Script -->
-	<script>
-		const addToCartButtons = document.querySelectorAll('.addToCart');
-
-		addToCartButtons.forEach(button => {
-			button.addEventListener('click', async (event) => {
-				event.preventDefault();
-
-				const productId = event.currentTarget.getAttribute('data-productId'); // Get data-id attribute
-				console.log(productId)
-				const response = await fetch(`/add-to-cart/?productId=${productId}`);
-				const result = await response.json();
-				if (result.status === 'success') {
-					Swal.fire({
-						icon: 'success',
-						title: result.message,
-						showConfirmButton: false,
-						timer: 1500
-					})
-					document.getElementById('cartItemsCount').textContent = result.cartItemsCount;
-				} else if (result.status === 'sessionError') {
-					Swal.fire({
-						icon: 'info',
-						title: result.message,
-						showConfirmButton: false,
-						timer: 1000
-					})
-					setTimeout(() => {
-						location.href = '/login'
-					}, 1500);
-				}
-				else {
-					Swal.fire({
-						icon: 'error',
-						title: result.message,
-						showConfirmButton: false,
-						timer: 1500
-					})
-				}
-			});
-		});
-
-	</script>
-
 	<!-- Add to whishlist Script -->
 
 	<script>
-		const addtoWhishlistBtn = document.querySelectorAll('.addtoWhishlist')
+		const addtoWhishlistBtn = document.querySelectorAll('.addToWishlist')
 
 		addtoWhishlistBtn.forEach((btn) => {
 			btn.addEventListener('click', async (event) => {
@@ -452,7 +327,7 @@
 				const productId = event.currentTarget.getAttribute('data-productId')
 
 				if (productId) {
-					const response = await fetch(`/add-to-whishlist/?productId=${productId}`);
+					const response = await fetch(`/add-wishlist/?productId=${productId}`);
 					const result = await response.json()
 					const icon = btn.querySelector('span.bi');
 					if (result.status === 'success') {
@@ -466,19 +341,19 @@
 						icon.classList.add('bi-heart-fill');
 						icon.style.color = 'red'
 
-					} else if (result.status === 'sessionError') {
+					} else if (result.status === 'blocked') {
 						Swal.fire({
 							icon: 'info',
 							title: result.message,
 							showConfirmButton: false,
-							timer: 1000
+							timer: 2000
 						})
 						setTimeout(() => {
-							location.href = '/login'
-						}, 1500);
+							location.href = '/login?blocked=true'
+						}, 2500);
 					} else {
 						Swal.fire({
-							icon: 'info',
+							icon: 'error',
 							title: result.message,
 							showConfirmButton: false,
 							timer: 1000

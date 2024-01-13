@@ -8,6 +8,7 @@ const forgotC = require('./controller/forgotpassController.js')
 const userProC = require('./controller/userProductsController.js')
 const userCartC = require('./controller/userCartController.js')
 const userOrderC = require('./controller/userOrderController.js')
+const userWishlistC = require('./controller/userWishlistController.js')
 //Controller files admin
 const admLoginC = require('./controller/adminLoginController.js')
 const admDashC = require('./controller/adminDashController.js')
@@ -86,6 +87,13 @@ router.post('/update-quantity',verifyToken,checkBlockedFetch,userCartC.updateQua
 //This route is only used to check the stock  in proceed to checkout and place order
 router.get('/checkstock',verifyToken,userCartC.manageStock)
 
+// Wishlist
+router.get('/wishlist',verifyToken,checkBlocked,userWishlistC.displayWishlist) 
+router.get('/add-wishlist',verifyToken,checkBlockedFetch,userWishlistC.addToWishlist)
+router.get('/remove-wishlist',verifyToken,checkBlockedFetch,userWishlistC.removeWishlist)
+
+
+
 
 // Checkout
 router.get('/checkout',verifyToken,checkBlocked,userCartC.displayCheckout) // checkout page
@@ -96,6 +104,8 @@ router.get('/orders',verifyToken,checkBlocked,userOrderC.displayOrders)
 router.get('/order-details',verifyToken,checkBlocked,userOrderC.displaySingleOrder)
 router.get('/cancel-order',verifyToken,checkBlockedFetch,userOrderC.cancelOrder)
 router.post('/payment-verification',verifyToken,checkBlockedFetch,userOrderC.verifyPaymentAndStatus)
+router.post('/return-order',verifyToken,checkBlockedFetch,userOrderC.returnOrder)
+router.get('/cancel-return',verifyToken,checkBlockedFetch,userOrderC.cancelRequest)
 
 // Wallet
 router.get('/wallet',verifyToken,checkBlocked,loginC.displayWallet)
@@ -126,11 +136,17 @@ router.get('/admin/products/edit/:id',adminAuth,admProC.displayEditPro)
 router.post('/admin/products/edit/:id',adminAuth,admProC.upload.fields([{ name: 'mainimage'}, { name: 'additionalimage'}]),admProC.manageEditPro)
 router.get('/admin/products/restrict/:id',adminAuth,admProC.manageTogglePro)
 router.get('/admin/products/remove/:id',adminAuth,admProC.removePro)
+router.get('/admin/search-product',adminAuth,admProC.searchProduct)
+
+
 
 // //Admin Order Management
 router.get('/admin/order-details',adminAuth,admOrderC.displayOrdersAdmin)
 router.get('/admin/change-status',adminAuth,admOrderC.displayChangeOrderStatus)
 router.post('/admin/change-status/:id',adminAuth,admOrderC.changeOrderStatus)
+router.get('/admin/search-order',adminAuth,admOrderC.searchOrder)
+router.get('/admin/approve-return',adminAuth,admOrderC.approveReturn)
+router.get('/admin/decline-return',adminAuth,admOrderC.declineReturn)
 
 
 

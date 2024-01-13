@@ -14,7 +14,7 @@ function addressValidation(){
    let city = document.getElementById('city').value;
    let pincode = document.getElementById('pcode').value;
    let state = document.getElementById('state').value;
-console.log(pincode)
+
     // Clear all the error areas
     document.getElementById('houseaddressError').textContent = ''
     document.getElementById('streetError').textContent = ''

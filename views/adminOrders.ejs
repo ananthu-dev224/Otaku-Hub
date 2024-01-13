@@ -16,6 +16,8 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/adminPro.css">
+
 </head>
 
 <body class="dark">
@@ -162,8 +164,8 @@
                     <h4 class="card-title">Orders Data :</h4>
                     <div class="row align-items-center">
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <form action="/admin/order-details/search" method="get">
-                                <input type="text" class="form-control"  id="search"  placeholder="Search order " name="name" required>
+                            <form action="/admin/search-order" method="get">
+                                <input type="text" class="form-control"  id="search"  placeholder="Search order by ID " name="orderId" required>
                         </div>
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
                             <button href="" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
@@ -201,6 +203,7 @@
                                         <th class="align-middle" scope="col">Payment Method</th>
                                         <th class="align-middle" scope="col">Status</th>
                                         <th class="align-middle" scope="col">Action</th>
+                                        <th class="align-middle" scope="col">Approval</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -246,13 +249,26 @@
                                                     order.orderStatus === 'Shipped' ? 'badge badge-pill badge-soft-info' :
                                                     order.orderStatus === 'Pending' ? 'badge badge-pill badge-soft-primary' :
                                                     order.orderStatus === 'Cancelled' ? 'badge badge-pill badge-soft-danger' :
-                                                    'badge badge-pill badge-soft-danger' %>"><%- order.orderStatus%></p>
+                                                    'badge badge-pill badge-soft-danger' %>"><%- order.orderStatus%></p><br>
+                                                    <% if(order.message){%>
+                                                        <p><%- order.message%></p>
+                                                        <%}%>
+
                                                 </td>
                                                 <td>
                                                     <a href="/admin/change-status/?orderId=<%= order._id %>" id="edit" class="fw-bold text-primary" >
                                                         <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
                                                     </a>
                                                 </td>
+                
+                                                <% if(order.orderStatus === 'Return requested'){%>
+                                                <td>
+                                                    
+                                                       <a href="/admin/approve-return/?orderId=<%= order._id %>" id="approve" onclick="approve(event)"><p class="badge badge-pill badge-soft-success">Approve</p></a><br><br>
+                                                       <a href="/admin/decline-return/?orderId=<%= order._id %>" id="decline" onclick="decline(event)"><p class="badge badge-pill badge-soft-danger">Decline</p></a>
+                                                     
+                                                </td>
+                                                <%}%>
                                             </tr>
                                             <% }); %>
                                 </tbody>
@@ -290,6 +306,99 @@
             </div>
         </footer>
     </main>
+        <!-- Sweet alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Approve and decline scripts -->
+    <script>
+function approve(event) {
+  event.preventDefault();
+  var url = event.currentTarget.getAttribute('href');
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "The return process will be confirmed",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Approve Return",
+    customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Proceed with the approval
+      window.location.href = url;
+      
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // User clicked "Cancel" or closed the modal
+      Swal.fire({
+        title: "Cancelled",
+        text: "Your request has been cancelled.",
+        icon: "info",
+        customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+      });
+    } else {
+      // Handle other dismissals if needed
+      Swal.fire({
+        title: "Dismissed",
+        text: "Your request has been dismissed.",
+        icon: "info",
+        customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+      });
+    }
+  });
+}
+    </script>
+    <script>
+  function decline(event) {
+  event.preventDefault();
+  var url = event.currentTarget.getAttribute('href');
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Return order request will be declined",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Decline",
+    customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Proceed with the deletion
+      window.location.href = url;
+      
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // User clicked "Cancel" or closed the modal
+      Swal.fire({
+        title: "Cancelled",
+        text: "Your request has been cancelled.",
+        icon: "info",
+        customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+      });
+    } else {
+      // Handle other dismissals if needed
+      Swal.fire({
+        title: "Dismissed",
+        text: "Your request has been dismissed.",
+        icon: "info",
+        customClass: {
+      title: 'sweetalertee-title', // Add a custom class to the title
+    }
+      });
+    }
+  });
+}
+    </script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

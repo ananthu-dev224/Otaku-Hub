@@ -99,9 +99,7 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Products of Otaku Hub</h2>
-                    <% if(alert){ %>
-                        <p id="alert-area"><%= alert%></p>
-                    <%}%>
+                  
 
                     
                 </div>
@@ -131,7 +129,12 @@
                     <h4 class="card-title">Products List :</h4>
                     <div class="row align-items-center">
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-            
+                    <form action="/admin/search-product" method="get">
+                                <input type="text" class="form-control"  id="search"  placeholder="Search Product " name="name" required>
+                                 <br>
+                                <button href="" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
+                            </form>
+                    
                         </div>
                     </div>
                 </header>

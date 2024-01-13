@@ -10,8 +10,8 @@ admUsersC.displayUsers = async  (req,res)=>{
           const users = await User.find()
           res.render('customers',{users,alert:null})
     } catch (error) {
-      console.log('An error occured',error.message) 
-      res.status(500).send("Internel Server Error")
+      console.log('An error occured while displaying users',error.message) 
+      res.render('error')
     }
 }
 
@@ -28,8 +28,9 @@ admUsersC.manageToggleUser = async(req,res) =>{
         res.redirect('/admin/view-users')
         
     } catch (error) {
-        res.status(500).send('Internal Server Error')
-        console.log("Error occured",error.message);
+        console.log("Error occured during toggling user",error.message);
+        res.render('error')
+
     }
 }
 
@@ -44,10 +45,10 @@ admUsersC.searchUser = async (req,res )=>{
     try{
         const regex = new RegExp (`^${name}.*`, 'i');
         const users = await User.find({name:regex})
-        res.render('customers',{users,alert:null})
+        res.render('customers',{users})
     }catch(err){
-        console.log(err.message);
-        res.status(404).send("Internal Server Error")
+        console.log("An error occured during searching user",err.message);
+        res.render('error')
     }
 }
 

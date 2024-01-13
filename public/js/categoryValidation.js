@@ -2,7 +2,7 @@
 
 // Regex pattern to check first letter as capital
 function validateName(name){
-    const nameValidate = /^[A-Z][a-z]*$/;
+    const nameValidate = /^[A-Za-z0-9]+$/;
     return nameValidate.test(name)
 }
 
@@ -23,7 +23,7 @@ function categoryValidation(){
         }, 4000);
         isValid = false;
     }else if(!validateName(category)){
-        document.getElementById('categoryError').textContent = 'First letter should be capital'
+        document.getElementById('categoryError').textContent = 'Only alphabets and numbers are allowed'
         setTimeout(() => {
             document.getElementById('categoryError').textContent = ''
         }, 4000); 

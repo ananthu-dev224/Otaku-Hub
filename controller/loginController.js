@@ -14,7 +14,7 @@ loginC.displayLogin = (req,res)=>{
     if(req.query.blocked === 'true'){
       res.render('userLogin',{alert:"For security reasons, your account has been temporarily blocked. Please contact our support team for assistance in resolving this issue"})
     }else if(!req.session.userActive ){
-      res.render('userLogin')
+      res.render('userLogin',{alert:null})
     }else{
       res.redirect('/home')
     }
@@ -35,7 +35,6 @@ loginC.manageLogin = async (req,res)=>{
     return res.json({status:'error',message:"No user found , Please Sign up"})  //handling if user not exist in db
   }
 
-  console.log(customer._id);
   try {
     const comparePassword = await bcrypt.compare(password, customer.password);
     if (!comparePassword) {
@@ -55,7 +54,6 @@ loginC.manageLogin = async (req,res)=>{
   // Generate a JWT
   const token = jwt.sign({ userId: customer._id }, process.env.SECRET_ID, { expiresIn: '24h' });
   // Set the token in a cookie
-  console.log(token);
    req.session.userActive = true;
 
    res.cookie('token', token, { httpOnly: true, secure: false });

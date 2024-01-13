@@ -64,6 +64,10 @@ const ordersModel = new mongoose.Schema({
    deliveredDate:{
       type:Date,
       default:'',
+   },
+   message:{
+      type:String,
+      default:null
    }
 })
 

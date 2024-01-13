@@ -40,6 +40,9 @@
                           <h4 class="text-center">Welcome Back Mate</h4>
                           <h6 class="text-center" style="color: #F6AF03;">Login to explore our Products</h6>
                         </div>
+                        <% if(alert){%>
+                          <p class="text-danger" id="alert"><%- alert%></p>
+                          <%}%>
                       </div>
                     </div>
 
@@ -153,6 +156,11 @@
             }
          }
       })
+      </script>
+      <script>
+      setTimeout(() => {
+        document.getElementById('alert').textContent = ''
+      }, 5000);
       </script>
       <script src="/static/js/loginValidation.js"></script>
 </html>

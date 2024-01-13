@@ -17,6 +17,7 @@
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
     <link href="/static/adminPro.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="dark">
@@ -133,9 +134,6 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Edit Product</h2>
-                    <% if(alert){ %>
-                        <p id="alert-area"><%= alert%></p>
-                        <%}%>
 
                     
                 </div>
@@ -305,7 +303,15 @@
 document.getElementById('additional-img').addEventListener('change',function(event){
     const selectedFiles = event.target.files
     if(selectedFiles.length > 4){
-      alert("You can Only choose maximum 4 images")
+        Swal.fire({
+                      icon: 'info',
+                      title: "You can only choose maximum 4 files",
+                      showConfirmButton: true,
+                      timer: 2000,
+                      customClass:{
+                        title:'swal'
+                      }
+                   })
         event.target.value = "" //removing the chosen files
     }
 })

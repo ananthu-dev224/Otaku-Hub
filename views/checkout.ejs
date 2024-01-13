@@ -304,10 +304,10 @@
                         <div class="order_box">
                             <h2>Your Order</h2>
                             <ul class="list">
-                                <li><a href="#">Product <span>Total</span></a></li>
+                                <li><a href="">Product <span>Total</span></a></li>
                                 <% if (products.length> 0) { %>
                                     <%  products.forEach((product) => {  %>
-                                        <li><a href="#"><%- product.productId.name %><span
+                                        <li><a href=""><%- product.productId.name %><span
                                                         class="middle">x <%- product.quantity %></span> <span
                                                         class="last"> &#x20B9; <%- product.total %></span></a>
                                         </li>
@@ -317,7 +317,7 @@
                             </ul>
 
                             <ul class="list list_2">
-                                <li><a href="#">Total <span id="total">
+                                <li><a href="">Total <span id="total">
                                             &#x20B9;<%- grandTotal %> </span></a></li>
                             </ul>
                             <ul class="list list_2">

@@ -137,11 +137,11 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Add Product</h2>
-                    <% if(alert){ %>
-                        <p id="alert-area"><%= alert%></p>
+<br>
+                    <% if(alert) {%>
+                        <p class="alert alert-warning" id="alert"><%- alert%></p>
                         <%}%>
-
-                    
+<br><br>                        
                 </div>
                 <div>
                     <a href="/admin/products" class="btn btn-primary">Back to Products</a>
@@ -200,24 +200,26 @@
                             <div class="form-row align-items-center">
                               <div class="col-auto">
                                 <label class="sr-only" for="inlineFormInput">Name of Product</label><br><br>
-                                <input type="text" class="form-control mb-2" id="name" name="name" placeholder="Product name">
+                                <input type="text" class="form-control mb-2" id="name" name="name" placeholder="Product name" maxlength="75">
+                                <p id="nameError"  class="text-danger"></p>
                               </div><br>
                               <div class="col-auto">
                                 <label class="sr-only" for="category">Category :</label>
                                 
                                 <select class="form-select mb-2" id="category" name="category">
-                                    <option value="" selected disabled>Choose</option>
+                                    <option value="" selected disabled >Choose</option>
                                     <% categories.forEach((category)=> {%>
                                     <option value="<%= category.name%>"><%= category.name%></option>
                                     <%})%>
                                 </select>
-                                
+                                <p id="categoryError"  class="text-danger"></p>
                             </div>
                             
                             
                               <div class="col-auto">
                                 <label for="Description">Description</label><br><br>
-                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                                <textarea class="form-control" id="description" rows="3" name="description" ></textarea>
+                                <p id="descriptionError"  class="text-danger"></p>
                               </div><br>
                               
                                 <div id="clothesForm" style="display: none;">
@@ -226,7 +228,8 @@
                                           <h6>Small :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock for S" name="stocks[]">
+                                          <input type="text" class="form-control" id="s" placeholder="Stock for S" name="stocks[]" maxlength="10">
+                                          <p id="sError"  class="text-danger"></p>
                                         </div>
                                       </div>
                                       <div class="row">
@@ -234,7 +237,8 @@
                                          <h6>Medium :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock for M" name="stocks[]">
+                                          <input type="text" class="form-control" id="m" placeholder="Stock for M" name="stocks[]" maxlength="10">
+                                          <p id="mError"  class="text-danger"></p>
                                         </div>
                                       </div>
                                       <div class="row">
@@ -242,7 +246,8 @@
                                          <h6>Large :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock for L" name="stocks[]">
+                                          <input type="text" class="form-control" id="l" placeholder="Stock for L" name="stocks[]" maxlength="10">
+                                          <p id="lError"  class="text-danger"></p>
                                         </div>
                                       </div>
                                       <div class="row">
@@ -250,7 +255,8 @@
                                          <h6>Extra Large :</h6>
                                         </div>
                                         <div class="col">
-                                          <input type="Number" class="form-control" placeholder="Stock for XL" name="stocks[]">
+                                          <input type="text" class="form-control" id="xl" placeholder="Stock for XL" name="stocks[]" maxlength="10">
+                                          <p id="xlError"  class="text-danger"></p>
                                         </div>
                                       </div>
                                 </div>
@@ -259,25 +265,28 @@
                               <div class="col-auto" id="otherForm" display="none">
                                 <label class="sr-only" for="inlineFormInput">Quantity :</label><br><br>
                               <label class="sr-only" for="inlineFormInput">Stock</label>
-                              <input type="number" class="form-control mb-2" id="stock" name="stock" placeholder="Stock"><br>
+                              <input type="text" class="form-control mb-2" id="stock" name="stock" placeholder="Stock" maxlength="10"><br>
+                              <p id="stockError"  class="text-danger"></p>
                               </div><br><br>
                            
                               <div class="col-auto">
                                 <label class="sr-only" for="price">Price</label><br><br>
-                                <input type="number" class="form-control mb-2" id="price" name="price" placeholder="Price of product in rupee">
+                                <input type="text" class="form-control mb-2" id="price" name="price" placeholder="Price of product in rupee" maxlength="6">
+                                <p id="priceError"  class="text-danger"></p>
                               </div><br>
                               <div class="col-auto">
                                 <label class="sr-only" for="price">Discount</label><br><br>
-                                <input type="number" class="form-control mb-2" id="discount" name="discount" placeholder="Discount in %">
+                                <input type="text" class="form-control mb-2" id="discount" name="discount" placeholder="Discount in %" maxlength="3">
+                                <p id="discountError"  class="text-danger"></p>
                               </div><br>
                               <div class="col-auto">
                                 <label class="sr-only" for="main-image">Main Image</label><br><br>
-                                <input type="file" class="form-control-file" id="main-img" name="mainimage" accept=".jpg, .jpeg, .png, .webp">
+                                <input type="file" class="form-control-file" id="main-img" name="mainimage" accept=".jpg, .jpeg, .png, .webp" required>
                                 <!-- CROP -->
                               </div><br>
                               <div class="col-auto">
                                 <label class="sr-only" for="additional-img">Additional images (maximum : 4)</label><br><br>
-                                <input type="file"  id="additional-img" name="additionalimage" accept=".jpg, .jpeg, .png, .webp" multiple>
+                                <input type="file"  id="additional-img" name="additionalimage" accept=".jpg, .jpeg, .png, .webp" multiple required>
                                  <!-- CROP -->
                                  
                               </div><br>
@@ -330,19 +339,6 @@ document.getElementById('additional-img').addEventListener('change',function(eve
     }
 })
 
-// Modal alert function
-// function openModal(msg){
-//     document.getElementById('alert-content').textContent = msg;
-//     // Trigger the Bootstrap modal
-//     var myModal = new bootstrap.Modal(document.getElementById('alert'));
-//     myModal.show();
-// }
-
-// document.getElementById('alert').addEventListener('hidden.bs.modal', function () {
-//     const fileInput = document.getElementById('additional-img');
-//     fileInput.disabled = false; // Enable the file input when the modal is closed
-//     fileInput.value = ''; // Clear the file input
-// });
 
 document.getElementById('category').addEventListener('change', function () {
         var selectedCategory = this.value.trim()
@@ -364,63 +360,21 @@ document.getElementById('category').addEventListener('change', function () {
 <script>
     document.getElementById('addProductForm').addEventListener('submit', async (event) => {
            event.preventDefault()
+        
+           
+           const isValid = addProductValidation();
     
-        //    const isValid = addressValidate();
-    
-        //    if (isValid) {
-    
-              const formData = {
-                 name: event.currentTarget.name.value,
-                 categoryId: event.currentTarget.categoryId.value
-              }
-    
-              const response = await fetch(`/admin/categories/edit/${categoryId}`, {
-                 method: 'post',
-                 headers: {
-                    'Content-Type': 'application/json'
-                 },
-                 body: JSON.stringify(formData)
-              })
-    
-              const result = await response.json();
-    
-              if (result.status === 'success') {
-                 Swal.fire({
-                    icon: 'success',
-                    title: result.message,
-                    showConfirmButton: false,
-                    timer: 3000,
-                    customClass:{
-                        title:'swal'
-                      }
-                 })
-                 setTimeout(() => {
-                    location.href = '/admin/categories'
-                 }, 2000);
-              } else if (result.status === 'error') {
-                   Swal.fire({
-                      icon: 'error',
-                      title: result.message,
-                      showConfirmButton: false,
-                      timer: 2000,
-                      customClass:{
-                        title:'swal'
-                      }
-                   })
-              } else {
-                Swal.fire({
-                      icon: 'info',
-                      title: result.message,
-                      showConfirmButton: false,
-                      timer: 2000,
-                      customClass:{
-                        title:'swal'
-                      }
-                   })
-              }
-        //    }
+           if (isValid) {       
+              let form = document.getElementById('addProductForm')
+              form.submit()
+           }
         })
+
+        setTimeout(() => {
+            document.getElementById('alert').style.display = 'none'
+        }, 3000);
         </script>
+<script src="/static/js/addProductValidation.js"></script>
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/vendors/select2.min.js"></script>

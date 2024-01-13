@@ -6,26 +6,51 @@ const multer = require('multer')
 const mongoose = require('mongoose')
 const {ObjectId} = require('mongoose').Types
 const path = require('path')
+let categoryName;
+let categoryID;
 
 
 //Displaying admin product management page
 ProductsC.displayPro = async (req,res) =>{
       try {
           const products = await productsdb.find().populate('category')
-          res.render("adminProducts",{alert:null,products})
+          res.render("adminProducts",{products})
       } catch (error) {
          console.log("An error occured while loading product management page",error.message);
+         res.render('error')
       }
 }
+
+// Search Product
+ProductsC.searchProduct = async (req,res) =>{
+  try {
+    const {name} = req.query
+    const regex = new RegExp(name , 'i')
+    const products = await productsdb.find({name:{$regex:regex}})
+    res.render("adminProducts",{products})
+  } catch (error) {
+    console.log("An error occured while searching product",error.message);
+    res.render('error')
+  }
+}
+
+
+
+
+
+
+
+
+
 
 //displaying add product page
 ProductsC.displayAddPro = async (req,res) =>{
     try {
             const categories = await categoriesdb.find()
-            res.render("addProduct",{alert:null,categories})
+            res.render("addProduct",{categories,alert:null})
     } catch (error) {
-        console.log("Error in fetching data",error.message);
-        res.status(500).send("Internal Server Error")
+        console.log("An error occured while displaying add products page",error.message);
+        res.render('error')
     }
 }
 
@@ -48,28 +73,34 @@ ProductsC.upload = multer({
 //posting product data to db
 ProductsC.manageAddPro = async (req,res) =>{
       const {name,category,description,stock,stocks,price,discount} = req.body
-      const existingPro = await productsdb.findOne({name})
-
-console.log('req.body:', req.body);
-console.log('req.files:', req.files); //uploaded files
+      const categories = await categoriesdb.find()
+      const existingPro = await productsdb.findOne({
+        $or: [
+            { name: name }, // Case-sensitive check for the exact name
+            { name: { $regex: new RegExp('^' + name + '$', 'i') } }, // Case-insensitive check
+        ]
+    });
+  //  console.log(name,category,description,stock,stocks,price, discount);
+  //  console.log('req.body:', req.body);
+  //  console.log('req.files:', req.files); //uploaded files
 
       if(existingPro){
-        res.render('addProduct',{alert:"Product with this name already exists"})
+        res.render("addProduct",{alert:'Product with this name already exists',categories})
       }
 
       try {
-    var categoryName = await categoriesdb.findOne({name:category}) 
-    var categoryID = categoryName._id
-      console.log(categoryID);
+    categoryName = await categoriesdb.findOne({name:category}) 
+    categoryID = categoryName._id
+
       } catch (error) {
        console.log("An error occured while converting category to ObjectID",error.message);
-       return res.render("addProduct",{alert:"Error converting category to ObjectID"})
+       return res.render("addProduct",{alert:"Error converting category to ObjectID",categories})
       }
  
       //Checking if the category id exist
       if(!mongoose.Types.ObjectId.isValid(categoryID)){
         console.log("An error occured not valid categoryID",categoryID);
-        return res.render("addProduct",{alert:"Invalid Category"})
+        return res.render("addProduct",{alert:"Invalid Category",categories})
       }
 
 try {
@@ -110,8 +141,8 @@ try {
        res.redirect('/admin/products')
         
       } catch (error) {
-        console.log("An error occured",error.message);
-        res.status(500).send("Internal Server Error")
+        console.log("An error occured while adding product",error.message);
+        res.render('error')
       }
 
 }
@@ -123,9 +154,10 @@ ProductsC.displayEditPro = async (req,res) =>{
     const id = req.params.id
     const categories = await categoriesdb.find()
     let product = await productsdb.findById(id).populate('category')
-    res.render('editProduct',{alert:null,product,categories}) 
+    res.render('editProduct',{product,categories}) 
  } catch (error) {
   console.log("An error occured while displaying edit products page",error.message);
+  res.render('error')
  }
 }
 
@@ -183,8 +215,8 @@ ProductsC.manageEditPro = async (req,res) =>{
     }
 
 } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Internal Server Error");
+    console.log("An error occured while managing edit product",error.message);
+    res.render('error')
 }
 
 }
@@ -201,11 +233,12 @@ ProductsC.manageTogglePro = async (req,res) =>{
        await product.save()
        res.redirect('/admin/products')
     }else{
-       res.status(404).send("Product not found error")
+      console.log("product not found error when toggling");
+       res.render('error')
     }
  } catch (error) {
-    console.log("An error occured",error.message);
-    res.status(500).send("Internal Server Error")
+    console.log("An error occured while toggling product",error.message);
+    res.render('error')
  }
 }
 
@@ -216,18 +249,10 @@ ProductsC.removePro = async (req,res) =>{
     await productsdb.findByIdAndDelete(productId)
     res.redirect('/admin/products')
   } catch (error) {
-    res.status(500).send("Internal Server Error")
-    console.log(error.message);
+    console.log("An error occured while removing product",error.message);
+    res.render('error')
   }
 }
-
-
-
-
-
-
-
-
 
 
 

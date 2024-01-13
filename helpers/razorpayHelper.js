@@ -76,12 +76,13 @@ const verifyOnlinePayment = async(details)=>{
           }
        } catch (error) {
           reject(error);
-          console.log("error occured and rejected at updating payment status :",error.message);
+          console.log("Error occured and rejected at updating payment status :",error.message);
        }
     })
  }
 
 
+ 
 module.exports = {
     generatePaymentOrder,
     verifyOnlinePayment,
