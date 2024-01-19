@@ -23,7 +23,12 @@ let userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
      }
-    }]
+    }],
+    referral:String,
+    isReferral:{
+        type:Boolean,
+        default:false
+    }
 })
 
 const User = mongoose.model('User',userSchema)

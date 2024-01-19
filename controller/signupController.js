@@ -5,6 +5,7 @@ const otpgenerator = require('generate-otp')
 const nodemailer = require('nodemailer')
 const bcrypt =  require('bcrypt')
 const jwt = require('jsonwebtoken')
+const generateRandomCode = require('../helpers/generateReferral')
 const signupC = {}
 
 //displaySignup
@@ -100,8 +101,8 @@ signupC.manageSignup = async (req,res)=>{
         try{
             await mail(email,otp) //calling mail function and sending otp through mail
             req.session.isSignup =  true
-            res.json({status:'success',message:'Otp sent to your Email'})
-    
+            res.json({status:'success'})
+  
      } catch (error) {
         res.json({status:'error',message:'An error occured please try again'})
         console.log("Error occured while managing sign up",error.message)
@@ -114,12 +115,13 @@ signupC.manageSignup = async (req,res)=>{
 signupC.displayOtp = (req,res)=>{
     try {
         if(req.session.isSignup){
-            res.render('verification',{alert:null})
+            res.render('verification')
         }else{
             res.redirect('/signup') 
         }
     } catch (error) {
         console.log("An error occured while loading otp page",error.message);
+        res.render('error')
     }
 }
 
@@ -148,6 +150,7 @@ signupC.manageOtp = async (req,res) =>{
            email: userData.email,
            phonenumber: userData.phonenumber,
            password:hashedpassword,
+           referral:generateRandomCode(8),
        })
  
        try {
@@ -164,7 +167,6 @@ signupC.manageOtp = async (req,res) =>{
      // Generate a JWT
         const token = jwt.sign({ userId: storeUser._id }, process.env.SECRET_ID, { expiresIn: '24h' });
      // Set the token in a cookie
-        console.log(token);
        res.cookie('token', token, { httpOnly: true, secure: false });
        res.json({status:'success',message:'Otp verified successfully'})
 

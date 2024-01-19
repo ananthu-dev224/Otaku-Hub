@@ -2,6 +2,7 @@ const productsdb = require('../model/productSchema')
 const usersdb = require('../model/userSchema')
 const cartdb = require('../model/cartSchema')
 const walletdb = require('../model/walletSchema')
+const coupondb = require('../model/couponSchema')
 const mongoose = require('mongoose')
 const userCart = {}
 
@@ -323,12 +324,26 @@ userCart.displayCheckout = async (req, res) => {
         return total + product.total;
       }, 0);
       const grandTotal = cart.total
+
+      const currentDate = new Date();
+
+
+      const coupons = await coupondb.aggregate([
+        {
+          $match: {
+            range: { $lte: grandTotal }, // Match coupons with range less than or equal to grandTotal
+            expire: { $gte: currentDate }, // Match coupons with expiration date greater than or equal to current date
+            isActive: true // Match coupons with isActive set to true
+          }
+        }
+      ])
+
       let wallet = await walletdb.findOne({ userId: userId })
       if (!wallet) {
         wallet = new walletdb({ userId: userId })
         await wallet.save()
       }
-      res.render('checkout', { user, products, grandTotal, wallet })
+      res.render('checkout', { user, products, grandTotal, wallet, coupons })
     } else {
       res.redirect('/cart')
     }

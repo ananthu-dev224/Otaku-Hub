@@ -16,15 +16,22 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+    .swal {
+        color: #000000 !important;
+    }
+</style>
 
 <body class="dark">
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-                <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku  Hub</p>
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -44,13 +51,14 @@
                         <span class="text">Customers</span>
                     </a>
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item ">
                     <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-store"></i>
                         <span class="text">Categories</span>
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -59,15 +67,16 @@
                         <span class="text">Banners</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item active ">
                     <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Coupons</span>
                     </a>
-                    <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
-                            <span class="text">Logout</span>
-                        </a>
-                    </li>
+                <li class="menu-item ">
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i
+                            class="icon material-icons md-exit_to_app"></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
                 </li>
             </ul>
             <hr>
@@ -90,7 +99,8 @@
                 </form> -->
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
                 <!-- <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
@@ -131,98 +141,97 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">Product Categories</h2>
-                    
+                    <h2 class="content-title card-title">Add Coupon</h2>
 
-                    
+
+
                 </div>
                 <div>
-                    <a href="/admin/categories/add" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Category</a>
+                    <a href="/admin/coupon" class="btn btn-primary">Back to Coupons</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                   
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
-                    
-            <div class="card mb-4">
-                <header class="card-header">
-                    <h4 class="card-title">Categories List :</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-            
+
+                    <div class="card mb-4">
+
+
+
+                        <!-- Table for recent orders starts here -->
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form action="/admin/coupon/add" method="post" id="addCouponForm">
+                                    <div class="form-row align-items-center">
+
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="inlineFormInput">Offer Name :</label><br><br>
+                                            <input type="text" class="form-control mb-2" id="offerName" name="Offername"
+                                                placeholder="Offer Name" maxlength="50">
+                                        </div><br>
+                                        <p id="offerNameError" class="text-danger"></p>
+
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="inlineFormInput">Coupon Code :</label><br><br>
+                                            <input type="text" class="form-control mb-2" id="coupon" name="couponCode"
+                                                placeholder="Code for Coupon" maxlength="15">
+                                        </div><br>
+                                        <p id="couponError" class="text-danger"></p>
+
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="inlineFormInput">Price Range :</label><br><br>
+                                            <input type="text" class="form-control mb-2" id="priceRange" name="range"
+                                                placeholder="Price range to show the coupon for user" maxlength="7">
+                                        </div><br>
+                                        <p id="priceRangeError" class="text-danger"></p>
+
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="inlineFormInput">Discount :</label><br><br>
+                                            <input type="text" class="form-control mb-2" id="discount"
+                                                name="discountOffer" placeholder="Discount in %" maxlength="3">
+                                        </div><br>
+                                        <p id="discountError" class="text-danger"></p>
+
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="inlineFormInput">Expire Date :</label><br><br>
+                                            <input type="date" class="form-control mb-2" id="expireDate" name="expire">
+                                        </div><br>
+                                        <p id="expireDateError" class="text-danger"></p>
+
+                                        <div class="col-auto">
+                                            <center><button type="submit" class="btn btn-primary mb-2">Add</button>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </header>
+                    <!-- Table ends here -->
 
+                    <div class="pagination-area mt-30 mb-50">
 
-                <!-- Table for recent orders starts here -->
-
-                <div class="card-body">
-                    <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0  >
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="align-middle" scope="col">Name</th>
-                                        <th class="align-middle" scope="col">Status</th>
-                                        <th class="align-middle" scope="col">Restrict</th>
-                                        <th class="align-middle" scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                        
-                                    <% category.forEach(category=> { %>
-                                        <tr>
-                                            <td>
-                                                <%= category.name%>
-                                            </td>
-                                            <td>
-                                                <p   class ="<%= category.isPublished ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>"><%= category.isPublished ? 'Active' : 'Inactive' %></p>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/categories/restrict/<%= category._id %>" id="restrict" title="<%= category.isPublished ? 'Unpublish' : 'Publish' %>"
-                                                    class="fw-bold text-warning" >
-                                                      <%= category.isPublished ? 'Unpublish' : 'Publish' %>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="/admin/categories/edit/<%= category._id %>" id="edit" class="fw-bold text-primary" >
-                                                    <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
-                                                </a><br><br>
-                                                <!-- <a href="/admin/categories/remove/<%= category._id %>" id="edit" class="fw-bold text-danger" >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30">
-                                                        <path d="M 14.984375 2.4863281 A 1.0001 1.0001 0 0 0 14 3.5 L 14 4 L 8.5 4 A 1.0001 1.0001 0 0 0 7.4863281 5 L 6 5 A 1.0001 1.0001 0 1 0 6 7 L 24 7 A 1.0001 1.0001 0 1 0 24 5 L 22.513672 5 A 1.0001 1.0001 0 0 0 21.5 4 L 16 4 L 16 3.5 A 1.0001 1.0001 0 0 0 14.984375 2.4863281 z M 6 9 L 7.7929688 24.234375 C 7.9109687 25.241375 8.7633438 26 9.7773438 26 L 20.222656 26 C 21.236656 26 22.088031 25.241375 22.207031 24.234375 L 24 9 L 6 9 z"></path>
-                                                    </svg>
-                                              </a> -->
-                                            </td>
-                                        </tr>
-                                        <% }); %>
-                                </tbody>
-                            </table>
                     </div>
-                </div>
-            </div>
- <!-- Table ends here -->
-
-            
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                    document.write(new Date().getFullYear())
+                        document.write(new Date().getFullYear())
                     </script> © Otaku Hub Administrator
                 </div>
                 <div class="col-sm-6">
@@ -233,6 +242,71 @@
             </div>
         </footer>
     </main>
+    <script>
+        document.getElementById('addCouponForm').addEventListener('submit', async (event) => {
+            event.preventDefault()
+
+            const isValid = couponValidation();
+
+            if (isValid) {
+
+                const formData = {
+                    offername: document.getElementById("offerName").value,
+                    coupon: document.getElementById("coupon").value,
+                    range: document.getElementById("priceRange").value,
+                    discount: document.getElementById("discount").value,
+                    expire: document.getElementById("expireDate").value
+                };
+   
+                const response = await fetch('/admin/coupon/add', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        customClass: {
+                            title: 'swal'
+                        }
+                    })
+                    setTimeout(() => {
+                        location.href = '/admin/coupon'
+                    }, 2000);
+                } else if (result.status === 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        customClass: {
+                            title: 'swal'
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        customClass: {
+                            title: 'swal'
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+    <script src="/static/js/couponValidation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.23/dist/sweetalert2.all.min.js"></script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

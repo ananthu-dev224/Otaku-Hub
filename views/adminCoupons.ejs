@@ -16,15 +16,17 @@
     <!-- Template CSS -->
     <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/adminPro.css">
 </head>
 
 <body class="dark">
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-                <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku  Hub</p>
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -39,7 +41,7 @@
                         <span class="text">Products</span>
                     </a>
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item ">
                     <a class="menu-link " href="/admin/view-users"> <i class="icon material-icons md-person"></i>
                         <span class="text">Customers</span>
                     </a>
@@ -50,7 +52,8 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -59,15 +62,16 @@
                         <span class="text">Banners</span>
                     </a>
                 </li>
-                <li class="menu-item ">
+                <li class="menu-item active">
                     <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Coupons</span>
                     </a>
-                    <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i> 
-                            <span class="text">Logout</span>
-                        </a>
-                    </li>
+                <li class="menu-item ">
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i
+                            class="icon material-icons md-exit_to_app"></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
                 </li>
             </ul>
             <hr>
@@ -90,7 +94,8 @@
                 </form> -->
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
                 <!-- <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
@@ -131,45 +136,46 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">Customers</h2>
+                    <h2 class="content-title card-title">Coupons</h2>
 
-                    
+
                 </div>
-                <!-- <div>
-                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Customer</a>
-                </div> -->
+                <div>
+                    <a href="/admin/coupon/add" class="btn btn-primary"><i
+                            class="text-muted material-icons md-post_add"></i>Add Coupon</a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                   
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
-                    
-            <div class="card mb-4">
-                <header class="card-header">
-                    <h4 class="card-title">Customers Data :</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <form action="/admin/view-users/search" method="get">
+
+                    <div class="card mb-4">
+                        <header class="card-header">
+                            <h4 class="card-title">Available Coupons :</h4>
+                            <div class="row align-items-center">
+                                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <!-- <form action="/admin/view-users/search" method="get">
                                 <input type="text" class="form-control"  id="search"  placeholder="Search by name" name="name" required>
                         </div>
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
                             <button href="/admin/view-users/search" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
                         </div>
-                    </form>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <!-- <div class="custom_select">
+                    </form> -->
+                                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                        <!-- <div class="custom_select">
                                 <select class="form-select">
                                     <option selected>Status</option>
                                     <option>All</option>
@@ -179,78 +185,87 @@
                                     <option>Unblocked</option>
                                 </select>
                             </div> -->
-                        </div>
-                    </div>
-                </header>
+                                    </div>
+                                </div>
+                        </header>
 
 
-                <!-- Table for recent orders starts here -->
+                        <!-- Table for recent orders starts here -->
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0" >
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="align-middle" scope="col">ID</th>
-                                        <th class="align-middle" scope="col">Name</th>
-                                        <th class="align-middle" scope="col">Email</th>
-                                        <th class="align-middle" scope="col">Phone number</th>
-                                        <th class="align-middle" scope="col">Status</th>
-                                        <th class="align-middle" scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                        
-                                        <% users.forEach(user=> { %>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <% if(coupons.length> 0){%>
+                                            <tr>
+                                                <th class="align-middle" scope="col">Offer Name</th>
+                                                <th class="align-middle" scope="col">Coupon</th>
+                                                <th class="align-middle" scope="col">Price range</th>
+                                                <th class="align-middle" scope="col">Discount in %</th>
+                                                <th class="align-middle" scope="col">Expire In</th>
+                                                <th class="align-middle" scope="col">Status</th>
+                                                <th class="align-middle" scope="col">Action</th>
+                                            </tr>
+                                    </thead>
+
+                                    <tbody>
+
+
+                                        <% coupons.forEach(coupon=> { %>
                                             <tr>
                                                 <td>
-                                                    <%= user.id %>
+                                                    <%= coupon.offerName %>
                                                 </td>
                                                 <td>
-                                                    <%= user.name %>
+                                                    <%= coupon.coupon %>
                                                 </td>
                                                 <td>
-                                                    <%= user.email %>
+                                                    <%= coupon.range %>
                                                 </td>
                                                 <td>
-                                                    <%= user.phonenumber %>
-                                                </td>
-                                                 <td>
-                                                    <p  class ="<%= user.isBlocked ? 'badge badge-pill badge-soft-danger' :  'badge badge-pill badge-soft-success' %>" ><%= user.isBlocked ? 'Inactive' : 'Active'%></p>
+                                                    <%= coupon.discount %>
                                                 </td>
                                                 <td>
-                                                    <a href="/admin/view-users/restrict/<%= user._id %>" id="restrict" title="<%= user.isBlocked ? 'Unblock' : 'Block' %>"
-                                                      class="fw-bold text-warning" >
-                                                        <%= user.isBlocked ? 'Unblock' : 'Block' %>
+                                                    <%= coupon.expire.toLocaleDateString() %>
+                                                </td>
+                                                <td>
+                                                    <p
+                                                        class="<%= coupon.isActive ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>">
+                                                        <%= coupon.isActive ? 'Active' : 'Inactive' %>
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <a href="" id="restrict"
+                                                        title="<%= coupon.isActive ? 'Unpublish' : 'Publish' %>"
+                                                        class="fw-bold text-warning restrict-btn"
+                                                        data-couponId="<%= coupon._id %>">
+                                                        <%= coupon.isActive ? 'Unpublish' : 'Publish' %>
                                                     </a>
                                                 </td>
                                             </tr>
                                             <% }); %>
-                                </tbody>
-                            </table>
-                    </div>
-                </div>
-            </div>
- <!-- Table ends here -->
+                                                <%}else{%>
+                                                    <tr>
 
-            <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div>
+
+                                                        <h5 class="text-warning">No coupons Available!</h5>
+
+
+                                                    </tr>
+                                                    <%}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table ends here -->
+
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                    document.write(new Date().getFullYear())
+                        document.write(new Date().getFullYear())
                     </script> © Otaku Hub Administrator
                 </div>
                 <div class="col-sm-6">
@@ -261,6 +276,47 @@
             </div>
         </footer>
     </main>
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Script for changing status of coupon -->
+    <script>
+        const changeStatus = document.querySelectorAll('.restrict-btn');
+        changeStatus.forEach((btn) => {
+            btn.addEventListener('click', async (event) => {
+                event.preventDefault();
+                const couponId = btn.getAttribute('data-couponId')
+
+                if (couponId) {
+                    const response = await fetch(`/admin/coupon/restrict/${couponId}`);
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            title: "Status changed successfully",
+                            icon: 'success',
+                            timer: 2000,
+                            customClass: {
+                                title: 'sweetalertee-title', // Add a custom class to the title
+                            }
+                        })
+                        setTimeout(() => {
+                            location.href = location.href;
+                        }, 2000);
+                    } else {
+                        Swal.fire({
+                            title: "An error occured please try again",
+                            icon: 'error',
+                            timer: 2000, 
+                            customClass: {
+                                title: 'sweetalertee-title', // Add a custom class to the title
+                            }
+                        })
+                    }
+                }
+
+            })
+        })
+    </script>
     <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/vendors/select2.min.js"></script>

@@ -32,6 +32,7 @@ const addToWishlist = async (req, res) => {
     try {
         const userId = req.userId;
         const productId = req.query.productId;
+        console.log(productId);
         const product = await productsdb.findById(productId).populate('category')
         if (!product.category.isPublished) {
             return res.json({ message: 'This category of products is not currently available' })

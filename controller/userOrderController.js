@@ -15,6 +15,9 @@ userOrder.placeOrder = async (req, res) => {
       paymentMethod,
       addressId } = req.body;
 
+    const couponDiscount = req.query.couponDiscount
+    console.log(couponDiscount);
+
     if (!addressId) {
       return res.json({ status: 'error', message: 'Please add an address' })
     }
@@ -26,7 +29,13 @@ userOrder.placeOrder = async (req, res) => {
     cart.total = products.reduce((total, product) => {
       return total + product.total;
     }, 0);
-    const grandTotal = cart.total
+    let grandTotal;
+    if (couponDiscount) {
+      grandTotal = Math.ceil(cart.total - (cart.total  * couponDiscount / 100)); //Final amount after discount
+    } else {
+      grandTotal = cart.total
+    }
+    console.log(grandTotal);
 
     // address saving in order details
     const shippingAddress = {
@@ -46,6 +55,7 @@ userOrder.placeOrder = async (req, res) => {
       paymentMethod: paymentMethod,
       products: cart.products,
       address: shippingAddress,
+      couponDiscount:couponDiscount,
     })
 
 
@@ -310,55 +320,55 @@ userOrder.cancelOrder = async (req, res) => {
 // Return order request and message
 userOrder.returnOrder = async (req, res) => {
   try {
-    const {message} = req.body;
+    const { message } = req.body;
     const orderId = req.query.orderId;
-    console.log(orderId);
     const order = await ordersdb.findById(orderId)
-    console.log(order);
-    if(!message){
-       return res.json({status:'error',message:'Message is mandatory!'})
+    if (!message) {
+      return res.json({ status: 'error', message: 'Message is mandatory!' })
     }
     // Check if the order delivered is not exceeded 3 days
     const deliveredDate = new Date(order.deliveredDate)
-    console.log(deliveredDate);
+
     const currentDate = new Date()
-    console.log(currentDate);
+
 
     // Calculate the difference in milliseconds
-     const differenceInMilliseconds = currentDate - deliveredDate;
-     console.log(differenceInMilliseconds);
+    const differenceInMilliseconds = currentDate - deliveredDate;
+
 
     // Calculate the difference in days
-     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-     console.log(differenceInDays);
-     if(differenceInDays > 3){
-      return res.json({status:'error',message:'You cant return order , More than 3 Days since delivery'})
-     }else{
-       order.message = message
-       order.orderStatus = "Return requested"
-       await order.save()
-       return res.json({status:'success',message:'Return request send successfully , you will be notified when admin approve the request'})
-     }
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+    if (differenceInDays > 3) {
+      return res.json({ status: 'error', message: 'You cant return order , More than 3 Days since delivery' })
+    } else {
+      order.message = message
+      order.orderStatus = "Return requested"
+      await order.save()
+      return res.json({ status: 'success', message: 'Return request send successfully , you will be notified when admin approve the request' })
+    }
   } catch (error) {
     console.log("An error occured while return order request", error.message);
-    res.json({ status: 'error',message:'An error occured, we will resolve this issue ASAP!'})
+    res.json({ status: 'error', message: 'An error occured, we will resolve this issue ASAP!' })
   }
 }
 
 // Cancel the return order request
-userOrder.cancelRequest = async (req,res) => {
+userOrder.cancelRequest = async (req, res) => {
   try {
-    const {orderId} = req.query;
+    const { orderId } = req.query;
     const orderDetails = await ordersdb.findById(orderId);
     orderDetails.message = ''
-    orderDetails.orderStatus = 'Request cancelled' 
+    orderDetails.orderStatus = 'Request cancelled'
     await orderDetails.save()
-    res.json({status:'success',message:'Return Request cancelled successfully'})
+    res.json({ status: 'success', message: 'Return Request cancelled successfully' })
   } catch (error) {
     console.log("An error occured while cancelling return order request", error.message);
-    res.json({ status: 'error',message:'An error occured, we will resolve this issue ASAP!'})
+    res.json({ status: 'error', message: 'An error occured, we will resolve this issue ASAP!' })
   }
 }
+
+
 
 
 

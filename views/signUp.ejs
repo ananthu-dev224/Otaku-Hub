@@ -149,16 +149,16 @@
             if (result.status === 'success') {
               Swal.fire({
                     icon: 'success',
-                    title: result.message,
+                    title: "Otp sent to your mail",
                     showConfirmButton: false,
-                    timer: 3000,
+                    timer: 2000,
                     customClass:{
                       title:'swal'
                     }
                  })
                 setTimeout(() => {
                   window.location.href = '/otp-verification'
-                }, 4000);
+                }, 2500);
             } else if (result.status === 'error') {
                  Swal.fire({
                     icon: 'error',

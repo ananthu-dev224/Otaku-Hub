@@ -274,9 +274,16 @@
                   <img src="https://i.pinimg.com/564x/e7/10/4b/e7104ba58ef864d23dfd404fc6d8f408.jpg" alt="" width="175" height="" class="img-fluid"><br><br>
 
                   
-                  <p>Name : <%- user.name%></p><br>
-                  <p>Email : <%- user.email%></p><br>
-                  <p>Mobile : <%- user.phonenumber%></p>
+                  <center>
+                     <div class="container">
+                        <p>Name : <%- user.name%></p><br>
+                     <p>Email : <%- user.email%></p><br>
+                     <p>Mobile : <%- user.phonenumber%></p><br>
+                     <p>Your Referral Code : <%- user.referral%></p>
+                     <br>
+                     <h5>Add your referral code , also refer others and earn money!</h5>
+                     </div>
+                  </center>
                   
                   
                </div>
@@ -291,6 +298,11 @@
                   <a href="/change-password" class="btn btn-outline-dark mb-3" data-toggle="modal"
                      data-target="#changePasswordModal">Change Password</a>
                   <a href="/wallet" class="btn btn-outline-dark mb-3">View Wallet</a>
+                  <% if(!user.isReferral){%>
+                  <a href="/add-referral" class="btn btn-outline-dark mb-3" id="referral">Add Referral</a>
+                  <%}else{%>
+                     <h5>Referral code added </h5>
+                     <%}%>
                   <hr>
                   <a href="/my-profile/logout" id="userLogoutbtn" class="btn btn-outline-danger mb-3">Log Out</a>
                </div>
@@ -360,7 +372,7 @@
 
          const response = await Swal.fire({
             title: "Logout",
-            text: "Are you certain you want to log out?",
+            text: "Are you sure you want to log out?",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -449,9 +461,6 @@
 
 </script>
 
-
-
-
    <!-- Change password modal -->
    <script>
       document.getElementById('changePasswordForm').addEventListener('submit', async (event) => {
@@ -511,6 +520,84 @@
          }
 
       })
+   </script>
+   <!-- Add referral code -->
+   <script>
+        document.getElementById('referral').addEventListener('click', async (event) => {
+            event.preventDefault()
+            const send = Swal.fire({
+                title: "Enter your referral code",
+                html: "Provide your referral code and get ₹50 in your wallet.<br><br><i>You can refer others and earn </i>",
+                input: "text",
+                inputAttributes: {
+                    autocapitalize: "off"
+                },
+                showCancelButton: true,
+                confirmButtonText: "Send",
+                showLoaderOnConfirm: true,
+                preConfirm: async (code) => {
+                    try {
+                        const data = {
+                            code
+                        }
+                        const response = await fetch('/add-referral', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        if (!response.ok) {
+                            return Swal.showValidationMessage("An error occured please try again");
+                        }
+                        const result = await response.json();
+                        if (result.status === 'success') {
+
+                            return Swal.fire({
+                                icon: 'success',
+                                html:'Reward successfully added to your wallet',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 4000,
+                                customClass: {
+                                    title: 'swal'
+                                }
+                            }).then(() => {
+                                location.reload(); 
+                            });
+
+                        } else if (result.status === 'blocked') {
+                            return Swal.fire({
+                                icon: 'info',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            }).then(() => {
+                                location.href = '/login?blocked=true'
+                            });
+                        } else if (result.status === 'error') {
+                            return Swal.fire({
+                                icon: 'error',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 2000,
+                                customClass: {
+                                    title: 'swal'
+                                }
+                            }).then(() => {
+                                location.reload(); 
+                            });
+
+                        }
+                    } catch (error) {
+                        Swal.showValidationMessage(`
+        Request failed: ${error}
+      `);
+                    }
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+        });
    </script>
    <script src="/static/js/profileValidation.js"></script>
    <script src="/static/js/newpasswordValidation.js"></script>

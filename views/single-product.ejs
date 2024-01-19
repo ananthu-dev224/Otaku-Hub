@@ -203,7 +203,7 @@
 							
 									<a class="primary-btn" href="" id="addToCart">Add to Cart</a>
 					
-                                    <a class="icon_btn addtoWishlist" data-productId="<%=  product._id %>" href="">
+                                    <a class="icon_btn addToWishlist" data-productId="<%=  product._id %>" href="/add-wishlist" id="addToWishlist">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/></svg>
                                     </a>
 						</div>
@@ -293,7 +293,7 @@
         button.classList.add('selected-size');
         selectedSize = button.innerText;
         selectedSizeElement.value = selectedSize;
-        console.log("Selected size:", selectedSize);
+
     }
 
     sizeButtons.forEach(button => {
@@ -306,8 +306,7 @@
         event.preventDefault();
 
         const productId = '<%- product._id %>';
-        console.log("Product to add to cart is ", productId);
-        console.log("Selected size to add to cart is", selectedSize);
+
 
 
         if (!selectedSize && productCategory === 'Outfits') {
@@ -378,16 +377,13 @@
 </script>
 <!-- Add to Wishlist -->
 	<script>
-		const addtoWishlistBtn = document.querySelectorAll('.addtoWishlist')
-
-		addtoWhishlistBtn.forEach((btn) => {
-			btn.addEventListener('click', async (event) => {
+		document.getElementById('addToWishlist').addEventListener('click', async (event) => {
 				event.preventDefault();
 
 				const productId = event.currentTarget.getAttribute('data-productId')
 
 				if (productId) {
-					const response = await fetch(`/add-to-whishlist/?productId=${productId}`);
+					const response = await fetch(`/add-wishlist/?productId=${productId}`);
 					const result = await response.json()
 					if (result.status === 'success') {
 						Swal.fire({
@@ -409,7 +405,7 @@
                }, 1500);
 					} else {
 						Swal.fire({
-							icon: 'info',
+							icon: 'error',
 							title: result.message,
 							showConfirmButton: false,
 							timer: 1000
@@ -417,7 +413,7 @@
 					}
 				}
 			})
-		})
+			
 	</script>
 	<script src="/static/user-assets/js/vendor/jquery-2.2.4.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"

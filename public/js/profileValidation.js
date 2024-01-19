@@ -2,7 +2,7 @@
 
 // Regex checking username
 function validateName(name){
-    const nameValidate = /^[A-Z][a-z]*$/;
+    const nameValidate = /^[A-Za-z0-9]+$/;
     return nameValidate.test(name)
 }
 
@@ -29,7 +29,7 @@ function profileValidation(){
         isValid = false;
     }
     if(!validateName(name)){
-        document.getElementById('nameError').textContent = 'First letter only should be capital'
+        document.getElementById('nameError').textContent = 'First letter should be capital and space not allowed'
         setTimeout(() => {
             document.getElementById('nameError').textContent = ''    
         }, 4000);

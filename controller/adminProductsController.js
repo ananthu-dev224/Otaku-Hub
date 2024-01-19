@@ -59,7 +59,7 @@ const storage = multer.diskStorage({
     cb(null,"public/productimgs") //location of storing images
   },
   filename: (req,file,cb) =>{
-    console.log(file);
+  
     cb(null,Date.now() + path.extname(file.originalname)) //Gives unique names to files with the extension name from path
   }
 })

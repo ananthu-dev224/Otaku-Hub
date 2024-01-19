@@ -161,7 +161,7 @@
                                 <% } %>
                                     <tr>
                                         <td>
-                                            <h4>Total</h4>
+                                            <h4></h4>
                                         </td>
                                         <td>
                                             <h5></h5>
@@ -170,7 +170,7 @@
                                             <h5></h5>
                                         </td>
                                         <td>
-                                            <p> &#x20B9; <%- orderDetails.totalAmount %></p>
+                                            <p></p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -184,7 +184,9 @@
                                             <h5></h5>
                                         </td>
                                         <td>
-                                            <p> &#x20B9; Coupon Discount</p>
+                                            <% if(orderDetails.couponDiscount){%>
+                                            <p><%- orderDetails.couponDiscount%>%</p>
+                                            <%}%>
                                         </td>
                                     </tr>
                                     <tr>
