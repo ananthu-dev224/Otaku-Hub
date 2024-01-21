@@ -2,9 +2,26 @@
 const coupondb = require('../model/couponSchema')
 const bannerdb = require('../model/bannerSchema')
 const cartdb = require('../model/cartSchema')
+const path = require('path')
+const multer = require('multer')
 
 
 
+// Uploading banner
+const storage = multer.diskStorage({
+    destination: (req, res, cb) => {
+        cb(null, "public/banners") //location of storing images
+    },
+    filename: (req, file, cb) => {
+        console.log(req.files);
+        cb(null, Date.now() + path.extname(file.originalname)) //Gives unique names to files with the extension name from path
+    }
+})
+
+const uploadBanner = multer({
+    storage: storage,
+    limits: { fieldSize: 5 * 1024 * 1024 } //5MB is the max size
+})
 
 
 
@@ -92,20 +109,20 @@ const restrictCoupon = async (req, res) => {
 const applyCoupon = async (req, res) => {
     try {
         const userId = req.userId;
-        const {coupon} = req.body;
+        const { coupon } = req.body;
 
 
-        if(coupon.trim() === ''){
+        if (coupon.trim() === '') {
             return res.json({ status: 'error', message: 'Enter a coupon' })
         }
 
-        const enteredCoupon = await coupondb.findOne({coupon:coupon})
-        if(!enteredCoupon){
+        const enteredCoupon = await coupondb.findOne({ coupon: coupon })
+        if (!enteredCoupon) {
             return res.json({ status: 'error', message: 'Coupon is not correct' })
         }
 
-        const usedCoupon = await coupondb.findOne({coupon:coupon,usedBy:userId})
-        if(usedCoupon){
+        const usedCoupon = await coupondb.findOne({ coupon: coupon, usedBy: userId })
+        if (usedCoupon) {
             return res.json({ status: 'error', message: 'Coupon is already used' })
         }
 
@@ -122,7 +139,7 @@ const applyCoupon = async (req, res) => {
         const couponId = enteredCoupon._id
         enteredCoupon.usedBy.push(userId)
         await enteredCoupon.save()
-        res.json({status:'success',discount:couponDiscount,grandTotal:grandTotal,couponId:couponId})
+        res.json({ status: 'success', discount: couponDiscount, grandTotal: grandTotal, couponId: couponId })
     } catch (error) {
         console.log("An error occured while applying coupon", error.message);
         res.json({ status: 'error', message: 'An error occured please try again' })
@@ -132,6 +149,52 @@ const applyCoupon = async (req, res) => {
 
 
 // Banner Admin Side
+const displayBanners = async (req, res) => {
+    try {
+        const banners = await bannerdb.find()
+        res.render('banners',{banners})
+    } catch (error) {
+        console.log("An error occured while displaying banners in admin", error.message);
+        res.render('error')
+    }
+}
+
+const addBannerPage = async (req, res) => {
+    try {
+        res.render('addBanner')
+    } catch (error) {
+        console.log("An error occured while displaying add banner", error.message);
+        res.render('error')
+    }
+}
+
+
+const addBanner = async (req, res) => {
+    try {
+        const finalImage = req.files['cropImage'][0].path
+        const newBanner = new bannerdb({
+            banner:finalImage
+        })
+        newBanner.save()
+        res.json({success:true})
+    } catch (error) {
+        console.log("An error occured while adding banner to db", error.message);
+        res.json({success:false})
+    }
+}
+
+const toggleBanner = async (req, res) => {
+    try {
+        const bannerId = req.query.bannerId;
+        const banner = await bannerdb.findById(bannerId)
+        banner.isActive = !banner.isActive
+        await banner.save()
+        res.json({status:'success'})
+    } catch (error) {
+        console.log("An error occured while toggling banner status", error.message);
+    }
+}
+
 
 
 
@@ -141,5 +204,9 @@ module.exports = {
     addCoupon,
     restrictCoupon,
     applyCoupon,
-
+    displayBanners,
+    addBannerPage,
+    addBanner,
+    toggleBanner,
+    uploadBanner,
 }

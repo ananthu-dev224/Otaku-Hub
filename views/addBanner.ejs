@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Otaku Hub</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.png">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+
+</head>
+<style>
+    .swal {
+        color: #000000 !important;
+    }
+</style>
+
+<body class="dark">
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/products"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link " href="/admin/view-users"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Customers</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Categories</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a class="menu-link" href="/banners"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Banners</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                <li class="menu-item ">
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i
+                            class="icon material-icons md-exit_to_app"></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+            <hr>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <!-- <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form> -->
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
+                <!-- <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul> -->
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Add Banner</h2>
+
+                </div>
+                <div>
+                    <a href="/banners" class="btn btn-primary">Back to Banners</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-12">
+
+                    <div class="card mb-4">
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form action="/admin/banners/add" method="post" enctype="multipart/form-data"
+                                    id="addBannerForm">
+                                    <div class="form-row align-items-center">
+                                        <div class="col-auto">
+                                            <label class="sr-only" for="main-image">Banner Image</label><br><br>
+                                            <input type="file" class="form-control-file" id="main-img"
+                                                name="originalImage" accept=".jpg, .jpeg, .png, .webp" required>
+
+                                        </div><br>
+
+                                        <!-- Display selected and cropped image in a card -->
+                                        <div class="col-auto">
+                                            <div class="card mt-3" id="selectedImageCard" style="display: none;">
+                                                <img class="card-img-top" id="selectedImagePreview" alt="Selected Image"
+                                                    name="originalImage">
+                                                <div class="card-body">
+                                                    <button class="btn btn-primary" id="cropBtn">Click to Crop
+                                                        image</button>
+                                                </div>
+                                                <div class="card-body">
+                                                    <button class="btn btn-primary" id="doneBtn"
+                                                        style="display: none;">Done</button>
+                                                </div>
+                                            </div>
+                                            <!-- Display the final cropped image -->
+                                            <img id="finalCroppedImage" style="display: none;" alt="Cropped Image"
+                                                name="cropImageView">
+                                            <!-- Hidden input for cropped image data -->
+                                            <input type="hidden" id="cropImageData" name="cropImage">
+                                        </div> <br>
+
+                                        <div class="col-auto">
+                                            <center><button type="submit" class="btn btn-primary mb-2"
+                                                    id="addBtn">Add</button>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table ends here -->
+
+                    <div class="pagination-area mt-30 mb-50">
+
+                    </div>
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> © Otaku Hub Administrator
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('main-img');
+        const card = document.getElementById('selectedImageCard');
+        const imagePreview = document.getElementById('selectedImagePreview');
+        const cropBtn = document.getElementById('cropBtn');
+        const doneBtn = document.getElementById('doneBtn');
+        const finalCroppedImage = document.getElementById('finalCroppedImage');
+        const addBannerForm = document.getElementById('addBannerForm');
+        let cropper;
+        let formData;
+
+        input.addEventListener('change', function (e) {
+            const files = e.target.files;
+
+            if (files && files.length > 0) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    cropper = new Cropper(imagePreview, {
+                        aspectRatio: NaN,
+                        viewMode: 2,
+                        dragMode: 'move',
+                        autoCropArea: 1,
+                        restore: false,
+                        guides: false,
+                        center: false,
+                        highlight: false,
+                        cropBoxMovable: false,
+                        cropBoxResizable: false,
+                        toggleDragModeOnDblclick: false,
+                        ready: function () {
+                            // Additional actions when the cropper is ready
+                        }
+                    });
+
+                    cropper.replace(event.target.result);
+
+                    card.style.display = 'block';
+                };
+
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        cropBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            cropper.setDragMode('crop');
+            doneBtn.style.display = 'block';
+        });
+
+        doneBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            cropper.setDragMode('move');
+            doneBtn.style.display = 'none';
+            updateFinalCroppedImage();
+        });
+
+        function updateFinalCroppedImage() {
+            const croppedCanvas = cropper.getCroppedCanvas();
+
+            croppedCanvas.toBlob(function (blob) {
+                const croppedImageFile = new File([blob], 'cropped-image.jpg', { type: 'image/jpeg' });
+
+                // Append the cropped image file to the existing form data
+                formData = new FormData(addBannerForm);
+                formData.set('cropImage', croppedImageFile);
+                // Display the final cropped image in another area
+                finalCroppedImage.src = URL.createObjectURL(croppedImageFile);
+                finalCroppedImage.style.display = 'block';
+
+            }, 'image/jpeg', 0.7);
+        }
+
+        function sendData() {
+
+            const croppedCanvas = cropper.getCroppedCanvas();
+
+            croppedCanvas.toBlob(function (blob) {
+                const croppedImageFile = new File([blob], 'cropped-image.jpg', { type: 'image/jpeg' });
+
+                // Append the cropped image file to the existing form data
+                formData = new FormData(addBannerForm);
+                formData.set('cropImage', croppedImageFile);
+                // Submit the form with the appended cropped image file
+                fetch('/admin/banners/add', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: "Banner added successfully",
+                                timer: 2000,
+                                customClass: {
+                                    title: 'swal'
+                                }
+                            })
+                            setTimeout(() => {
+                                location.href = '/banners'
+                            }, 2000);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: "An error occured please try again",
+                                timer: 2000,
+                                customClass: {
+                                    title: 'swal'
+                                }
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }, 'image/jpeg', 0.7);
+        }
+
+        const addButton = document.getElementById('addBtn');
+        addButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (!input.files || input.files.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: "Choose any image",
+                    showConfirmButton: true,
+                    timer: 2000,
+                    customClass: {
+                        title: 'swal'
+                    }
+                })
+                return;
+            }
+            if (doneBtn.style.display === 'block') {
+                Swal.fire({
+                    icon: 'info',
+                    title: "Please click done to show final image!",
+                    showConfirmButton: true,
+                    timer: 2000,
+                    customClass: {
+                        title: 'swal'
+                    }
+                })
+            } else {
+                sendData(); // Call this function to append the cropped image to the form data and submit the form
+            }
+        });
+    });
+
+</script>
+<script src="/static/js/addProductValidation.js"></script>
+<script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/vendors/select2.min.js"></script>
+<script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+<script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+<script src="/assets/js/vendors/chart.js"></script>
+<!-- Main Script -->
+<script src="/assets/js/main.js" type="text/javascript"></script>
+<script src="/assets/js/custom-chart.js" type="text/javascript"></script>
+
+</html>

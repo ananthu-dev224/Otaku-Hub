@@ -16,7 +16,7 @@ const admUsersC = require('./controller/adminUserController.js')
 const admCatC = require('./controller/adminCategoryController.js')
 const admProC = require('./controller/adminProductsController.js')
 const admOrderC = require('./controller/adminOrderController.js')
-const CouponC = require('./controller/couponController.js')
+const couponC = require('./controller/couponController.js')
 //Middleware
 const {verifyToken,checkBlocked,checkBlockedFetch} = require('./middlewares/userAuth.js')
 const adminAuth = require('./middlewares/adminAuth.js')
@@ -101,7 +101,7 @@ router.get('/remove-wishlist',verifyToken,checkBlockedFetch,userWishlistC.remove
 router.get('/checkout',verifyToken,checkBlocked,userCartC.displayCheckout) // checkout page
 
 // Coupon
-router.post('/apply-coupon',verifyToken,checkBlockedFetch,CouponC.applyCoupon)
+router.post('/apply-coupon',verifyToken,checkBlockedFetch,couponC.applyCoupon)
 
 // Place Order
 router.post('/place-order',verifyToken,checkBlockedFetch,userOrderC.placeOrder)
@@ -154,11 +154,16 @@ router.get('/admin/approve-return',adminAuth,admOrderC.approveReturn)
 router.get('/admin/decline-return',adminAuth,admOrderC.declineReturn)
 
 // //Admin Coupon Management
-router.get('/admin/coupon',adminAuth,CouponC.displayCoupons)
-router.get('/admin/coupon/add',adminAuth,CouponC.addCouponPage)
-router.post('/admin/coupon/add',adminAuth,CouponC.addCoupon)
-router.get('/admin/coupon/restrict/:id',adminAuth,CouponC.restrictCoupon)
+router.get('/admin/coupon',adminAuth,couponC.displayCoupons)
+router.get('/admin/coupon/add',adminAuth,couponC.addCouponPage)
+router.post('/admin/coupon/add',adminAuth,couponC.addCoupon)
+router.get('/admin/coupon/restrict/:id',adminAuth,couponC.restrictCoupon)
 
+// //Admin Banner Management
+router.get('/banners',adminAuth,couponC.displayBanners)
+router.get('/admin/banners/add',adminAuth,couponC.addBannerPage)
+router.post('/admin/banners/add',adminAuth,couponC.uploadBanner.fields([{ name: 'originalImage'},{name: 'cropImage'}]),couponC.addBanner)
+router.get('/banners/restrict',adminAuth,couponC.toggleBanner)
 
 
 

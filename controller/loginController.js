@@ -3,6 +3,7 @@
 const bcrypt = require('bcrypt')
 const User = require('../model/userSchema')
 const productsDb = require('../model/productSchema')
+const bannerdb = require('../model/bannerSchema')
 const walletdb = require('../model/walletSchema')
 const razorpayHelper = require('../helpers/razorpayHelper')
 const jwt = require('jsonwebtoken')
@@ -14,7 +15,7 @@ loginC.displayLogin = (req, res) => {
     if (req.query.blocked === 'true') {
       res.render('userLogin', { alert: "For security reasons, your account has been temporarily blocked. Please contact our support team for assistance in resolving this issue" })
     } else if (!req.session.userActive) {
-      res.render('userLogin', { alert: null })
+      res.render('userLogin',{alert:null})
     } else {
       res.redirect('/home')
     }
@@ -71,7 +72,8 @@ loginC.displayHome = async (req, res) => {
   try {
     let allProducts = await productsDb.find()
     let latestProducts = allProducts.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp()).slice(0, 4) //sorted to get the last added products
-    res.render('home', { products: latestProducts })
+    const banners = await bannerdb.find({isActive:true})
+    res.render('home', { products: latestProducts, banners })
 
   } catch (error) {
     res.render('error')

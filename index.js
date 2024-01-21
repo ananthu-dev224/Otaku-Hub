@@ -48,6 +48,7 @@ app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use('/assets', express.static(path.join(__dirname, '/public/assets')))
 app.use('/public/productimgs', express.static(path.join(__dirname, 'public', 'productimgs')));
+app.use('/public/banners', express.static(path.join(__dirname, 'public', 'banners')));
 
 
 //view engine

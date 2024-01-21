@@ -37,12 +37,6 @@ ProductsC.searchProduct = async (req,res) =>{
 
 
 
-
-
-
-
-
-
 //displaying add product page
 ProductsC.displayAddPro = async (req,res) =>{
     try {
@@ -59,7 +53,6 @@ const storage = multer.diskStorage({
     cb(null,"public/productimgs") //location of storing images
   },
   filename: (req,file,cb) =>{
-  
     cb(null,Date.now() + path.extname(file.originalname)) //Gives unique names to files with the extension name from path
   }
 })

@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Otaku Hub</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.png">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/adminPro.css">
+</head>
+
+<body class="dark">
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/products"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link " href="/admin/view-users"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Customers</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Categories</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+                <li class="menu-item active ">
+                    <a class="menu-link" href="/banners"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Banners</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                <li class="menu-item ">
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i
+                            class="icon material-icons md-exit_to_app"></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+            <hr>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <!-- <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form> -->
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
+                <!-- <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul> -->
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Banners</h2>
+
+
+                </div>
+                <div>
+                    <a href="/admin/banners/add" class="btn btn-primary"><i
+                            class="text-muted material-icons md-post_add"></i>Add Banner</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-12">
+
+                    <div class="card mb-4">
+                        <header class="card-header">
+                            <h4 class="card-title">Available Banners :</h4>
+                            <div class="row align-items-center">
+                                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <!-- <form action="/admin/view-users/search" method="get">
+                                <input type="text" class="form-control"  id="search"  placeholder="Search by name" name="name" required>
+                        </div>
+                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                            <button href="/admin/view-users/search" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
+                        </div>
+                    </form> -->
+                                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                        <!-- <div class="custom_select">
+                                <select class="form-select">
+                                    <option selected>Status</option>
+                                    <option>All</option>
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                    <option>Blocked</option>
+                                    <option>Unblocked</option>
+                                </select>
+                            </div> -->
+                                    </div>
+                                </div>
+                        </header>
+
+
+                        <!-- Table for recent orders starts here -->
+
+                        <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+                            <% for(let i=0; i < banners.length; i++){%>
+                                <div class="card" style="width: 18rem;">
+                                    <img src="<%- banners[i].banner%>" class="card-img-top" alt="Banner">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Banner <%- i+1 %></h5>
+                                        <p
+                                            class="<%= banners[i].isActive ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>">
+                                            <%= banners[i].isActive ? 'Active' : 'Inactive' %>
+                                        </p>
+                                        <p class="card-text"></p>
+                                        <a href="/admin/banners/restrict?bannerId=<%= banners[i]._id%>"
+                                            class="btn btn-primary restrict-btn" data-bannerId="<%= banners[i]._id %>">
+                                            <%= banners[i].isActive ? 'Unpublish' : 'Publish' %>
+                                        </a>
+                                    </div>
+                                </div>
+                                <%}%>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Table ends here -->
+
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> © Otaku Hub Administrator
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Script for changing status of coupon -->
+    <script>
+        const changeStatus = document.querySelectorAll('.restrict-btn');
+        changeStatus.forEach((btn) => {
+            btn.addEventListener('click', async (event) => {
+                event.preventDefault();
+                const bannerId = btn.getAttribute('data-bannerId')
+
+                if (bannerId) {
+                    const response = await fetch(`/banners/restrict?bannerId=${bannerId}`);
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            title: "Status changed successfully",
+                            icon: 'success',
+                            timer: 2000,
+                            customClass: {
+                                title: 'sweetalertee-title', // Add a custom class to the title
+                            }
+                        })
+                        setTimeout(() => {
+                            location.href = location.href;
+                        }, 2000);
+                    } else {
+                        Swal.fire({
+                            title: "An error occured please try again",
+                            icon: 'error',
+                            timer: 2000,
+                            customClass: {
+                                title: 'sweetalertee-title', // Add a custom class to the title
+                            }
+                        })
+                    }
+                }
+
+            })
+        })
+    </script>
+    <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/vendors/select2.min.js"></script>
+    <script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <script src="/assets/js/vendors/chart.js"></script>
+    <!-- Main Script -->
+    <script src="/assets/js/main.js" type="text/javascript"></script>
+    <script src="/assets/js/custom-chart.js" type="text/javascript"></script>
+</body>
+
+</html>
