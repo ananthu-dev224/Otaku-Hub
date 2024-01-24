@@ -371,9 +371,9 @@ admDashC.generateSalesPdf = async (req, res) => {
     let subtitle;
     salesData.forEach(entry => {
       if (entry.startingDate && entry.endingDate) {
-         subtitle = `Data from ${entry.startingDate} to ${entry.endingDate}`;  // Add your desired subtitle text
-      }else{
-         subtitle = `${entry.filterDrop.toUpperCase()} Sales`;  // Add your desired subtitle text
+        subtitle = `Data from ${entry.startingDate} to ${entry.endingDate}`;  // Add your desired subtitle text
+      } else {
+        subtitle = `${entry.filterDrop.toUpperCase()} Sales`;  // Add your desired subtitle text
       }
     })
     pdfDoc.text(title, { align: 'center', underline: true });
@@ -383,16 +383,40 @@ admDashC.generateSalesPdf = async (req, res) => {
     pdfDoc.moveDown();
     let totalOrders = 0;
     let totalAmount = 0;
+    const tableHeaders = ['Order ID', 'Total Amount (Rs)', 'Delivered Date'];
+
+    // Set up initial positions
+    let tableX = 50;
+    let tableY = pdfDoc.y + 40;
+
+    // Draw table headers
+    tableHeaders.forEach(header => {
+      pdfDoc.text(header, tableX, tableY, { width: 150, align: 'left' });
+      tableX += 150; // Adjust the width as needed
+    });
+
+    // Move to the next row
+    tableY += 20; // Adjust the row height as needed
+
     salesData.forEach(entry => {
-      pdfDoc.moveDown();
-      pdfDoc.text(`Order ID: ${entry.orderId}`);
-      pdfDoc.text(`Total Amount: Rs:${entry.totalAmount}`);
-      pdfDoc.text(`Order Delivered Date: ${entry.date}`);
-      pdfDoc.text('Shipped address', { underline: true })
-      pdfDoc.text(`${entry.address}`);
+      tableX = 50; // Reset X-coordinate for each row
+
+      pdfDoc.text(entry.orderId, tableX, tableY, { width: 150, align: 'left' });
+      tableX += 150;
+
+      pdfDoc.text(`Rs:${entry.totalAmount}`, tableX, tableY, { width: 150, align: 'left' });
+      tableX += 150;
+
+      pdfDoc.text(entry.date, tableX, tableY, { width: 150, align: 'left' });
+
+      // Update totalOrders and totalAmount
       totalOrders += 1;
       totalAmount += entry.totalAmount;
+
+      // Move to the next row
+      tableY += 20; // Adjust the row height as needed
     });
+
     pdfDoc.moveDown();
     pdfDoc.moveDown();
     pdfDoc.moveDown();

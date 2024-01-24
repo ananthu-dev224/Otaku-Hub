@@ -177,7 +177,4 @@ router.get('/banners/restrict',adminAuth,couponC.toggleBanner)
 
 
 
-
-
-
 module.exports = router
