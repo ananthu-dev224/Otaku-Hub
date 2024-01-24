@@ -22,9 +22,10 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-                <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku  Hub</p>
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -50,7 +51,8 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -63,11 +65,12 @@
                     <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Coupons</span>
                     </a>
-                    <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i> 
-                            <span class="text">Logout</span>
-                        </a>
-                    </li>
+                <li class="menu-item ">
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/admin/logout"> <i
+                            class="icon material-icons md-exit_to_app"></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
                 </li>
             </ul>
             <hr>
@@ -90,7 +93,8 @@
                 </form> -->
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
                 <!-- <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
@@ -133,7 +137,7 @@
                 <div>
                     <h2 class="content-title card-title">Customers</h2>
 
-                    
+
                 </div>
                 <!-- <div>
                     <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Customer</a>
@@ -141,35 +145,37 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                   
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
-                    
-            <div class="card mb-4">
-                <header class="card-header">
-                    <h4 class="card-title">Customers Data :</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <form action="/admin/view-users/search" method="get">
-                                <input type="text" class="form-control"  id="search"  placeholder="Search by name" name="name" required>
-                        </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <button href="/admin/view-users/search" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
-                        </div>
-                    </form>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <!-- <div class="custom_select">
+
+                    <div class="card mb-4">
+                        <header class="card-header">
+                            <h4 class="card-title">Customers Data :</h4>
+                            <div class="row align-items-center">
+                                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <form action="/admin/view-users/search" method="get">
+                                        <input type="text" class="form-control" id="search" placeholder="Search by name"
+                                            name="name" required>
+                                </div>
+                                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <button href="/admin/view-users/search" class="btn btn-sm"
+                                        style="background-color: green;" type="submit">Search</button>
+                                </div>
+                                </form>
+                                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <!-- <div class="custom_select">
                                 <select class="form-select">
                                     <option selected>Status</option>
                                     <option>All</option>
@@ -179,28 +185,28 @@
                                     <option>Unblocked</option>
                                 </select>
                             </div> -->
-                        </div>
-                    </div>
-                </header>
+                                </div>
+                            </div>
+                        </header>
 
 
-                <!-- Table for recent orders starts here -->
+                        <!-- Table for recent orders starts here -->
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0" >
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="align-middle" scope="col">ID</th>
-                                        <th class="align-middle" scope="col">Name</th>
-                                        <th class="align-middle" scope="col">Email</th>
-                                        <th class="align-middle" scope="col">Phone number</th>
-                                        <th class="align-middle" scope="col">Status</th>
-                                        <th class="align-middle" scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                        
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="align-middle" scope="col">ID</th>
+                                            <th class="align-middle" scope="col">Name</th>
+                                            <th class="align-middle" scope="col">Email</th>
+                                            <th class="align-middle" scope="col">Phone number</th>
+                                            <th class="align-middle" scope="col">Status</th>
+                                            <th class="align-middle" scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
                                         <% users.forEach(user=> { %>
                                             <tr>
                                                 <td>
@@ -215,42 +221,54 @@
                                                 <td>
                                                     <%= user.phonenumber %>
                                                 </td>
-                                                 <td>
-                                                    <p  class ="<%= user.isBlocked ? 'badge badge-pill badge-soft-danger' :  'badge badge-pill badge-soft-success' %>" ><%= user.isBlocked ? 'Inactive' : 'Active'%></p>
+                                                <td>
+                                                    <p
+                                                        class="<%= user.isBlocked ? 'badge badge-pill badge-soft-danger' :  'badge badge-pill badge-soft-success' %>">
+                                                        <%= user.isBlocked ? 'Inactive' : 'Active' %>
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <a href="/admin/view-users/restrict/<%= user._id %>" id="restrict" title="<%= user.isBlocked ? 'Unblock' : 'Block' %>"
-                                                      class="fw-bold text-warning" >
+                                                    <a href="/admin/view-users/restrict/<%= user._id %>" id="restrict"
+                                                        title="<%= user.isBlocked ? 'Unblock' : 'Block' %>"
+                                                        class="fw-bold text-warning">
                                                         <%= user.isBlocked ? 'Unblock' : 'Block' %>
                                                     </a>
                                                 </td>
                                             </tr>
                                             <% }); %>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
- <!-- Table ends here -->
+                    <!-- Table ends here -->
 
-            <!-- <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div> -->
+                    <div class="pagination-area mt-30 mb-50">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                <% for (let i=1; i <=totalPages; i++) { %>
+                                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                        <%if(search !==null){%>
+                                            <a class="page-link"
+                                                href="/admin/view-users/search?name=<%= search %>&page=<%= i %>">
+                                                <%= i %>
+                                            </a>
+                                            <%}else{%>
+                                                <a class="page-link" href="/admin/view-users?page=<%= i %>">
+                                                    <%= i %>
+                                                </a>
+                                                <%}%>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </nav>
+                    </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                    document.write(new Date().getFullYear())
+                        document.write(new Date().getFullYear())
                     </script> © Otaku Hub Administrator
                 </div>
                 <div class="col-sm-6">

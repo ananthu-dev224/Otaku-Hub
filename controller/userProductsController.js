@@ -11,37 +11,85 @@ const bcrypt = require('bcrypt')
 userPro.displayPro = async (req, res) => {
    try {
       const userId = req.userId;
-      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
+      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId');
+
       if (!cart) {
          cart = new cartdb({ userId: userId });
-         await cart.save()
+         await cart.save();
       }
-      const cartCount = cart.products.length
-      const categories = await categoriesdb.find()
-      const products = await productsdb.find().populate('category')
-      res.render('all-products', { categories, products, cartCount })
+
+      const cartCount = cart.products.length;
+      const categories = await categoriesdb.find();
+
+      // Pagination parameters
+      const page = parseInt(req.query.page) || 1; // Get the page from the query parameter, default to 1
+      const perPage = 8; // Number of products per page
+
+      // Fetch all products
+      const allProducts = await productsdb.find().populate('category');
+
+      // Calculate total number of pages
+      const totalProducts = allProducts.length;
+      const totalPages = Math.ceil(totalProducts / perPage);
+
+      // Fetch products for the current page
+      const products = await productsdb
+         .find()
+         .populate('category')
+         .skip((page - 1) * perPage)
+         .limit(perPage);
+
+      res.render('all-products', { categories, products, cartCount, currentPage: page, totalPages , order: null ,category:null, search:null });
    } catch (error) {
-      console.log("An error occured while loading all products", error.message);
-      res.render('error')
+      console.log("An error occurred while loading all products", error.message);
+      res.render('error');
    }
-}
+};
+
+
 
 //Products displaying category vise
 userPro.displayCat = async (req, res) => {
    try {
       const userId = req.userId;
-      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
+      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId');
+
       if (!cart) {
          cart = new cartdb({ userId: userId });
-         await cart.save()
+         await cart.save();
       }
-      const cartCount = cart.products.length
-      const name = req.query.name
-      let categories = await categoriesdb.find().populate('products')
-      let category = await categoriesdb.findOne({ name: name, isPublished: true })
-      let id = category._id
-      let products = await productsdb.find({ category: id, isPublished: true }).populate('category')
-      res.render('all-products', { categories, products, cartCount })
+
+      const cartCount = cart.products.length;
+      const name = req.query.name;
+      const currentPage = parseInt(req.query.page) || 1; // Get the page from the query parameter, default to 1
+      const perPage = 8; // Number of products per page
+
+      // Fetch all categories
+      let categories = await categoriesdb.find().populate('products');
+
+      // Fetch the specific category
+      let category = await categoriesdb.findOne({ name: name, isPublished: true });
+
+      if (!category) {
+         // Handle the case where the category is not found
+         return res.render('category-not-found', { cartCount });
+      }
+
+      let id = category._id;
+
+      // Fetch products for the current page and specific category
+      let products = await productsdb
+         .find({ category: id, isPublished: true })
+         .skip((currentPage - 1) * perPage)
+         .limit(perPage)
+         .populate('category');
+
+      // Calculate total number of products for the specific category
+      const totalProducts = await productsdb.countDocuments({ category: id, isPublished: true });
+      const totalPages = Math.ceil(totalProducts / perPage);
+
+      res.render('all-products', { categories, products, cartCount, currentPage, totalPages, category:name ,order: null , search:null});
+
    } catch (error) {
       console.log("An error occured while loading category products", error.message);
       res.render('error')
@@ -68,21 +116,39 @@ userPro.displayView = async (req, res) => {
 userPro.filterPro = async (req, res) => {
    try {
       const userId = req.userId;
-      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
+      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId');
+
       if (!cart) {
          cart = new cartdb({ userId: userId });
-         await cart.save()
+         await cart.save();
       }
-      const cartCount = cart.products.length
-      const categories = await categoriesdb.find()
-      let order = req.query.order
-      let filteredPro
+
+      const cartCount = cart.products.length;
+      const categories = await categoriesdb.find();
+      let order = req.query.order;
+      const currentPage = parseInt(req.query.page) || 1; // Get the page from the query parameter, default to 1
+      const perPage = 8; // Number of products per page
+
+      let filteredPro;
+
       if (order === 'low') {
+         // Fetch products sorted by price in ascending order
          filteredPro = await productsdb.find().populate('category').sort({ price: 1 })
+            .skip((currentPage - 1) * perPage)
+            .limit(perPage);
       } else {
+         // Fetch products sorted by price in descending order
          filteredPro = await productsdb.find().populate('category').sort({ price: -1 })
+            .skip((currentPage - 1) * perPage)
+            .limit(perPage);
       }
-      res.render('all-products', { categories, products: filteredPro, cartCount })
+
+      // Calculate total number of products
+      const totalProducts = await productsdb.countDocuments({});
+      const totalPages = Math.ceil(totalProducts / perPage);
+
+      res.render('all-products', { categories, products: filteredPro, cartCount, currentPage, totalPages, order: order ,category:null, search:null });
+
    } catch (error) {
       console.log("An error occured while sorting", error.message);
       res.render('error')
@@ -94,22 +160,40 @@ userPro.filterPro = async (req, res) => {
 userPro.displaySearch = async (req, res) => {
    try {
       const userId = req.userId;
-      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
+      let cart = await cartdb.findOne({ userId: userId }).populate('products.productId');
+
       if (!cart) {
          cart = new cartdb({ userId: userId });
-         await cart.save()
+         await cart.save();
       }
-      const cartCount = cart.products.length
-      const { name } = req.query
+
+      const cartCount = cart.products.length;
+      const { name } = req.query;
 
       if (!name) {
-         res.redirect('/products')
+         res.redirect('/products');
       }
+
+      const currentPage = parseInt(req.query.page) || 1; // Get the page from the query parameter, default to 1
+      const perPage = 8; // Number of products per page
+
       const escapedText = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regex = new RegExp(escapedText, 'i');
-      const products = await productsdb.find({ name: regex }).populate('category')
+
+      // Fetch products for the current page and specific search query
+      const products = await productsdb
+         .find({ name: regex })
+         .skip((currentPage - 1) * perPage)
+         .limit(perPage)
+         .populate('category');
+
+      // Calculate total number of products for the specific search query
+      const totalProducts = await productsdb.countDocuments({ name: regex });
+      const totalPages = Math.ceil(totalProducts / perPage);
+
       const categories = await categoriesdb.find();
-      res.render('all-products', { products, categories, cartCount })
+      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name , order: null ,category:null});
+
    } catch (error) {
       console.log("An error occured while searching products", error.message);
       res.render('error')
@@ -128,7 +212,7 @@ userPro.displayProfile = async (req, res) => {
       const cartCount = cart.products.length
       const id = req.userId
       const user = await usersdb.findById(id)
-      res.render('userProfile', { user , cartCount })
+      res.render('userProfile', { user, cartCount })
    } catch (error) {
       console.log("Error occured while loading profile", error.message);
       res.render('error')

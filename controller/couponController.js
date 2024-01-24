@@ -192,10 +192,9 @@ const toggleBanner = async (req, res) => {
         res.json({status:'success'})
     } catch (error) {
         console.log("An error occured while toggling banner status", error.message);
+        res.json({status:'error'})
     }
 }
-
-
 
 
 module.exports = {

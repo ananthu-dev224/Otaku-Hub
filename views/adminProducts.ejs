@@ -23,9 +23,10 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-                <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku  Hub</p>
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -51,7 +52,8 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -64,11 +66,12 @@
                     <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Coupons</span>
                     </a>
-                    <li class="menu-item ">
-                        <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
-                            <span class="text">Logout</span>
-                        </a>
-                    </li>
+                <li class="menu-item ">
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i
+                            class="icon material-icons md-exit_to_app"></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
                 </li>
             </ul>
             <hr>
@@ -91,140 +94,185 @@
                 </form> -->
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
-                
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
+
             </div>
         </header>
         <section class="content-main">
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Products of Otaku Hub</h2>
-                  
 
-                    
+
+
                 </div>
                 <div>
-                    <a href="/admin/products/add" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Add Product</a>
+                    <a href="/admin/products/add" class="btn btn-primary"><i
+                            class="text-muted material-icons md-post_add"></i>Add Product</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
                 <div class="col-lg-3">
-                   
+
                 </div>
                 <div class="col-lg-3">
-                    
+
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
-                    
-            <div class="card mb-4">
-                <header class="card-header">
-                    <h4 class="card-title">Products List :</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                    <form action="/admin/search-product" method="get">
-                                <input type="text" class="form-control"  id="search"  placeholder="Search Product " name="name" required>
-                                 <br>
-                                <button href="" class="btn btn-sm" style="background-color: green;" type="submit">Search</button>
-                            </form>
-                    
-                        </div>
-                    </div>
-                </header>
+
+                    <div class="card mb-4">
+                        <header class="card-header">
+                            <h4 class="card-title">Products List :</h4>
+                            <div class="row align-items-center">
+                                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <form action="/admin/search-product" method="get">
+                                        <input type="text" class="form-control" id="search"
+                                            placeholder="Search Product " name="name" required>
+                                        <br>
+                                        <button href="" class="btn btn-sm" style="background-color: green;"
+                                            type="submit">Search</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </header>
 
 
-                <!-- Table for recent orders starts here -->
+                        <!-- Table for recent orders starts here -->
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                            <table class="table table-bordered align-middle table-nowrap mb-0" >
-                                <thead class="table-light">
-                                    <tr>
-                                        <th class="align-middle" scope="col">Product</th>
-                                        <th class="align-middle" scope="col">Category</th>
-                                        <th class="align-middle" scope="col">Description</th>
-                                        <th class="align-middle" scope="col">Size</th>
-                                        <th class="align-middle" scope="col">Stock</th>
-                                        <th class="align-middle" scope="col">Price</th>
-                                        <th class="align-middle" scope="col">Discount</th>
-                                        <th class="align-middle" scope="col">Status</th>
-                                        <th class="align-middle" scope="col">Restrict</th>
-                                        <th class="align-middle" scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                        <% products.forEach(product => {%>
-                                           <tr>
-                                                <td><%= product.name%>
-                                                    <div style="height:100px; width: 100px;" class="d-flex">
-                                                        <img src="/<%= product.mainimage%>"
-                                                            alt=""> 
-                                                    </div></td>
-
-                                                <td><%= product.category.name%></td>
-
-                                                <td><%= product.description%></td>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="align-middle" scope="col">Product</th>
+                                            <th class="align-middle" scope="col">Category</th>
+                                            <th class="align-middle" scope="col">Description</th>
+                                            <th class="align-middle" scope="col">Size</th>
+                                            <th class="align-middle" scope="col">Stock</th>
+                                            <th class="align-middle" scope="col">Price</th>
+                                            <th class="align-middle" scope="col">Discount</th>
+                                            <th class="align-middle" scope="col">Status</th>
+                                            <th class="align-middle" scope="col">Restrict</th>
+                                            <th class="align-middle" scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% products.forEach(product=> {%>
+                                            <tr>
                                                 <td>
-                                                <% for (let i = 0; i < product.quantity.length; i++) { %>
-                                                    <% if(product.quantity[i].size !== null){ %>
-                                                    <!-- Accessing size for each item in the array -->
-                                               <%= product.quantity[i].size%> <br>
-                                                <%}%>
-                                                <%}%>
+                                                    <%= product.name%>
+                                                        <div style="height:100px; width: 100px;" class="d-flex">
+                                                            <img src="/<%= product.mainimage%>" alt="">
+                                                        </div>
                                                 </td>
-                                               <td>
-                                               <% for (let i = 0; i < product.quantity.length; i++) { %>
-                                                <!-- Accessing stock for each item in the array -->
-                                               <%= product.quantity[i].stock%> <br>
-                                               <% } %>
-                                               </td>
-                                           
-                                                </td>
-                                                   
-                                                <td><%= product.price%></td>
-
-                                                <td><%= product.discount%></td>
-
-                                                <td> <p p  class ="<%= product.isPublished ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>"><%= product.isPublished ? 'Active' : 'Inactive'%></p></td>
 
                                                 <td>
-                                                    <a href="/admin/products/restrict/<%= product._id %>" id="restrict" title="<%= product.isPublished ? 'Unpublish' : 'Publish' %>"
-                                                      class="fw-bold text-warning" >
+                                                    <%= product.category.name%>
+                                                </td>
+
+                                                <td>
+                                                    <%= product.description%>
+                                                </td>
+                                                <td>
+                                                    <% for (let i=0; i < product.quantity.length; i++) { %>
+                                                        <% if(product.quantity[i].size !==null){ %>
+                                                            <!-- Accessing size for each item in the array -->
+                                                            <%= product.quantity[i].size%> <br>
+                                                                <%}%>
+                                                                    <%}%>
+                                                </td>
+                                                <td>
+                                                    <% for (let i=0; i < product.quantity.length; i++) { %>
+                                                        <!-- Accessing stock for each item in the array -->
+                                                        <%= product.quantity[i].stock%> <br>
+                                                            <% } %>
+                                                </td>
+
+                                                </td>
+
+                                                <td>
+                                                    <%= product.price%>
+                                                </td>
+
+                                                <td>
+                                                    <%= product.discount%>
+                                                </td>
+
+                                                <td>
+                                                    <p p
+                                                        class="<%= product.isPublished ? 'badge badge-pill badge-soft-success' :  'badge badge-pill badge-soft-danger' %>">
+                                                        <%= product.isPublished ? 'Active' : 'Inactive' %>
+                                                    </p>
+                                                </td>
+
+                                                <td>
+                                                    <a href="/admin/products/restrict/<%= product._id %>" id="restrict"
+                                                        title="<%= product.isPublished ? 'Unpublish' : 'Publish' %>"
+                                                        class="fw-bold text-warning">
                                                         <%= product.isPublished ? 'Unpublish' : 'Publish' %>
                                                     </a>
                                                 </td>
 
                                                 <td>
-                                                    <a href="/admin/products/edit/<%= product._id %>" id="edit" class="fw-bold text-primary" >
-                                                          <img width="34" height="34" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png" alt="external-edit-web-flaticons-lineal-color-flat-icons-7"/>
-                                                    </a><hr>
-                                                    <a href="/admin/products/remove/<%= product._id %>" id="delete" onclick="confirmDelete(event)">
-                                                        <img width="25" height="25" src="https://img.icons8.com/color/48/delete-forever.png" alt="delete-forever"/>
-                                                  </a>
-                                                </td>                    
-                                           </tr>
+                                                    <a href="/admin/products/edit/<%= product._id %>" id="edit"
+                                                        class="fw-bold text-primary">
+                                                        <img width="34" height="34"
+                                                            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-edit-web-flaticons-lineal-color-flat-icons-7.png"
+                                                            alt="external-edit-web-flaticons-lineal-color-flat-icons-7" />
+                                                    </a>
+                                                    <hr>
+                                                    <a href="/admin/products/remove/<%= product._id %>" id="delete"
+                                                        onclick="confirmDelete(event)">
+                                                        <img width="25" height="25"
+                                                            src="https://img.icons8.com/color/48/delete-forever.png"
+                                                            alt="delete-forever" />
+                                                    </a>
+                                                </td>
+                                            </tr>
                                             <%})%>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
- <!-- Table ends here -->
+                    <!-- Table ends here -->
+                    <div class="pagination-area mt-30 mb-50">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                <% for (let i=1; i <=totalPages; i++) { %>
+                                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                        <%if(search !==null){%>
+                                            <a class="page-link"
+                                                href="/admin/search-product?name=<%= search %>&page=<%= i %>">
+                                                <%= i %>
+                                            </a>
+                                            <%}else{%>
+                                                <a class="page-link" href="/admin/products?page=<%= i %>">
+                                                    <%= i %>
+                                                </a>
+                                                <%}%>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </nav>
+                    </div>
 
-           
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                    document.write(new Date().getFullYear())
+                        document.write(new Date().getFullYear())
                     </script> © Otaku Hub Administrator
                 </div>
                 <div class="col-sm-6">
@@ -246,50 +294,51 @@
     <script src="/assets/js/custom-chart.js" type="text/javascript"></script>
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-function confirmDelete(event) {
-  event.preventDefault();
-  var url = event.currentTarget.getAttribute('href');
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault();
+            var url = event.currentTarget.getAttribute('href');
 
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-    customClass: {
-      title: 'sweetalertee-title', // Add a custom class to the title
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Proceed with the deletion
-      window.location.href = url;
-      
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-      // User clicked "Cancel" or closed the modal
-      Swal.fire({
-        title: "Cancelled",
-        text: "Your request has been cancelled.",
-        icon: "info",
-        customClass: {
-      title: 'sweetalertee-title', // Add a custom class to the title
-    }
-      });
-    } else {
-      // Handle other dismissals if needed
-      Swal.fire({
-        title: "Dismissed",
-        text: "Your request has been dismissed.",
-        icon: "info",
-        customClass: {
-      title: 'sweetalertee-title', // Add a custom class to the title
-    }
-      });
-    }
-  });
-}
-</script>
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+                customClass: {
+                    title: 'sweetalertee-title', // Add a custom class to the title
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Proceed with the deletion
+                    window.location.href = url;
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // User clicked "Cancel" or closed the modal
+                    Swal.fire({
+                        title: "Cancelled",
+                        text: "Your request has been cancelled.",
+                        icon: "info",
+                        customClass: {
+                            title: 'sweetalertee-title', // Add a custom class to the title
+                        }
+                    });
+                } else {
+                    // Handle other dismissals if needed
+                    Swal.fire({
+                        title: "Dismissed",
+                        text: "Your request has been dismissed.",
+                        icon: "info",
+                        customClass: {
+                            title: 'sweetalertee-title', // Add a custom class to the title
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 </body>
+
 </html>

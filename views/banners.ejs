@@ -245,6 +245,7 @@
                 if (bannerId) {
                     const response = await fetch(`/banners/restrict?bannerId=${bannerId}`);
                     const result = await response.json();
+                    
 
                     if (result.status === 'success') {
                         Swal.fire({
