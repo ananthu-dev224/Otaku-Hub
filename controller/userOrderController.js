@@ -4,6 +4,8 @@ const productsdb = require('../model/productSchema')
 const ordersdb = require('../model/ordersSchema')
 const walletdb = require('../model/walletSchema')
 const razorpayHelper = require('../helpers/razorpayHelper')
+const pdf = require('pdfkit')
+const fs = require('fs')
 const userOrder = {}
 
 
@@ -16,7 +18,7 @@ userOrder.placeOrder = async (req, res) => {
       addressId } = req.body;
 
     const couponDiscount = req.query.couponDiscount
-    console.log(couponDiscount);
+   
 
     if (!addressId) {
       return res.json({ status: 'error', message: 'Please add an address' })
@@ -31,11 +33,11 @@ userOrder.placeOrder = async (req, res) => {
     }, 0);
     let grandTotal;
     if (couponDiscount) {
-      grandTotal = Math.ceil(cart.total - (cart.total  * couponDiscount / 100)); //Final amount after discount
+      grandTotal = Math.ceil(cart.total - (cart.total * couponDiscount / 100)); //Final amount after discount
     } else {
       grandTotal = cart.total
     }
-    console.log(grandTotal);
+   
 
     // address saving in order details
     const shippingAddress = {
@@ -55,7 +57,7 @@ userOrder.placeOrder = async (req, res) => {
       paymentMethod: paymentMethod,
       products: cart.products,
       address: shippingAddress,
-      couponDiscount:couponDiscount,
+      couponDiscount: couponDiscount,
     })
 
 
@@ -109,7 +111,7 @@ userOrder.placeOrder = async (req, res) => {
 
     // Wallet
     if (paymentMethod === 'Wallet') {
-      ;
+      
       let wallet = await walletdb.findOne({ userId: userId })
 
       if (!wallet) {
@@ -128,7 +130,7 @@ userOrder.placeOrder = async (req, res) => {
         wallet.transactionHistory.push(transaction) // recent transaction as debit in history
         await wallet.save();
         orderPlaced = await newOrder.save();
-        console.log("Wallet after transaction", wallet);
+        
 
 
         // Reduce the stock
@@ -171,22 +173,20 @@ userOrder.placeOrder = async (req, res) => {
 
 // Verify the Online payment from Razorpay and Update the payment status
 userOrder.verifyPaymentAndStatus = async (req, res) => {
-  console.log("Entered into verify payment route");
+ 
   const userId = req.userId;
   const data = req.body;
   const receipt = data.order.receipt;
   const cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
 
   razorpayHelper.verifyOnlinePayment(data).then(() => {
-    console.log("Resolved verifyOnlinePayment from helper");
+    
 
     if (data.from === 'Wallet') {  // so we have to recharge money to wallet
       const amount = (data.order.amount) / 100 // converting paise to inr 
       walletdb.findOneAndUpdate({ userId: userId }, { $inc: { amount: amount }, $push: { transactionHistory: amount } }, { new: true }).then((isUpdated) => {
-        console.log("Wallet recharged ", isUpdated);
         res.json({ status: 'rechargeSuccess', message: 'Wallet Updated' });
       }).catch((err) => {
-        console.log("Wallet not recharged", err.message);
         res.json({ status: 'error', message: 'An error occured, Wallet not updated' });
       })
     } else { // so it is direct payment from razorpay
@@ -223,7 +223,6 @@ userOrder.verifyPaymentAndStatus = async (req, res) => {
       updateStock();
       req.session.isCheckout = false;
       razorpayHelper.updatePaymentStatus(receipt, paymentSuccess).then(() => {
-        console.log("updated payment success of razorpay online payment");
         res.json({ status: "paymentSuccess", placedOrderId: receipt })
       })
     }
@@ -231,7 +230,6 @@ userOrder.verifyPaymentAndStatus = async (req, res) => {
     console.log("Rejected verifyOnlinePayment from helper", error.message);
     let paymentSuccess = false;
     razorpayHelper.updatePaymentStatus(receipt, paymentSuccess).then(() => {
-      console.log("updated payment failure of razorpay online payment")
       res.json({ status: "paymentFailed", placedOrderId: receipt })
     })
   })
@@ -368,6 +366,64 @@ userOrder.cancelRequest = async (req, res) => {
   }
 }
 
+// Generate invoice
+userOrder.invoice = async (req, res) => {
+  try {
+    const orderDetails = req.body;
+    console.log(orderDetails.products);
+    const pdfDoc = new pdf();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=sales-report.pdf`);
+
+    pdfDoc.pipe(res);
+    pdfDoc.fontSize(12);
+    let title = `Invoice - ${orderDetails.address.name}`;
+
+    pdfDoc.text(title, { align: 'center', underline: true });
+    pdfDoc.moveDown();  // Move down after the title
+
+
+
+
+    pdfDoc.moveDown();
+    pdfDoc.text(`Order ID: ${orderDetails.orderId}`);
+    pdfDoc.text(`Total Amount: Rs:${orderDetails.totalAmount}`);
+    pdfDoc.text(`Order Delivered Date: ${orderDetails.deliveredDate}`);
+    pdfDoc.moveDown();
+    pdfDoc.text('Products', { underline: true })
+    // Loop through products and add details
+    for (let i = 0; i < orderDetails.products.length; i++) {
+      if(orderDetails.products[i].name !== undefined){
+      pdfDoc.moveDown();
+      pdfDoc.text(`Name: ${orderDetails.products[i].name}`);
+      if (orderDetails.products[i].size !== null) {
+        pdfDoc.text(`Size: ${orderDetails.products[i].size}`);
+      }
+      pdfDoc.text(`Quantity: ${orderDetails.products[i].quantity}`);
+      pdfDoc.text(`Total: Rs:${orderDetails.products[i].total}`);
+    }
+    }
+
+    pdfDoc.moveDown();
+    pdfDoc.text('Shipped address', { underline: true })
+    pdfDoc.text(`Mobile: ${orderDetails.address.mobile}`);
+    pdfDoc.text(`House Address: ${orderDetails.address.houseaddress}`);
+    pdfDoc.text(`Street: ${orderDetails.address.street}`);
+    pdfDoc.text(`City: ${orderDetails.address.city}`);
+    pdfDoc.text(`Pincode: ${orderDetails.address.pincode}`);
+    pdfDoc.text(`State: ${orderDetails.address.state}`);
+
+    pdfDoc.moveDown();
+    pdfDoc.moveDown();
+    pdfDoc.moveDown();
+    pdfDoc.text(`Keep Shopping @Otaku Hub`);
+
+    pdfDoc.end();
+
+  } catch (error) {
+    console.log("An error occured while generating invoice", error.message);
+  }
+}
 
 
 

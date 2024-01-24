@@ -16,15 +16,52 @@
     <!-- Template CSS -->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
 </head>
+<style>
+    /* Custom styles for dark theme */
+    .dataTables_wrapper {
+        background-color: #a19c9c;
+        /* Dark background color */
+        color: #fff;
+        /* Text color */
+    }
+
+    .dataTables_filter input {
+        background-color: #555;
+        /* Search input background color */
+        color: #fff;
+        /* Search input text color */
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        background-color: #1a1b1d;
+        /* Pagination background color */
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        color: #fff;
+        /* Info text color */
+    }
+
+    #salesTable th,
+    #salesTable td {
+        border-right: 1px solid #a8a5a5;
+        border-bottom: 1px solid #a8a5a5;
+        background-color: #2A3042;
+    }
+</style>
 
 <body class="dark">
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-                <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku  Hub</p>
+            <p class="brand-wrap " style="font-family: Satisfy; font-size: 30px;">Otaku Hub</p>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -50,7 +87,8 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" href="/admin/order-details"> <i class="icon material-icons md-shopping_cart"></i></i>
+                    <a class="menu-link" href="/admin/order-details"> <i
+                            class="icon material-icons md-shopping_cart"></i></i>
                         <span class="text">Orders</span>
                     </a>
                 </li>
@@ -65,7 +103,8 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i class="icon material-icons md-exit_to_app"></i> 
+                    <a class="menu-link" style="background-color: rgb(173, 12, 12);" href="/adminlog"> <i
+                            class="icon material-icons md-exit_to_app"></i>
                         <span class="text">Logout</span>
                     </a>
                 </li>
@@ -90,7 +129,8 @@
                 </form> -->
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
                 <!-- <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
@@ -134,17 +174,23 @@
                     <h2 class="content-title card-title">Dashboard</h2>
                     <p>Overview of your business here.</p>
                     <br><br>
-               
+
                 </div>
-                <div>
-                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Print Report</a>
-                </div>
+                <!-- <div>
+                    <a href="" class="btn btn-primary"  data-toggle="modal" data-target="#myModal"><i class="text-muted material-icons md-post_add"
+                           ></i>Sales Report</a>
+                </div> -->
             </div>
+
+
+
+
             <div class="row">
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+                            <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                                    class="text-primary material-icons md-monetization_on"></i></span>
                             <div class="text">
                                 <h6 class="mb-1 card-title">Revenue</h6>
                                 <span>₹<%- totalRevenue%></span>
@@ -158,9 +204,12 @@
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
+                            <span class="icon icon-sm rounded-circle bg-success-light"><i
+                                    class="text-success material-icons md-local_shipping"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Orders Delivered</h6> <span><%= totalOrders ? totalOrders : '0'  %></span>
+                                <h6 class="mb-1 card-title">Orders Delivered</h6> <span>
+                                    <%= totalOrders ? totalOrders : '0' %>
+                                </span>
                                 <span class="text-sm">
                                     Total orders in all Categories
                                 </span>
@@ -171,11 +220,14 @@
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
+                            <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                                    class="text-warning material-icons md-qr_code"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Products</h6> <span><%= totalProducts ? totalProducts : '0'  %></span>
+                                <h6 class="mb-1 card-title">Products</h6> <span>
+                                    <%= totalProducts ? totalProducts : '0' %>
+                                </span>
                                 <span class="text-sm">
-                                    In <%= totalCategory ? totalCategory : '0'  %> Categories 
+                                    In <%= totalCategory ? totalCategory : '0' %> Categories
                                 </span>
                             </div>
                         </article>
@@ -184,9 +236,11 @@
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
+                            <span class="icon icon-sm rounded-circle bg-info-light"><i
+                                    class="text-info material-icons md-shopping_basket"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Total Users</h6> <span><%- totalUsers ? totalUsers : '0' %></span>
+                                <h6 class="mb-1 card-title">Total Users</h6> <span><%- totalUsers ? totalUsers : '0'
+                                        %></span>
                                 <span class="text-sm">
                                     Based on the overall data
                                 </span>
@@ -195,188 +249,147 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-8 col-lg-12">
-                    <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Sale statistics</h5>
-                            <canvas id="myChart" height="120px"></canvas>
-                        </article>
-                    </div>
-                    <!-- <div class="row">
-                        <div class="col-lg-5">
-                            <div class="card mb-4">
-                                <article class="card-body">
-                                    <h5 class="card-title">New Members</h5>
-                                    <div class="new-member-list">
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/imgs/people/avatar4.jpg" alt="" class="avatar">
-                                                <div>
-                                                    <h6>Patric Adams</h6>
-                                                    <p class="text-muted font-xs">
-                                                        Sanfrancisco
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="btn btn-xs"><i class="material-icons md-add"></i> Add</a>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/imgs/people/avatar2.jpg" alt="" class="avatar">
-                                                <div>
-                                                    <h6>Dilan Specter</h6>
-                                                    <p class="text-muted font-xs">
-                                                        Sanfrancisco
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="btn btn-xs"><i class="material-icons md-add"></i> Add</a>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/imgs/people/avatar3.jpg" alt="" class="avatar">
-                                                <div>
-                                                    <h6>Tomas Baker</h6>
-                                                    <p class="text-muted font-xs">
-                                                        Sanfrancisco
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="btn btn-xs"><i class="material-icons md-add"></i> Add</a>
-                                        </div>
+
+
+
+
+
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="row gx-3">
+                        <div class="card card-body mb-4">
+                            <article class="icontext">
+                                <span class="bg-primary-light"></span>
+                                <div class="text">
+                                    <div class="row">
+                                        <div class="col-lg-9 col-md-9">
+                                            <h3 class="mb-1 card-title">Sales Report</h3>
+                                        </div><br><br><br>
+                                        <h6>Data will be from below table :</h6><br><br><button class="btn btn-primary"
+                                            style="width: auto;" id="salesPDF">Download Report</button>&nbsp;&nbsp;
+                                        <!-- <button class="btn btn-primary"
+                                            style="width: auto;" id="salesXL">XL</button> -->
+
+
                                     </div>
-                                </article>
-                            </div>
+                                </div>
+                            </article>
                         </div>
-                        <div class="col-lg-7">
-                            <div class="card mb-4">
-                                <article class="card-body">
-                                    <h5 class="card-title">Recent activities</h5>
-                                    <ul class="verti-timeline list-unstyled font-sm">
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>Today</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Lorem ipsum dolor sit amet consectetur
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list active">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl animation-fade-right"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>17 May</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Debitis nesciunt voluptatum dicta reprehenderit
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>13 May</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Accusamus voluptatibus voluptas.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>05 April</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        At vero eos et accusamus et iusto odio dignissi
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>26 Mar</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Responded to need “Volunteer Activities
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </article>
+                        <!-- Date Inputs and Filter Button -->
+                        <div class="row">
+                            <p class="text-center" style="color: rgb(175, 113, 21);" id="dateError"></p>
+                            <div class="col-lg-3 col-md-3 me-auto">
+                                <p class="text-center text-info">Starting Date</p>
+                                <input type="date" value="" id="startingDate" class="form-control">
+                            </div>
+                            <div class="col-lg-3 col-md-3 me-auto">
+                                <p class="text-center text-info">Ending Date</p>
+                                <input type="date" id="endingDate" class="form-control">
+
+                            </div>
+                            <div class="col-lg-3 col-md-3  mb-3 mt-4">
+                                <button class="btn btn-primary" id="dateWiseFilterBtn">Filter</button>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-6 mt-4">
+                                <select class="form-select" onchange="filter(this.value)" id="filterDrop">
+                                    <option value="all">All</option>
+                                    <option value="today">Today</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div> -->
-                <!-- <div class="col-xl-4 col-lg-12"> -->
+                </div>
+            </div>
+
+            <div class="card-body" id="orderList">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="salesTable">
+                        <thead>
+                            <tr>
+                                <th>OrderId</th>
+                                <th>Shipped Address</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (ordersData.length) { %>
+                                <% for( let i=0; i < ordersData.length; i++ ) { %>
+                                    <tr>
+                                        <td width="40%">
+                                            <div>
+                                                <p><%- ordersData[i].trackingId %></p>
+                                            </div>
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <% Object.keys(ordersData[i].address).forEach(function(key) { %>
+                                                <%= ordersData[i].address[key] %> <br>
+                                                    <% }); %>
+                                        </td>
+                                        <td><%- new Date(ordersData[i].deliveredDate).toLocaleDateString('en-GB') %>
+                                        </td>
+                                        <td>&#x20B9; <%- ordersData[i].totalAmount %></td>
+
+                                    </tr>
+                                    <% } %>
+                                        <% } %>
+                        </tbody>
+                    </table> <!-- table-responsive.// -->
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="container">
                     <div class="card mb-4">
                         <article class="card-body">
-                            <h5 class="card-title">Revenue Base on Area</h5>
-                            <canvas id="myChart2" height="217"></canvas>
-                        </article>
-                    </div>
-                    <!-- <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Marketing Chanel</h5>
-                            <span class="text-muted font-xs">Facebook</span>
-                            <div class="progress mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 15%">15%</div>
-                            </div>
-                            <span class="text-muted font-xs">Instagram</span>
-                            <div class="progress mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 65%">65% </div>
-                            </div>
-                            <span class="text-muted font-xs">Google</span>
-                            <div class="progress mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 51%"> 51% </div>
-                            </div>
-                            <span class="text-muted font-xs">Twitter</span>
-                            <div class="progress mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
-                            </div>
-                            <span class="text-muted font-xs">Other</span>
-                            <div class="progress mb-3">
-                                <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
-                            </div>
+                            <h5 class="card-title">Order Statistics</h5>
+                            <canvas id="aChart"></canvas>
                         </article>
                     </div>
                 </div>
-            </div> -->
-           
+            </div>
+
+            <div class="col-lg-6">
+                <div class="container">
+                    <div class="card mb-4">
+                        <article class="card-body">
+                            <% const monthNames=['January', 'February' , 'March' , 'April' , 'May' , 'June' , 'July'
+                                , 'August' , 'September' , 'October' , 'November' , 'December' ]; %>
+                                <% const currentMonthIndex=new Date().getMonth(); %>
+                                    <% const currentMonthName=monthNames[currentMonthIndex]; %>
+                                        <h5 class="card-title">
+                                            <%= currentMonthName %> Sales
+                                        </h5>
+                                        <canvas id="cChart" height="217"></canvas>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="container">
+                    <div class="card mb-4">
+                        <article class="card-body">
+                            <h5 class="card-title">Monthly Sales</h5>
+                            <canvas id="bChart" height="217"></canvas>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
 
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                    document.write(new Date().getFullYear())
+                        document.write(new Date().getFullYear())
                     </script> © Otaku Hub Administrator
                 </div>
                 <div class="col-sm-6">
@@ -387,6 +400,429 @@
             </div>
         </footer>
     </main>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- PDF of sales report -->
+    <script>
+        document.getElementById('salesPDF').addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            // Get a reference to the table
+            const salesTable = document.getElementById('salesTable');
+
+            // Get the table body
+            const tableBody = salesTable.querySelector('tbody');
+
+            const salesData = []
+            const startingDate = document.getElementById('startingDate').value;
+            const endingDate = document.getElementById('endingDate').value;
+            const filterDrop = document.getElementById('filterDrop').value;
+           
+
+            // Iterate through rows in the table
+            for (const row of tableBody.rows) {
+                // Access individual cells in the row
+                const orderId = row.cells[0].textContent.trim();
+                const date = row.cells[2].textContent;
+                const address = row.cells[1].textContent;
+                let totalAmount = row.cells[3].textContent.trim();
+                totalAmount = parseFloat(totalAmount.replace(/[^0-9]/g, ''), 10);
+         
+
+                const orderData = {
+                    orderId: orderId,
+                    date: date,
+                    address: address,
+                    totalAmount: totalAmount,
+                    startingDate:startingDate,
+                    endingDate:endingDate,
+                    filterDrop:filterDrop
+                }
+
+                salesData.push(orderData);
+            }
+           
+
+            try {
+                const response = await fetch('/dashboard/generate-report', {
+                    method: 'post',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify(salesData)
+                })
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'report.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Failed to generate PDF');
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+
+        })
+    </script>
+    <!-- Filtering based on input date -->
+    <script>
+        document.getElementById('dateWiseFilterBtn').addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            const isValid = validateInputDate();
+
+            if (isValid) {
+                const startingDate = document.getElementById('startingDate').value;
+                const endingDate = document.getElementById('endingDate').value;
+
+
+                const response = await fetch('/dashboard/filter-by-date', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ startingDate, endingDate })
+                })
+
+                const result = await response.json()
+                const orders = result.orders
+                const orderListDiv = document.getElementById('orderList');
+
+                const orderListHTML = `
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="salesTable">
+                                    <thead>
+                                        <tr>
+                                <th>OrderId</th>
+                                <th>Shipped Address</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${orders.length > 0 ?
+                        orders.map((order) => `
+        <tr>
+            <td width="40%">
+                <div>
+                    <p>${order.trackingId}</p>
+                </div>
+            </td>
+            
+            <td>
+                ${Object.keys(order.address).map((key) => `
+                    ${order.address[key]}<br>
+                `).join('')}
+            </td>
+            <td>${new Date(order.deliveredDate).toLocaleDateString('en-GB')}</td>
+            <td>₹${order.totalAmount}</td>
+        </tr>
+    `).join('') :
+                        '<tr><td colspan="4" class="text-center" style="color:orange">OOPS! Orders are empty</td></tr>'
+                    }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+
+                if (orderListDiv) {
+                    orderListDiv.innerHTML = orderListHTML;
+
+                    // Initialize DataTable only if there are orders
+                    if (orders.length > 0) {
+                        const dataTable = new DataTable('#salesTable');
+                        dataTable.init();
+                    }
+                }
+            } else {
+                console.log('Not proper data')
+            }
+        })
+
+
+        // Date form validation
+        function validateInputDate() {
+            const startingDate = document.getElementById('startingDate').value;
+            const endingDate = document.getElementById('endingDate').value;
+            console.log(startingDate, endingDate);
+
+            let isValid = true;
+
+            // Checking the start and end logic
+
+            if (dateValidate(startingDate, endingDate) === false) {
+                document.getElementById('dateError').textContent = 'Please check you date'
+                document.getElementById('startingDate').style.borderColor = 'red'
+                document.getElementById('endingDate').style.borderColor = 'red'
+                setTimeout(() => {
+                    document.getElementById('dateError').textContent = ''
+                    document.getElementById('startingDate').style.borderColor = ''
+                    document.getElementById('endingDate').style.borderColor = ''
+                }, 5000)
+                isValid = false;
+            }
+
+
+
+            return isValid;
+        }
+        function dateValidate(startingDate, endingDate) {
+            const created = new Date(startingDate);
+            const expire = new Date(endingDate);
+            return created <= expire
+        }
+    </script>
+    <!-- Function filtering based on dropdown -->
+    <script>
+        async function filter(value) {
+            if (value) {
+                try {
+                    const response = await fetch(`/dashboard/filter-sales?by=${value}`);
+                    const data = await response.json();
+                    const orders = data.orders;
+
+                    const orderListDiv = document.getElementById('orderList');
+                    if (!orderListDiv) {
+                        console.error("Element with ID 'orderList' not found in HTML");
+                        return;
+                    }
+
+
+
+                    const orderListHTML = `
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="salesTable">
+                                    <thead>
+                                        <tr>
+                                <th>OrderId</th>
+                                <th>Shipped Address</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${orders.length > 0 ?
+                            orders.map((order) => `
+        <tr>
+            <td width="40%">
+                <div>
+                    <p>${order.trackingId}</p>
+                </div>
+            </td>
+            
+            <td>
+                ${Object.keys(order.address).map((key) => `
+                    ${order.address[key]}<br>
+                `).join('')}
+            </td>
+            <td>${new Date(order.deliveredDate).toLocaleDateString('en-GB')}</td>
+            <td>₹${order.totalAmount}</td>
+        </tr>
+    `).join('') :
+                            '<tr><td colspan="4" class="text-center" style="color:orange">OOPS! Orders are empty</td></tr>'
+                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+
+                    if (orderListDiv) {
+                        orderListDiv.innerHTML = orderListHTML;
+
+                        // Initialize DataTable only if there are orders
+                        if (orders.length > 0) {
+                            const dataTable = new DataTable('#salesTable');
+                            dataTable.init();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error occured while filtering based on dropdown', error.message);
+                }
+            }
+        }
+    </script>
+    <!-- Pie chart to show orders , based on status -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Order data from backend count
+            const pending = '<%- ordersPie.pending%>'
+            const shipped = '<%- ordersPie.shipped%>'
+            const processing = '<%- ordersPie.processing%>'
+            const delivered = '<%- ordersPie.delivered%>'
+            const returned = '<%- ordersPie.returned%>'
+
+            // Create a pie chart for orders
+            const orderCtx = document.getElementById('aChart').getContext('2d');
+            const orderChart = new Chart(orderCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'Shipped', 'Processing', 'Delivered', 'Returned'],
+                    datasets: [{
+                        data: [pending, shipped, processing, delivered, returned],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(255, 205, 86, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 64, 64, 0.7)',
+                        ],
+                    }],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Order Statistics by Status',
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'orange', // Set the font color to white
+                            },
+                        },
+                    },
+                },
+            });
+
+            // Sales data for monthly sales
+            const months = ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+
+            const labels = '<%- labels%>'.split(',') // Months
+            const count = '<%- count%>'.split(',')  // And its count of orders
+
+            // Initialize an array to store counts with null values
+            const countsWithNull = new Array(months.length).fill(null); // Set all values as null
+
+            // Map labels to their corresponding positions in the counts array
+            labels.forEach((label, index) => {
+                const monthIndex = months.indexOf(label);
+                if (monthIndex !== -1) {
+                    countsWithNull[monthIndex] = count[index];
+                }
+            });
+
+
+            // Create a line chart for monthly sales
+            const salesCtx = document.getElementById('bChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Sales by Month',
+                            data: countsWithNull,
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            fill: false,
+                        },
+                    ],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Sales',
+                    },
+                    scales: {
+                        x: {
+                            type: 'category', // Use 'category' scale for non-numeric labels
+                            position: 'bottom',
+                        },
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'orange', // Set the font color to white
+                            },
+                        },
+                    },
+                },
+            });
+
+
+            // Sales data for monthly sales
+            const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+
+            const week = '<%- weeks%>'.split(',') // Months
+            const data = '<%- weekCount%>'.split(',')  // And its count of orders
+
+            // Initialize an array to store counts with null values
+            const dataWithNull = new Array(weeks.length).fill(null); // Set all values as null
+
+            // Map labels to their corresponding positions in the counts array
+            week.forEach((label, index) => {
+                const weekIndex = weeks.indexOf(week);
+                if (weekIndex !== -1) {
+                    dataWithNull[weekIndex] = data[index];
+                }
+            });
+
+
+            // Create a line chart for monthly sales
+            const weekCtx = document.getElementById('cChart').getContext('2d');
+            const weekChart = new Chart(weekCtx, {
+                type: 'bar',
+                data: {
+                    labels: weeks,
+                    datasets: [
+                        {
+                            label: 'Sales by Week',
+                            data: data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set the fill color
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1, // Add a border width to make the border visible
+                        },
+                    ],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Weekly Sales',
+                    },
+                    scales: {
+                        x: {
+                            type: 'category',
+                            position: 'bottom',
+                        },
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'orange',
+                            },
+                        },
+                    },
+                },
+            });
+
+        });
+    </script>
+
+    <!-- DataTables Initialization -->
+    <script>
+        var $j = jQuery.noConflict();
+
+        $j(document).ready(function () {
+            $j('#salesTable').DataTable();
+        });
+    </script>
+    <!-- Sales Report Section -->
     <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="assets/js/vendors/select2.min.js"></script>

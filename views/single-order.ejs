@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -185,8 +186,8 @@
                                         </td>
                                         <td>
                                             <% if(orderDetails.couponDiscount){%>
-                                            <p><%- orderDetails.couponDiscount%>%</p>
-                                            <%}%>
+                                                <p><%- orderDetails.couponDiscount%>%</p>
+                                                <%}%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -226,6 +227,11 @@
                 <%}%>
                     <% if( orderDetails.orderStatus==='Delivered' ){%>
                         <div class="container">
+                            <div class="row mt-2 justify-content-center">
+                                <a href="" class="btn col-md-6" id="invoice"
+                                    style="background-color: rgb(28, 65, 121); text-decoration: none; color: white; font-size: 18px;">Download
+                                    Invoice</a>
+                            </div>
                             <div class="row mt-2 justify-content-center">
                                 <a href="/return-order/?orderId=<%- orderDetails._id%>" class="btn col-md-6"
                                     id="returnOrder"
@@ -408,6 +414,67 @@
             </div>
         </div>
     </footer>
+    <!-- Download Invoice -->
+    <script>
+        document.getElementById('invoice').addEventListener('click', async function (e) {
+            e.preventDefault()
+            const orderData = {
+                orderId: ' <%= orderDetails.trackingId %>',
+                date: '<%= orderDetails.date.toDateString() %>',
+                address: {
+                    name: '<%= orderDetails.address.name %>',
+                    mobile: '<%= orderDetails.address.mobile %>',
+                    houseaddress: '<%= orderDetails.address.houseaddress %>',
+                    street: '<%= orderDetails.address.street %>',
+                    city: '<%= orderDetails.address.city %>',
+                    pincode: '<%= orderDetails.address.pincode %>',
+                    state: '<%= orderDetails.address.state %>'
+                },
+                totalAmount: '<%= orderDetails.totalAmount %>',
+                deliveredDate: '<%- orderDetails.deliveredDate ? orderDetails.deliveredDate.toDateString() : "" %>',
+                paymentMethod: '<%= orderDetails.paymentMethod %>',
+                products: [
+                    '<% for (let i = 0; i < orderDetails.products.length; i++) { %>',
+                    {
+                        name: '<%= orderDetails.products[i].productId.name %>',
+                        size: '<%= orderDetails.products[i].size !== null ? orderDetails.products[i].size : "" %>',
+                        quantity: '<%- orderDetails.products[i].quantity %>',
+                        total: '<%= orderDetails.products[i].total %>'
+                    },
+
+                    '<% } %>'
+                ]
+            };
+
+
+
+            try {
+                const response = await fetch('/order-details/generate-invoice', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'invoice.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Failed to generate PDF');
+                }
+            } catch (error) {
+                console.error("Error occured while generating invoice:", error.message);
+            }
+        });
+    </script>
+
     <script>
         // Cancel Order
         document.getElementById('cancelOrder').addEventListener('click', async (event) => {
@@ -512,7 +579,7 @@
                                     title: 'swal'
                                 }
                             }).then(() => {
-                                location.reload(); 
+                                location.reload();
                             });
 
                         } else if (result.status === 'blocked') {
@@ -534,7 +601,7 @@
                                     title: 'swal'
                                 }
                             }).then(() => {
-                                location.reload(); 
+                                location.reload();
                             });
 
                         }

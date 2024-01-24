@@ -103,7 +103,7 @@ router.get('/checkout',verifyToken,checkBlocked,userCartC.displayCheckout) // ch
 // Coupon
 router.post('/apply-coupon',verifyToken,checkBlockedFetch,couponC.applyCoupon)
 
-// Place Order
+// Order
 router.post('/place-order',verifyToken,checkBlockedFetch,userOrderC.placeOrder)
 router.get('/orders',verifyToken,checkBlocked,userOrderC.displayOrders)
 router.get('/order-details',verifyToken,checkBlocked,userOrderC.displaySingleOrder)
@@ -111,11 +111,19 @@ router.get('/cancel-order',verifyToken,checkBlockedFetch,userOrderC.cancelOrder)
 router.post('/payment-verification',verifyToken,checkBlockedFetch,userOrderC.verifyPaymentAndStatus)
 router.post('/return-order',verifyToken,checkBlockedFetch,userOrderC.returnOrder)
 router.get('/cancel-return',verifyToken,checkBlockedFetch,userOrderC.cancelRequest)
+router.post('/order-details/generate-invoice',verifyToken,checkBlockedFetch,userOrderC.invoice)
 
 // Wallet
 router.get('/wallet',verifyToken,checkBlocked,loginC.displayWallet)
 router.post('/recharge-wallet',verifyToken,checkBlockedFetch,loginC.rechargeWallet)
 router.get('/clear-history',verifyToken,checkBlockedFetch,loginC.clearHistory)
+
+
+// //Admin Dashboard
+router.get('/dashboard/filter-sales',adminAuth,admDashC.filterSales)
+router.post('/dashboard/filter-by-date',adminAuth,admDashC.filterByDate)
+router.post('/dashboard/generate-report',adminAuth,admDashC.generateSalesPdf)
+
 
 
 
@@ -164,6 +172,9 @@ router.get('/banners',adminAuth,couponC.displayBanners)
 router.get('/admin/banners/add',adminAuth,couponC.addBannerPage)
 router.post('/admin/banners/add',adminAuth,couponC.uploadBanner.fields([{ name: 'originalImage'},{name: 'cropImage'}]),couponC.addBanner)
 router.get('/banners/restrict',adminAuth,couponC.toggleBanner)
+
+
+
 
 
 
