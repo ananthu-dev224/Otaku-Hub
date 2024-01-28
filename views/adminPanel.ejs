@@ -16,7 +16,7 @@
     <!-- Template CSS -->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet'>
- 
+
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 
@@ -116,57 +116,12 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <!-- <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
-                </form> -->
+                
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
                         class="material-icons md-apps"></i> </button>
-                <!-- <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assets/imgs/people/avatar2.jpg" alt="User"></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                        </div>
-                    </li>
-                </ul> -->
+                
             </div>
         </header>
         <section class="content-main">
@@ -268,7 +223,9 @@
                                             <h3 class="mb-1 card-title">Sales Report</h3>
                                         </div><br><br><br>
                                         <h6>Data will be from below table :</h6><br><br><button class="btn btn-primary"
-                                            style="width: auto;" id="salesPDF"><i class="text-muted material-icons md-post_add animation-shake"></i>Download Report</button>&nbsp;&nbsp;
+                                            style="width: auto;" id="salesPDF"><i
+                                                class="text-muted material-icons md-post_add animation-shake"></i>Download
+                                            Report</button>&nbsp;&nbsp;
                                         <!-- <button class="btn btn-primary"
                                             style="width: auto;" id="salesXL">XL</button> -->
 
@@ -418,7 +375,7 @@
             const startingDate = document.getElementById('startingDate').value;
             const endingDate = document.getElementById('endingDate').value;
             const filterDrop = document.getElementById('filterDrop').value;
-           
+
 
             // Iterate through rows in the table
             for (const row of tableBody.rows) {
@@ -428,21 +385,21 @@
                 const address = row.cells[1].textContent;
                 let totalAmount = row.cells[3].textContent.trim();
                 totalAmount = parseFloat(totalAmount.replace(/[^0-9]/g, ''), 10);
-         
+
 
                 const orderData = {
                     orderId: orderId,
                     date: date,
                     address: address,
                     totalAmount: totalAmount,
-                    startingDate:startingDate,
-                    endingDate:endingDate,
-                    filterDrop:filterDrop
+                    startingDate: startingDate,
+                    endingDate: endingDate,
+                    filterDrop: filterDrop
                 }
 
                 salesData.push(orderData);
             }
-           
+
 
             try {
                 const response = await fetch('/dashboard/generate-report', {

@@ -72,7 +72,7 @@ userPro.displayCat = async (req, res) => {
 
       if (!category) {
          // Handle the case where the category is not found
-         return res.render('category-not-found', { cartCount });
+         return res.render('error');
       }
 
       let id = category._id;
@@ -285,8 +285,7 @@ userPro.changePass = async (req, res) => {
 // Manage address page
 userPro.displayManageAddress = async (req, res) => {
    try {
-      const userId = req.userId
-      console.log("User id in address page", userId);
+      const userId = req.userId;
       const user = await usersdb.findById(userId)
       res.render('userAddress', { user })
    } catch (error) {
@@ -300,8 +299,7 @@ userPro.displayManageAddress = async (req, res) => {
 userPro.manageAddAddress = async (req, res) => {
    try {
       const { houseaddress, street, city, pincode, state } = req.body
-      const userId = req.userId
-      console.log("User id in add address", userId);
+      const userId = req.userId;
       const user = await usersdb.findById(userId)
       const userAddress = user.address
 
@@ -336,7 +334,6 @@ userPro.manageAddAddress = async (req, res) => {
       if (matchingAddresses.length > 0) {
          return res.json({ status: 'error', message: "Same address already exists" })
       }
-      console.log("Exisiting address is :", matchingAddresses);
 
       // Push new address 
       user.address.push(newAddress);
@@ -392,7 +389,6 @@ userPro.manageEditAddress = async (req, res) => {
             userAddr._id.toString() !== addressId // Exclude the current address being edited
       );
 
-      console.log("Exisiting address is :", matchingAddresses);
       if (matchingAddresses.length > 0) {
          return res.json({ status: 'error', message: "Same address already exists" })
       } else {
@@ -417,15 +413,13 @@ userPro.manageDeleteAddress = async (req, res) => {
    try {
       const addressId = req.params.id
       const userId = req.userId
-      const user = await usersdb.findById(userId)
-      console.log("User document in delete address", user);
+      const user = await usersdb.findById(userId);
       // Find the index of the address with the ID
       const addressIndex = user.address.findIndex((address) => address._id.toString() === addressId);
       // Check if the address with the specified ID exists
       if (addressIndex === -1) {
          return res.status(404).json({ status: 'error', message: 'Address not found' });
       }
-      console.log("Address index is", addressIndex);
       user.address.splice(addressIndex, 1); // Modifying address array
       await user.save();
       res.json({ status: 'success', message: 'Address deleted successfully' })
@@ -449,6 +443,8 @@ userPro.logoutUser = async (req, res) => {
       console.log("An error occured while user logout", error.message)
    }
 }
+
+
 
 
 module.exports = userPro

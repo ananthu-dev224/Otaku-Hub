@@ -2,6 +2,8 @@ const ordersdb = require('../model/ordersSchema')
 const walletdb = require('../model/walletSchema')
 const adminOrder = {}
 
+const stockHelper = require('../helpers/stockHelper')
+
 
 // display orders in admin 
 adminOrder.displayOrdersAdmin = async (req, res) => {
@@ -60,29 +62,7 @@ adminOrder.changeOrderStatus = async (req, res) => {
             await orderData.save()
         } else if (status === 'Returned') {
             // Add the stock back when the order returned also if it is razorpay or wallet refund the money
-            let stockToIncrease
-            for (const product of orderData.products) {
-                if (product.size !== null) {
-                    stockToIncrease = product.productId.quantity.find((entry) => entry.size === product.size);
-                    if (stockToIncrease) {
-                        stockToIncrease.stock += product.quantity;
-                        await product.productId.save();
-                        console.log("stock added back in product with size", stockToIncrease.stock);
-                    } else {
-                        console.log('Cannot get the stock for size present products');
-                    }
-                } else {
-                    stockToIncrease = product.productId.quantity[0]
-                    if (stockToIncrease) {
-                        stockToIncrease.stock += product.quantity;
-                        await product.productId.save();
-                        console.log("stock added back in product without size", stockToIncrease.stock);
-                    } else {
-                        console.log('Cannot get the stock for  products without size');
-                    }
-                }
-            };
-
+            await stockHelper.updateStock(orderData);
             // Refund amount in wallet
             if (orderData.paymentMethod !== 'COD') {
                 let wallet = await walletdb.findOne({ userId: userId })

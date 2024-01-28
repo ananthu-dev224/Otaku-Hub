@@ -26,7 +26,6 @@ try {
 admLoginC.manageadminLogin = async (req,res) =>{
     try {
         const{email,password} = req.body
-        console.log(req.body);
         const dbAdmin = await Admin.findOne({email})
 
         if(!dbAdmin){
@@ -43,7 +42,6 @@ admLoginC.manageadminLogin = async (req,res) =>{
         const tokenadmin = jwt.sign({ adminId: dbAdmin._id }, process.env.SECRET_ID_ADMIN, { expiresIn: '1h' });
         // Set the token in a cookie
         res.cookie('tokenadmin', tokenadmin, { httpOnly: true, secure: false });
-        console.log("Admin JWT",tokenadmin);
         res.json({status:'success'}) //to admin dashboard
     } catch (error) {
       res.json({status:'error',message:'An error occured please try again'})
@@ -63,12 +61,6 @@ admLoginC.manageadminLogout = (req,res) =>{
   res.render('error')
  }
 }
-
-
-
-
-
-
 
 
 

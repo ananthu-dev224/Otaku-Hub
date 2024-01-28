@@ -77,8 +77,4 @@ admUsersC.searchUser = async (req, res) => {
 }
 
 
-
-
-
-
 module.exports = admUsersC

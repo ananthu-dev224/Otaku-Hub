@@ -152,7 +152,7 @@ const applyCoupon = async (req, res) => {
 const displayBanners = async (req, res) => {
     try {
         const banners = await bannerdb.find()
-        res.render('banners',{banners})
+        res.render('banners', { banners })
     } catch (error) {
         console.log("An error occured while displaying banners in admin", error.message);
         res.render('error')
@@ -173,13 +173,13 @@ const addBanner = async (req, res) => {
     try {
         const finalImage = req.files['cropImage'][0].path
         const newBanner = new bannerdb({
-            banner:finalImage
+            banner: finalImage
         })
         newBanner.save()
-        res.json({success:true})
+        res.json({ success: true })
     } catch (error) {
         console.log("An error occured while adding banner to db", error.message);
-        res.json({success:false})
+        res.json({ success: false })
     }
 }
 
@@ -189,10 +189,10 @@ const toggleBanner = async (req, res) => {
         const banner = await bannerdb.findById(bannerId)
         banner.isActive = !banner.isActive
         await banner.save()
-        res.json({status:'success'})
+        res.json({ status: 'success' })
     } catch (error) {
         console.log("An error occured while toggling banner status", error.message);
-        res.json({status:'error'})
+        res.json({ status: 'error' })
     }
 }
 

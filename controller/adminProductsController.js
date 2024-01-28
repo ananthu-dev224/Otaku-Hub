@@ -24,7 +24,7 @@ ProductsC.displayPro = async (req, res) => {
       .limit(perPage)
       .exec();
 
-    res.render("adminProducts", { products, currentPage, totalPages, search:null });
+    res.render("adminProducts", { products, currentPage, totalPages, search: null });
 
   } catch (error) {
     console.log("An error occured while loading product management page", error.message);
@@ -96,9 +96,6 @@ ProductsC.manageAddPro = async (req, res) => {
       { name: { $regex: new RegExp('^' + name + '$', 'i') } }, // Case-insensitive check
     ]
   });
-  //  console.log(name,category,description,stock,stocks,price, discount);
-  //  console.log('req.body:', req.body);
-  //  console.log('req.files:', req.files); //uploaded files
 
   if (existingPro) {
     res.render("addProduct", { alert: 'Product with this name already exists', categories })
@@ -130,8 +127,6 @@ ProductsC.manageAddPro = async (req, res) => {
           size: sizes[i],
           stock: stocks[i],
         });
-        console.log(sizes[i])
-        console.log(stocks[i]);
       }
     } else {
       quantity.push({
@@ -213,7 +208,6 @@ ProductsC.manageEditPro = async (req, res) => {
         });
       }
       updateFields.quantity = quantity;
-      console.log(updateFields.quantity);
     }
 
     if (req.files['mainimage'] && req.files['mainimage'][0]) {

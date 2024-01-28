@@ -7,6 +7,7 @@ const razorpayHelper = require('../helpers/razorpayHelper')
 const pdf = require('pdfkit')
 const fs = require('fs')
 const userOrder = {}
+const stockHelper = require('../helpers/stockHelper')
 
 
 
@@ -18,7 +19,7 @@ userOrder.placeOrder = async (req, res) => {
       addressId } = req.body;
 
     const couponDiscount = req.query.couponDiscount
-   
+
 
     if (!addressId) {
       return res.json({ status: 'error', message: 'Please add an address' })
@@ -37,7 +38,7 @@ userOrder.placeOrder = async (req, res) => {
     } else {
       grandTotal = cart.total
     }
-   
+
 
     // address saving in order details
     const shippingAddress = {
@@ -66,28 +67,7 @@ userOrder.placeOrder = async (req, res) => {
     // Cash on Delivery
     if (paymentMethod === 'COD') {
       // Reduce the stock
-      let stockToReduce
-      for (const product of cart.products) {
-        if (product.size !== null) {
-          stockToReduce = product.productId.quantity.find((entry) => entry.size === product.size);
-          if (stockToReduce) {
-            stockToReduce.stock -= product.quantity;
-            await product.productId.save();
-            console.log("stock reduced in product with size", stockToReduce.stock);
-          } else {
-            console.log('Cannot get the stock for size present products');
-          }
-        } else {
-          stockToReduce = product.productId.quantity[0]
-          if (stockToReduce) {
-            stockToReduce.stock -= product.quantity;
-            await product.productId.save();
-            console.log("stock reduced in product without size", stockToReduce.stock);
-          } else {
-            console.log('Cannot get the stock for  products without size');
-          }
-        }
-      };
+      await stockHelper.reduceStock(cart)
       cart.products = []
       await cart.save()  //Clear the cart and save
       req.session.isCheckout = false;
@@ -111,7 +91,7 @@ userOrder.placeOrder = async (req, res) => {
 
     // Wallet
     if (paymentMethod === 'Wallet') {
-      
+
       let wallet = await walletdb.findOne({ userId: userId })
 
       if (!wallet) {
@@ -130,32 +110,9 @@ userOrder.placeOrder = async (req, res) => {
         wallet.transactionHistory.push(transaction) // recent transaction as debit in history
         await wallet.save();
         orderPlaced = await newOrder.save();
-        
-
 
         // Reduce the stock
-        let stockToReduce
-        for (const product of cart.products) {
-          if (product.size !== null) {
-            stockToReduce = product.productId.quantity.find((entry) => entry.size === product.size);
-            if (stockToReduce) {
-              stockToReduce.stock -= product.quantity;
-              await product.productId.save();
-              console.log("stock reduced in product with size", stockToReduce.stock);
-            } else {
-              console.log('Cannot get the stock for size present products');
-            }
-          } else {
-            stockToReduce = product.productId.quantity[0]
-            if (stockToReduce) {
-              stockToReduce.stock -= product.quantity;
-              await product.productId.save();
-              console.log("stock reduced in product without size", stockToReduce.stock);
-            } else {
-              console.log('Cannot get the stock for  products without size');
-            }
-          }
-        };
+        await stockHelper.reduceStock(cart)
         // Clearing the cart and reducing the product quantity
         cart.products = []
         await cart.save()  //Clear the cart and save
@@ -173,14 +130,14 @@ userOrder.placeOrder = async (req, res) => {
 
 // Verify the Online payment from Razorpay and Update the payment status
 userOrder.verifyPaymentAndStatus = async (req, res) => {
- 
+
   const userId = req.userId;
   const data = req.body;
   const receipt = data.order.receipt;
   const cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
 
   razorpayHelper.verifyOnlinePayment(data).then(() => {
-    
+
 
     if (data.from === 'Wallet') {  // so we have to recharge money to wallet
       const amount = (data.order.amount) / 100 // converting paise to inr 
@@ -191,36 +148,13 @@ userOrder.verifyPaymentAndStatus = async (req, res) => {
       })
     } else { // so it is direct payment from razorpay
       let paymentSuccess = true;
-      const updateStock = async () => { //if the payment is success only the cart is updating as empty and clearing stock
-        // Reduce the stock
-        let stockToReduce
-        for (const product of cart.products) {
-          if (product.size !== null) {
-            stockToReduce = product.productId.quantity.find((entry) => entry.size === product.size);
-            if (stockToReduce) {
-              stockToReduce.stock -= product.quantity;
-              await product.productId.save();
-              console.log("stock reduced in product with size", stockToReduce.stock);
-            } else {
-              console.log('Cannot get the stock for size present products');
-            }
-          } else {
-            stockToReduce = product.productId.quantity[0]
-            if (stockToReduce) {
-              stockToReduce.stock -= product.quantity;
-              await product.productId.save();
-              console.log("stock reduced in product without size", stockToReduce.stock);
-            } else {
-              console.log('Cannot get the stock for  products without size');
-            }
-          }
-        };
-
+      const update = async () => {
+        await stockHelper.reduceStock(cart)
         // Clearing the cart and reducing the product quantity
         cart.products = []
         await cart.save()  //Clear the cart and save
       }
-      updateStock();
+      update();
       req.session.isCheckout = false;
       razorpayHelper.updatePaymentStatus(receipt, paymentSuccess).then(() => {
         res.json({ status: "paymentSuccess", placedOrderId: receipt })
@@ -271,28 +205,7 @@ userOrder.cancelOrder = async (req, res) => {
       order.orderStatus = "Cancelled"
 
       // If order cancelled put the stock back
-      let stockToIncrease
-      for (const product of order.products) {
-        if (product.size !== null) {
-          stockToIncrease = product.productId.quantity.find((entry) => entry.size === product.size);
-          if (stockToIncrease) {
-            stockToIncrease.stock += product.quantity;
-            await product.productId.save();
-            console.log("stock added back in product with size", stockToIncrease.stock);
-          } else {
-            console.log('Cannot get the stock for size present products');
-          }
-        } else {
-          stockToIncrease = product.productId.quantity[0]
-          if (stockToIncrease) {
-            stockToIncrease.stock += product.quantity;
-            await product.productId.save();
-            console.log("stock added back in product without size", stockToIncrease.stock);
-          } else {
-            console.log('Cannot get the stock for  products without size');
-          }
-        }
-      };
+      await stockHelper.updateStock(order)
       await order.save()
       if (order.paymentMethod !== 'COD') {
         let wallet = await walletdb.findOne({ userId: userId })
@@ -393,15 +306,15 @@ userOrder.invoice = async (req, res) => {
     pdfDoc.text('Products', { underline: true })
     // Loop through products and add details
     for (let i = 0; i < orderDetails.products.length; i++) {
-      if(orderDetails.products[i].name !== undefined){
-      pdfDoc.moveDown();
-      pdfDoc.text(`Name: ${orderDetails.products[i].name}`);
-      if (orderDetails.products[i].size !== null) {
-        pdfDoc.text(`Size: ${orderDetails.products[i].size}`);
+      if (orderDetails.products[i].name !== undefined) {
+        pdfDoc.moveDown();
+        pdfDoc.text(`Name: ${orderDetails.products[i].name}`);
+        if (orderDetails.products[i].size !== null) {
+          pdfDoc.text(`Size: ${orderDetails.products[i].size}`);
+        }
+        pdfDoc.text(`Quantity: ${orderDetails.products[i].quantity}`);
+        pdfDoc.text(`Total: Rs:${orderDetails.products[i].total}`);
       }
-      pdfDoc.text(`Quantity: ${orderDetails.products[i].quantity}`);
-      pdfDoc.text(`Total: Rs:${orderDetails.products[i].total}`);
-    }
     }
 
     pdfDoc.moveDown();
@@ -424,7 +337,4 @@ userOrder.invoice = async (req, res) => {
     console.log("An error occured while generating invoice", error.message);
   }
 }
-
-
-
 module.exports = userOrder

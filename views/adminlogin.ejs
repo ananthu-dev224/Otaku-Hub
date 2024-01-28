@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Otaku Hub</title>
   <link rel="stylesheet" href="/styles/admin.css">
   <!-- CSS Files -->
-<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.2/components/logins/login-8/assets/css/login-8.css" />
-<link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.2/components/logins/login-8/assets/css/login-8.css" />
+  <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <style>
   .swal {
-    color: #000000 !important; 
+    color: #000000 !important;
   }
-  </style>
+</style>
+
 <body>
   <section class="bg-black p-3 p-md-4 p-xl-5">
     <div class="container">
@@ -25,7 +27,8 @@
           <div class="card border-light-subtle">
             <div class="row g-0">
               <div class="col-12 col-md-6">
-                <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy" src="/assets/Administrator of Otaku Hub.png" alt="">
+                <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
+                  src="/assets/Administrator of Otaku Hub.png" alt="">
               </div>
               <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <div class="col-12 col-lg-11 col-xl-10">
@@ -34,8 +37,9 @@
                       <div class="col-12">
                         <div class="mb-5">
                           <div class="text-center mb-4">
-                            <a href="#!">
-                              <img src="https://i.pinimg.com/564x/73/59/3c/73593cd9efaf92b0d1de17cda3de4e80.jpg" alt="" width="175" height="57" class="img-fluid">
+                            <a href="">
+                              <img src="/assets/adminmeme.jpg" alt=""
+                                width="175" height="57" class="img-fluid">
                             </a>
                           </div>
                           <h4 class="text-center">Welcome Admin !</h4>
@@ -46,34 +50,38 @@
                     <div class="row">
                       <div class="col-12">
                         <div class="d-flex gap-3 flex-column">
-                        
-                    </div>
-      
-                    <form action="/admin" method="post" id="adminForm">
-                      <div class="row gy-3 overflow-hidden">
-                        <div class="col-12">
-                          <div class="form-floating mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                            <label for="email" class="form-label">Email</label>
-                          </div>
+
                         </div>
-                        <div class="col-12">
-                          <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
-                            <label for="password" class="form-label">Password</label>
+
+                        <form action="/admin" method="post" id="adminForm">
+                          <div class="row gy-3 overflow-hidden">
+                            <div class="col-12">
+                              <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email" id="email"
+                                  placeholder="name@example.com" required>
+                                <label for="email" class="form-label">Email</label>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="password" id="password" value=""
+                                  placeholder="Password" required>
+                                <label for="password" class="form-label">Password</label>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="d-grid">
+                                <button class="btn btn-success btn-lg" type="submit">Log in </button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div class="col-12">
-                          <div class="d-grid">
-                            <button class="btn btn-success btn-lg" type="submit">Log in </button>
+                        </form>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
+                              <a href="#!" class="link-secondary text-decoration-none">Forgot password ?</a>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </form>
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
-                          <a href="#!" class="link-secondary text-decoration-none">Forgot password ?</a>
                         </div>
                       </div>
                     </div>
@@ -83,66 +91,64 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   </section>
 </body>
 <script>
   document.getElementById('adminForm').addEventListener('submit', async (event) => {
-         event.preventDefault()
-  
-     
-  
-            const formData = {
-               email:event.currentTarget.email.value,
-               password:event.currentTarget.password.value                       
-            }
-  
-            const response = await fetch('/admin', {
-               method: 'post',
-               headers: {
-                  'Content-Type': 'application/json'
-               },
-               body: JSON.stringify(formData)
-            })
-  
-            const result = await response.json();
-  
-            if (result.status === 'success') {
-              Swal.fire({
-                    icon: 'success',
-                    title: "Verified successfully",
-                    showConfirmButton: false,
-                    timer: 2000,
-                    customClass:{
-                      title:'swal'
-                    }
-                 })
-                setTimeout(() => {
-                  window.location.href = '/dashboard'
-                }, 2500);
-            } else if (result.status === 'error') {
-                 Swal.fire({
-                    icon: 'error',
-                    title: result.message,
-                    showConfirmButton: true,
-                    timer: 2000,
-                    customClass:{
-                      title:'swal'
-                    }
-                 })
-            } else {
-              Swal.fire({
-                    icon: 'info',
-                    title: result.message,
-                    showConfirmButton: false,
-                    timer: 4000,
-                    customClass:{
-                      title:'swal'
-                    }
-                 })
-            }
+    event.preventDefault()
 
+
+
+    const formData = {
+      email: event.currentTarget.email.value,
+      password: event.currentTarget.password.value
+    }
+
+    const response = await fetch('/admin', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+
+    const result = await response.json();
+
+    if (result.status === 'success') {
+      Swal.fire({
+        icon: 'success',
+        title: "Verified successfully",
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+          title: 'swal'
+        }
       })
-      </script>
+      setTimeout(() => {
+        window.location.href = '/dashboard'
+      }, 2500);
+    } else if (result.status === 'error') {
+      Swal.fire({
+        icon: 'error',
+        title: result.message,
+        showConfirmButton: true,
+        timer: 2000,
+        customClass: {
+          title: 'swal'
+        }
+      })
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: result.message,
+        showConfirmButton: false,
+        timer: 4000,
+        customClass: {
+          title: 'swal'
+        }
+      })
+    }
+
+  })
+</script>
 </html>

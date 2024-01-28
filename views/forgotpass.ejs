@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Otaku Hub</title>
   <link rel="stylesheet" href="/static/userLogin.css">
   <!-- CSS Files -->
-<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.2/components/logins/login-8/assets/css/login-8.css" />
-<link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.2/components/logins/login-8/assets/css/login-8.css" />
+  <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
   .swal {
-    color: #000000 !important; 
+    color: #000000 !important;
   }
-  </style>
+
+  .body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+  }
+</style>
+
 <body>
   <section class="bg-black p-3 p-md-4 p-xl-5">
     <div class="container">
@@ -24,7 +32,8 @@
           <div class="card border-light-subtle">
             <div class="row g-0">
               <div class="col-12 col-md-6">
-                <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy" src="/assets/forgot.jpeg" alt="">
+                <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
+                  src="/assets/forgot.jpeg" alt="">
               </div>
               <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <div class="col-12 col-lg-11 col-xl-10">
@@ -34,11 +43,12 @@
                         <div class="mb-5">
                           <div class="text-center mb-4">
                             <a href="">
-                              <img src="https://i.pinimg.com/564x/ad/e2/42/ade242c68b9416e13c2613f62c6a6c4c.jpg" alt="" width="175" height="57" class="img-fluid">
+                              <img src="/assets/forgotmeme.jpg" alt="" width="175" height="57" class="img-fluid">
                             </a>
                           </div>
                           <h4 class="text-center">Verify Email</h4>
-                          <h6 class="text-center" style="color: #2F2FA2;">Verify your email address to change your password</h6>
+                          <h6 class="text-center" style="color: #2F2FA2;">Verify your email address to change your
+                            password</h6>
                         </div>
                       </div>
                     </div>
@@ -47,34 +57,32 @@
                       <div class="col-12">
                         <div class="d-flex gap-3 flex-column">
                           </a>
-                          
-                    </div>
-      
-                    <form action="/forgot-password" method="post" id="emailForm">
-                      <div class="row gy-3 overflow-hidden">
-                        <div class="col-12">
-                          <div class="form-floating mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                            <label for="email" class="form-label">Email</label>
-                          </div>
+
                         </div>
-                        <!-- <div class="col-12">
-                          <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
-                            <label for="password" class="form-label">Password</label>
+
+                        <form action="/forgot-password" method="post" id="emailForm">
+                          <div class="row gy-3 overflow-hidden">
+                            <div class="col-12">
+                              <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email" id="email"
+                                  placeholder="name@example.com" required>
+                                <label for="email" class="form-label">Email</label>
+                              </div>
+                            </div>
+
+                            <div class="col-12">
+                              <div class="d-grid">
+                                <button class="btn btn-success btn-lg" type="submit">Send OTP</button>
+                              </div>
+                            </div>
                           </div>
-                        </div> -->
-                        <div class="col-12">
-                          <div class="d-grid">
-                            <button class="btn btn-success btn-lg" type="submit">Send OTP</button>
+                        </form>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
+
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </form>
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
-                       
                         </div>
                       </div>
                     </div>
@@ -84,67 +92,61 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   </section>
-</body>
 <script>
   document.getElementById('emailForm').addEventListener('submit', async (event) => {
-         event.preventDefault()
-  
-      //    const isValid = addressValidate();
-  
-      //    if (isValid) {
-  
-            const formData = {
-               email:event.currentTarget.email.value,                       
-            }
-  
-            const response = await fetch('/forgot-password', {
-               method: 'post',
-               headers: {
-                  'Content-Type': 'application/json'
-               },
-               body: JSON.stringify(formData)
-            })
-  
-            const result = await response.json();
-  
-            if (result.status === 'success') {
-              Swal.fire({
-                    icon: 'success',
-                    title: result.message,
-                    showConfirmButton: false,
-                    timer: 2000,
-                    customClass:{
-                      title:'swal'
-                    }
-                 })
-                setTimeout(() => {
-                  window.location.href = '/forgot-password/verify'
-                }, 2500);
-            } else if (result.status === 'error') {
-                 Swal.fire({
-                    icon: 'error',
-                    title: result.message,
-                    showConfirmButton: true,
-                    timer: 2000,
-                    customClass:{
-                      title:'swal'
-                    }
-                 })
-            } else {
-              Swal.fire({
-                    icon: 'info',
-                    title: result.message,
-                    showConfirmButton: false,
-                    timer: 4000,
-                    customClass:{
-                      title:'swal'
-                    }
-                 })
-            }
-      //    }
+    event.preventDefault()
+
+    const formData = {
+      email: event.currentTarget.email.value,
+    }
+
+    const response = await fetch('/forgot-password', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+
+    const result = await response.json();
+
+    if (result.status === 'success') {
+      Swal.fire({
+        icon: 'success',
+        title: result.message,
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+          title: 'swal'
+        }
       })
-      </script>  
+      setTimeout(() => {
+        window.location.href = '/forgot-password/verify'
+      }, 2500);
+    } else if (result.status === 'error') {
+      Swal.fire({
+        icon: 'error',
+        title: result.message,
+        showConfirmButton: true,
+        timer: 2000,
+        customClass: {
+          title: 'swal'
+        }
+      })
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: result.message,
+        showConfirmButton: false,
+        timer: 4000,
+        customClass: {
+          title: 'swal'
+        }
+      })
+    }
+  })
+</script>
+</body>
+
 </html>

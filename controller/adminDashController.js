@@ -74,7 +74,7 @@ async function graph() {
       count: count
     }
   } catch (error) {
-    console.error('Error retrieving orders in graph function:', error);
+    console.log('Error retrieving orders in graph function:', error.message);
   }
 }
 
@@ -132,7 +132,7 @@ async function barGraph() {
 
 
   } catch (error) {
-    console.error('Error retrieving orders in barGraph function:', error);
+    console.log('Error retrieving orders in barGraph function:', error.message);
   }
 }
 
@@ -155,17 +155,27 @@ admDashC.displayadminDash = async (req, res) => {
         },
       },
     ]);
-    const ordersData = await ordersdb.find({ orderStatus: 'Delivered' }).populate('products.productId')
-    const totalOrders = await ordersdb.find({ orderStatus: 'Delivered' }).count()
-    const totalProducts = await productsdb.find().count()
-    const totalCategory = await categorydb.find().count()
-    const totalUsers = await usersdb.find().count()
-    const ordersPie = await chart() // orders based on orderStatus
-    const ordersGraph = await graph()
+    const [
+      ordersData,
+      totalOrders,
+      totalProducts,
+      totalCategory,
+      totalUsers,
+      ordersPie,
+      ordersGraph,
+      ordersBarGraph
+    ] = await Promise.all([
+      ordersdb.find({ orderStatus: 'Delivered' }).populate('products.productId'),
+      ordersdb.find({ orderStatus: 'Delivered' }).count(),
+      productsdb.find().count(),
+      categorydb.find().count(),
+      usersdb.find().count(),
+      chart(),
+      graph(),
+      barGraph()
+    ]);
     const labels = [...ordersGraph.labels] // months 
     const count = [...ordersGraph.count] // orders in each month
-
-    const ordersBarGraph = await barGraph()
     const weeks = [...ordersBarGraph.labels] // weeks
     const weekCount = [...ordersBarGraph.count] // orders in each week corresponding to current month  
 
@@ -184,8 +194,6 @@ admDashC.displayadminDash = async (req, res) => {
 admDashC.filterSales = async (req, res) => {
   try {
     const value = req.query.by
-    console.log(value);
-
     const today = new Date()
 
     if (value === 'all') {
@@ -195,7 +203,7 @@ admDashC.filterSales = async (req, res) => {
         { $match: { orderStatus: 'Delivered' } },
         { $sort: { deliveredDate: -1 } },
       ]);
-      console.log(orders);
+
 
       res.json({ orders });
 
@@ -427,5 +435,6 @@ admDashC.generateSalesPdf = async (req, res) => {
     console.log("An error occured while downloading pdf report", error.message);
   }
 }
+
 
 module.exports = admDashC

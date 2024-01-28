@@ -30,6 +30,10 @@ router.post('/admin',admLoginC.manageadminLogin)
 // //Admin Dashboard
 router.get('/dashboard',adminAuth,admDashC.displayadminDash)
 
+// Landing Page
+router.get('/',loginC.displayLandingPage)
+
+
 //Home Page
 router.get('/home',verifyToken,checkBlocked,loginC.displayHome)
 
@@ -172,6 +176,7 @@ router.get('/banners',adminAuth,couponC.displayBanners)
 router.get('/admin/banners/add',adminAuth,couponC.addBannerPage)
 router.post('/admin/banners/add',adminAuth,couponC.uploadBanner.fields([{ name: 'originalImage'},{name: 'cropImage'}]),couponC.addBanner)
 router.get('/banners/restrict',adminAuth,couponC.toggleBanner)
+
 
 
 

@@ -9,13 +9,30 @@ const razorpayHelper = require('../helpers/razorpayHelper')
 const jwt = require('jsonwebtoken')
 const loginC = {}
 
+//display Landing page
+loginC.displayLandingPage = async (req, res) => {
+  try {
+    let allProducts = await productsDb.find()
+    let latestProducts = allProducts.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp()).slice(0, 4) //sorted to get the last added products
+    const banners = await bannerdb.find({ isActive: true })
+    if (!req.session.userActive) {
+      res.render('landing', { products: latestProducts, banners })
+    } else {
+      res.redirect('/home')
+    }
+  } catch (error) {
+    res.render('error')
+    console.log(" An error occured while loading landing page", error.message);
+  }
+}
+
 //displayLogin
 loginC.displayLogin = (req, res) => {
   try {
     if (req.query.blocked === 'true') {
       res.render('userLogin', { alert: "For security reasons, your account has been temporarily blocked. Please contact our support team for assistance in resolving this issue" })
     } else if (!req.session.userActive) {
-      res.render('userLogin',{alert:null})
+      res.render('userLogin', { alert: null })
     } else {
       res.redirect('/home')
     }
@@ -72,7 +89,7 @@ loginC.displayHome = async (req, res) => {
   try {
     let allProducts = await productsDb.find()
     let latestProducts = allProducts.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp()).slice(0, 4) //sorted to get the last added products
-    const banners = await bannerdb.find({isActive:true})
+    const banners = await bannerdb.find({ isActive: true })
     res.render('home', { products: latestProducts, banners })
 
   } catch (error) {
@@ -128,7 +145,7 @@ loginC.clearHistory = async (req, res) => {
       res.json({ status: 'success', message: 'Transaction history cleared' })
     }
   } catch (error) {
-    console.log("An error occured while clearing transaction history");
+    console.log("An error occured while clearing transaction history", error.message);
     res.json({ status: 'failed', message: 'An error occured please try again' })
   }
 }
@@ -141,7 +158,6 @@ loginC.addReferral = async (req, res) => {
     // User details
     const userWallet = await walletdb.findOne({ userId: userId })
     const user = await User.findById(userId)
-    // Referred User details
     const referredUser = await User.findOne({ referral: code })
     const refferedUserId = referredUser._id
     const referredUserWallet = await walletdb.findOne({ userId: refferedUserId })
@@ -168,15 +184,12 @@ loginC.addReferral = async (req, res) => {
       referredUserWallet.amount += reward;
       referredUserWallet.transactionHistory.push(reward)
       await referredUserWallet.save()
-      res.json({ status: 'success', message: `You are referred by ${referredUser.name}`})
+      res.json({ status: 'success', message: `You are referred by ${referredUser.name}` })
     }
   } catch (error) {
     console.log("An error occured while adding referral code", error.message);
     res.json({ status: 'error', message: 'An error occured please try again' })
   }
 }
-
-
-
 
 module.exports = loginC

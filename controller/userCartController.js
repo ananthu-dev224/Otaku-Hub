@@ -38,6 +38,7 @@ userCart.displayCart = async (req, res) => {
     res.render('cart', { products, totalCart })
   } catch (error) {
     console.log("An error occured while displaying cart page", error.message);
+    res.render('error')
   }
 }
 
@@ -46,6 +47,7 @@ userCart.manageAddToCart = async (req, res) => {
   try {
     const userId = req.userId
     const productId = req.query.productId
+    const size = req.query.size
     let cart = await cartdb.findOne({ userId: userId })
     if (!cart) {
       let newCart = new cartdb({ userId: userId, products: [] }) // If user has no cart
@@ -56,11 +58,13 @@ userCart.manageAddToCart = async (req, res) => {
     let productInCart;
     let quantity;
     if (cart.products.length > 0) {
-      productInCart = cart.products.find((product) => product.productId._id.toString() === productId.toString())
+      if (size) {
+        productInCart = cart.products.find((product) => product.productId._id.toString() === productId.toString() && product.size === size)
+      } else {
+        productInCart = cart.products.find((product) => product.productId._id.toString() === productId.toString())
+      }
       if (productInCart) {
-        console.log("product is", productInCart);
         quantity = productInCart.quantity;
-        console.log("quantity is", quantity);
       }
     }
 
@@ -69,9 +73,8 @@ userCart.manageAddToCart = async (req, res) => {
     if (!product.isPublished) {
       return res.json({ status: 'published', message: 'Currently the product is not available' })
     }
-    let size
+
     if (product.category.name === 'Outfits') {  // If product is a Outfit
-      size = req.query.size
       let selectedSizeStock = product.quantity.find(entry => entry.size === size);
       selectedSizeStock = selectedSizeStock.stock
       if (selectedSizeStock <= 0 || selectedSizeStock <= quantity) {
@@ -127,11 +130,14 @@ userCart.manageRemoveProduct = async (req, res) => {
   try {
     const userId = req.userId
     const productIdRemove = req.query.productId
+    const size = req.query.size
     const cart = await cartdb.findOne({ userId: userId }).populate('products.productId')
-    // console.log("cart is ", cart);
-    // console.log("Prodcutobj id", productIdRemove);
-    const productIndexToRemove = cart.products.findIndex(product => product.productId._id.toString() === productIdRemove);
-
+    let productIndexToRemove
+    if (size) {
+      productIndexToRemove = cart.products.findIndex(product => product.productId._id.toString() === productIdRemove && product.size === size);
+    } else {
+      productIndexToRemove = cart.products.findIndex(product => product.productId._id.toString() === productIdRemove);
+    }
     // If the product is found, remove it
     if (productIndexToRemove !== -1) {
       cart.products.splice(productIndexToRemove, 1);
@@ -154,20 +160,28 @@ userCart.updateQuantity = async (req, res) => {
   try {
     const userId = req.userId
     const productId = req.body.proId
+    const size = req.body.size
     const count = req.body.count;
     const currentValue = req.body.currentValue;
-    console.log(count, currentValue);
+    // console.log(size);
+    // console.log(currentValue,count);
 
     const cart = await cartdb.findOne({ userId: userId }).populate('products.productId'); //cart
-    const productToUpdate = cart.products.find(product => product.productId._id.toString() === productId.toString()); // product to update quantity
+    let productToUpdate
+    if (size) {
+      productToUpdate = cart.products.find(product => product.productId._id.toString() === productId.toString() && product.size === size); // product to update quantity
+    } else {
+      productToUpdate = cart.products.find(product => product.productId._id.toString() === productId.toString()); // product to update quantity
+    }
+
 
     let stock;
     if (productToUpdate && productToUpdate.size) {
       stock = getProductStock(productToUpdate, productToUpdate.size) // if product is an outfit
-      console.log(stock);
+      console.log("stock :", stock);
     } else {
       stock = productToUpdate.productId.quantity[0].stock
-      console.log(stock);
+      console.log("stock :", stock);
     }
     if (stock < currentValue) {
       res.json({ status: 'error', message: 'Out of Stock' });
@@ -194,10 +208,6 @@ userCart.updateQuantity = async (req, res) => {
       }
       updateProduct.total = finalPrice * updateProduct.quantity;
       await cart.save()
-
-      // Finding the cart total items count
-
-
       res.json({ status: 'success', message: 'Quantity Updated' });
     }
   } catch (error) {
@@ -235,9 +245,8 @@ userCart.manageStock = async (req, res) => {
     // Check stock and product published status for each product in the cart
     for (const cartProduct of products) {
       const product = cartProduct.productId;
-      console.log("Cart product", product);
       const quantityInCart = cartProduct.quantity;
-      console.log("quantity of product", quantityInCart);
+      console.log(quantityInCart);
 
       // Check if the product is published
       if (!product.isPublished) {
@@ -247,15 +256,13 @@ userCart.manageStock = async (req, res) => {
           unpublishedProducts.push({
             name: product.name,
           });
-          console.log("Product unpublished", product.name);
           continue; // Skip further checks for unpublished products
         }
       }
       // Check if the product has a size property
       if (cartProduct.size) {
         const availableStock = getProductStock(cartProduct, cartProduct.size);
-        console.log("available stock", availableStock);
-        console.log("Product size ", cartProduct.size);
+        console.log(availableStock);
         if (quantityInCart > availableStock) {
           outOfStockProducts.push({
             name: product.name,
@@ -266,7 +273,6 @@ userCart.manageStock = async (req, res) => {
       } else {
         // For products without size, assume there is a single stock value for the entire product
         const availableStock = cartProduct.productId.quantity[0].stock
-        console.log("available stock", availableStock);
         if (quantityInCart > availableStock) {
           outOfStockProducts.push({
             name: product.name,
@@ -280,29 +286,23 @@ userCart.manageStock = async (req, res) => {
     // If there are products with unpublished products, display an alert
     if (cart.products.length === 0) {
       alertMessage = "Cart is Empty"
-      console.log(alertMessage);
       return res.json({ status: 'error', message: alertMessage })
     } else if (unpublishedProducts.length === cart.products.length) {
       alertMessage = "All products in the cart are not available"
-      console.log(alertMessage);
       return res.json({ status: 'error', message: alertMessage })
     } else if (outOfStockProducts.length === cart.products.length) {
       alertMessage = 'All products in cart are out of stock'
-      console.log(alertMessage);
       return res.json({ status: 'error', message: alertMessage })
     } else if (outOfStockProducts.length > 0) {
       alertMessage = ` Remove the following out-of-stock products from your cart: ${outOfStockProducts
         .map(item => (item.size ? `${item.name} (Size: ${item.size})` : item.name))
         .join(', ')}`;
-      console.log(alertMessage);
       return res.json({ status: 'error', message: alertMessage })
     } else if (unpublishedProducts.length > 0) {
       let alertMessage = ` Remove the following unavailable products from your cart: ${unpublishedProducts
         .map(item => item.name).join(', ')}`;
-      console.log(alertMessage);
       return res.json({ status: 'error', message: alertMessage })
     } else {
-      console.log("Displaying checkout page");
       return res.json({ status: 'success' })
     }
   } catch (error) {
@@ -349,9 +349,9 @@ userCart.displayCheckout = async (req, res) => {
     }
   } catch (error) {
     console.log("An error occured while loading checkout page", error.message);
+    res.render('error')
   }
 }
-
 
 
 

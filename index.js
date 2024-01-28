@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const router = require('./router')
-const { v4: uuid } = require('uuid')
 const session = require('express-session')
 const crypto = require('crypto')
 const cookieParser = require('cookie-parser');
@@ -14,7 +13,7 @@ const secretID = crypto.randomBytes(32).toString('hex');
 
 //Database require
 const db = require('./model/db')
-const userSchema = require('./model/userSchema')
+
 
 
 //Connect db
