@@ -26,6 +26,7 @@ try {
 admLoginC.manageadminLogin = async (req,res) =>{
     try {
         const{email,password} = req.body
+        
         const dbAdmin = await Admin.findOne({email})
 
         if(!dbAdmin){
@@ -61,7 +62,6 @@ admLoginC.manageadminLogout = (req,res) =>{
   res.render('error')
  }
 }
-
 
 
 
