@@ -156,7 +156,7 @@ loginC.addReferral = async (req, res) => {
     const { code } = req.body
     const userId = req.userId
     // User details
-    const userWallet = await walletdb.findOne({ userId: userId })
+    let userWallet = await walletdb.findOne({ userId: userId })
     const user = await User.findById(userId)
     const referredUser = await User.findOne({ referral: code })
     if (!referredUser) {
