@@ -178,10 +178,8 @@ userCart.updateQuantity = async (req, res) => {
     let stock;
     if (productToUpdate && productToUpdate.size) {
       stock = getProductStock(productToUpdate, productToUpdate.size) // if product is an outfit
-      console.log("stock :", stock);
     } else {
       stock = productToUpdate.productId.quantity[0].stock
-      console.log("stock :", stock);
     }
     if (stock < currentValue) {
       res.json({ status: 'error', message: 'Out of Stock' });
@@ -246,7 +244,6 @@ userCart.manageStock = async (req, res) => {
     for (const cartProduct of products) {
       const product = cartProduct.productId;
       const quantityInCart = cartProduct.quantity;
-      console.log(quantityInCart);
 
       // Check if the product is published
       if (!product.isPublished) {
@@ -262,7 +259,6 @@ userCart.manageStock = async (req, res) => {
       // Check if the product has a size property
       if (cartProduct.size) {
         const availableStock = getProductStock(cartProduct, cartProduct.size);
-        console.log(availableStock);
         if (quantityInCart > availableStock) {
           outOfStockProducts.push({
             name: product.name,
