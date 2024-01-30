@@ -164,7 +164,7 @@ loginC.addReferral = async (req, res) => {
     }
     const refferedUserId = referredUser._id
     let referredUserWallet = await walletdb.findOne({ userId: refferedUserId })
-    if(userId === refferedUserId){
+    if(user === referredUser){
       return res.json({status:'error',message:'You cannot refer yourself!'})
     } else {
       user.isReferral = true;
