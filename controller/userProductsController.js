@@ -39,7 +39,7 @@ userPro.displayPro = async (req, res) => {
          .skip((page - 1) * perPage)
          .limit(perPage);
 
-      res.render('all-products', { categories, products, cartCount, currentPage: page, totalPages, order: null, category: null, search: null , categorySort : null});
+      res.render('all-products', { categories, products, cartCount, currentPage: page, totalPages, order: null, category: null, search: null, categorySort: null });
    } catch (error) {
       console.log("An error occurred while loading all products", error.message);
       res.render('error');
@@ -88,7 +88,7 @@ userPro.displayCat = async (req, res) => {
       const totalProducts = await productsdb.countDocuments({ category: id, isPublished: true });
       const totalPages = Math.ceil(totalProducts / perPage);
 
-      res.render('all-products', { categories, products, cartCount, currentPage, totalPages, category: name, order: null, search: null , categorySort : null});
+      res.render('all-products', { categories, products, cartCount, currentPage, totalPages, category: name, order: null, search: null, categorySort: null });
 
    } catch (error) {
       console.log("An error occured while loading category products", error.message);
@@ -147,7 +147,7 @@ userPro.filterPro = async (req, res) => {
       const totalProducts = await productsdb.countDocuments({});
       const totalPages = Math.ceil(totalProducts / perPage);
 
-      res.render('all-products', { categories, products: filteredPro, cartCount, currentPage, totalPages, order: order, category: null, search: null , categorySort : null});
+      res.render('all-products', { categories, products: filteredPro, cartCount, currentPage, totalPages, order: order, category: null, search: null, categorySort: null });
 
    } catch (error) {
       console.log("An error occured while sorting", error.message);
@@ -169,12 +169,9 @@ userPro.displaySearch = async (req, res) => {
 
       const cartCount = cart.products.length;
       const { name, category } = req.query;
-      let categorySort 
-      if(category){
-         categorySort = category
-      }else{
-         categorySort = null
-      }
+      // Set a default value for categorySort
+      let categorySort = category !== undefined ? category : null;
+
       const categoryObject = await categoriesdb.findOne({ name: category });
       const categoryId = categoryObject ? categoryObject._id : null;
 
@@ -209,7 +206,7 @@ userPro.displaySearch = async (req, res) => {
       const totalPages = Math.ceil(totalProducts / perPage);
 
       const categories = await categoriesdb.find();
-      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name, order: null, categorySort , category:null});
+      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name, order: null, categorySort, category: null });
 
    } catch (error) {
       console.log("An error occured while searching products", error.message);
