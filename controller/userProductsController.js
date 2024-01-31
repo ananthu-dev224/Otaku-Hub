@@ -170,7 +170,7 @@ userPro.displaySearch = async (req, res) => {
       const cartCount = cart.products.length;
       const { name, category } = req.query;
 
-      let categorySort = category !== undefined ? category : null;
+      let categorySort = (category !== undefined && category !== '') ? category : null;
       console.log(categorySort);
 
 
