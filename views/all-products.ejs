@@ -262,7 +262,7 @@
 					  <ul class="pagination justify-content-start">
 						<% for (let i = 1; i <= totalPages; i++) { %>
 							<li class="page-item <%= currentPage === i ? 'active' : '' %>">
-								<% if (categorySort) { %>
+								<% if (categorySort !== null && search) { %>
 									<a class="page-link" href="/search-products?search=<%= search %>&category=<%= categorySort %>&page=<%= i %>"><%= i %></a>
 							  <% } else if (category) { %>
 								<a class="page-link" href="/category?name=<%= category %>&page=<%= i %>"><%= i %></a>
@@ -348,13 +348,9 @@
     const urlParams = new URLSearchParams(window.location.search);
     const categoryNameFromURL = urlParams.get('name');
 
-
-    // Log the selected category for debugging
-    console.log('Selected Category:', categoryNameFromURL);
-
     // Set the selected category to the hidden input
     const hiddenInput = document.getElementById('selectedCategory');
-    hiddenInput.value = categoryNameFromURL ;
+    hiddenInput.value = categoryNameFromURL || "all-products"
 
     // Submit the form
     document.getElementById('searchForm').submit();

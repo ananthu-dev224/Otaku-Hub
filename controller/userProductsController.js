@@ -170,7 +170,7 @@ userPro.displaySearch = async (req, res) => {
       const cartCount = cart.products.length;
       const { name, category } = req.query;
 
-      let categorySort = (category !== undefined && category !== '') ? category : null;
+      let categorySort = category !== 'all-products' ? category : null;
       console.log(categorySort);
 
 
@@ -192,7 +192,7 @@ userPro.displaySearch = async (req, res) => {
       const searchConditions = { name: regex };
 
       // Check if the category value is present in the request query
-      if (category) {
+      if (category !== 'all-products') {
          searchConditions.category = categoryId;
       }
 
