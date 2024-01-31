@@ -123,6 +123,7 @@
 				<form method="get" class="d-flex justify-content-between" action="/search-products">
 					<input name="name" type="text" class="form-control" id="search_input" placeholder="Search Here">
 					<button type="submit" class="btn"></button>
+					<input type="hidden" name="category" id="selectedCategory">
 					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
 				</form>
 			</div>
@@ -174,8 +175,8 @@
 						</li>
 						<% categories.forEach(category => {%>
 							<% if(category.isPublished === true){%>
-							<li class="nav-item"><a class="nav-link filter-options"
-									href="/category?name=<%=category.name%>"><%= category.name%></a>
+							<li class="nav-item"><a class="nav-link filter-options category-link"
+									href="/category?name=<%=category.name%>" data-category="<%= category.name %>"><%= category.name%></a>
 							</li>
 							<%}%>
 							<%})%>
@@ -261,7 +262,9 @@
 					  <ul class="pagination justify-content-start">
 						<% for (let i = 1; i <= totalPages; i++) { %>
 							<li class="page-item <%= currentPage === i ? 'active' : '' %>">
-							  <% if (category) { %>
+								<% if (search && category) { %>
+									<a class="page-link" href="/search-products?search=<%= search %>&from=<%= category %>&page=<%= i %>"><%= i %></a>
+							  <% } else if (category) { %>
 								<a class="page-link" href="/category?name=<%= category %>&page=<%= i %>"><%= i %></a>
 							  <% } else if (order) { %>
 								<a class="page-link" href="/price?order=<%= order %>&page=<%= i %>"><%= i %></a>
@@ -339,7 +342,24 @@
 			</div>
 		</div>
 	</footer>
-
+	<script>
+		// JavaScript to handle category selection
+		document.addEventListener('DOMContentLoaded', function () {
+			const categoryLinks = document.querySelectorAll('.category-link');
+	
+			categoryLinks.forEach(function (link) {
+				link.addEventListener('click', function (event) {
+					
+					// Get the category name from the data-category attribute
+					const categoryName = link.getAttribute('data-category');
+					
+					// Set the hidden input value
+					document.getElementById('selectedCategory').value = categoryName;
+	
+				});
+			});
+		});
+	</script>
 	<!-- Add to whishlist Script -->
 
 	<script>

@@ -39,7 +39,7 @@ userPro.displayPro = async (req, res) => {
          .skip((page - 1) * perPage)
          .limit(perPage);
 
-      res.render('all-products', { categories, products, cartCount, currentPage: page, totalPages , order: null ,category:null, search:null });
+      res.render('all-products', { categories, products, cartCount, currentPage: page, totalPages, order: null, category: null, search: null });
    } catch (error) {
       console.log("An error occurred while loading all products", error.message);
       res.render('error');
@@ -88,7 +88,7 @@ userPro.displayCat = async (req, res) => {
       const totalProducts = await productsdb.countDocuments({ category: id, isPublished: true });
       const totalPages = Math.ceil(totalProducts / perPage);
 
-      res.render('all-products', { categories, products, cartCount, currentPage, totalPages, category:name ,order: null , search:null});
+      res.render('all-products', { categories, products, cartCount, currentPage, totalPages, category: name, order: null, search: null });
 
    } catch (error) {
       console.log("An error occured while loading category products", error.message);
@@ -147,7 +147,7 @@ userPro.filterPro = async (req, res) => {
       const totalProducts = await productsdb.countDocuments({});
       const totalPages = Math.ceil(totalProducts / perPage);
 
-      res.render('all-products', { categories, products: filteredPro, cartCount, currentPage, totalPages, order: order ,category:null, search:null });
+      res.render('all-products', { categories, products: filteredPro, cartCount, currentPage, totalPages, order: order, category: null, search: null });
 
    } catch (error) {
       console.log("An error occured while sorting", error.message);
@@ -168,31 +168,40 @@ userPro.displaySearch = async (req, res) => {
       }
 
       const cartCount = cart.products.length;
-      const { name } = req.query;
+      const { name, category } = req.query;
+      console.log(name,category)
 
       if (!name) {
          res.redirect('/products');
       }
 
-      const currentPage = parseInt(req.query.page) || 1; // Get the page from the query parameter, default to 1
+      const currentPage = parseInt(req.query.page) || 1; 
       const perPage = 8; // Number of products per page
 
       const escapedText = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regex = new RegExp(escapedText, 'i');
 
+      // Create a condition object for the query
+      const searchConditions = { name: regex };
+
+      // Check if the category value is present in the request query
+      if (category) {
+         searchConditions.category = category; 
+      }
+
       // Fetch products for the current page and specific search query
       const products = await productsdb
-         .find({ name: regex })
+         .find(searchConditions)
          .skip((currentPage - 1) * perPage)
          .limit(perPage)
          .populate('category');
 
       // Calculate total number of products for the specific search query
-      const totalProducts = await productsdb.countDocuments({ name: regex });
+      const totalProducts = await productsdb.countDocuments(searchConditions);
       const totalPages = Math.ceil(totalProducts / perPage);
 
       const categories = await categoriesdb.find();
-      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name , order: null ,category:null});
+      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name, order: null, category });
 
    } catch (error) {
       console.log("An error occured while searching products", error.message);
