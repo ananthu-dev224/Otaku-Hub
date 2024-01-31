@@ -169,7 +169,12 @@ userPro.displaySearch = async (req, res) => {
 
       const cartCount = cart.products.length;
       const { name, category } = req.query;
-
+      let categorySort 
+      if(category){
+         categorySort = category
+      }else{
+         categorySort = null
+      }
       const categoryObject = await categoriesdb.findOne({ name: category });
       const categoryId = categoryObject ? categoryObject._id : null;
 
@@ -204,7 +209,7 @@ userPro.displaySearch = async (req, res) => {
       const totalPages = Math.ceil(totalProducts / perPage);
 
       const categories = await categoriesdb.find();
-      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name, order: null, category });
+      res.render('all-products', { products, categories, cartCount, currentPage, totalPages, search: name, order: null, categorySort });
 
    } catch (error) {
       console.log("An error occured while searching products", error.message);
