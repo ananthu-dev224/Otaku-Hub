@@ -352,6 +352,8 @@
 					
 					// Get the category name from the data-category attribute
 					const categoryName = link.getAttribute('data-category');
+
+					console.log('Selected Category:', categoryName);
 					
 					// Set the hidden input value
 					document.getElementById('selectedCategory').value = categoryName;
