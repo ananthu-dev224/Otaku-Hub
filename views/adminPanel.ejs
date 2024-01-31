@@ -116,12 +116,12 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                
+
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
                         class="material-icons md-apps"></i> </button>
-                
+
             </div>
         </header>
         <section class="content-main">
@@ -226,8 +226,7 @@
                                             style="width: auto;" id="salesPDF"><i
                                                 class="text-muted material-icons md-post_add animation-shake"></i>Download
                                             Report PDF</button>&nbsp;&nbsp;
-                                            <br><br><button class="btn btn-primary"
-                                            style="width: auto;" id="saleExcel"><i
+                                        <br><br><button class="btn btn-primary" style="width: auto;" id="saleExcel"><i
                                                 class="text-muted material-icons md-post_add animation-shake"></i>Download
                                             Report Excel</button>&nbsp;&nbsp;
                                         <!-- <button class="btn btn-primary"
@@ -366,7 +365,67 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <!-- Sales report excel download -->
     <script>
+        document.getElementById('salesExcel').addEventListener('click', async (event) => {
+            event.preventDefault();
 
+            // Get a reference to the table
+            const salesTable = document.getElementById('salesTable');
+
+            // Get the table body
+            const tableBody = salesTable.querySelector('tbody');
+
+            const salesData = [];
+            const startingDate = document.getElementById('startingDate').value;
+            const endingDate = document.getElementById('endingDate').value;
+            const filterDrop = document.getElementById('filterDrop').value;
+
+            // Iterate through rows in the table
+            for (const row of tableBody.rows) {
+                // Access individual cells in the row
+                const orderId = row.cells[0].textContent.trim();
+                const date = row.cells[2].textContent;
+                const address = row.cells[1].textContent;
+                let totalAmount = row.cells[3].textContent.trim();
+                totalAmount = parseFloat(totalAmount.replace(/[^0-9]/g, ''), 10);
+
+                const orderData = {
+                    orderId: orderId,
+                    date: date,
+                    address: address,
+                    totalAmount: totalAmount,
+                    startingDate: startingDate,
+                    endingDate: endingDate,
+                    filterDrop: filterDrop
+                };
+
+                salesData.push(orderData);
+            }
+
+            try {
+                const response = await fetch('/dashboard/generate-excel-report', {
+                    method: 'post',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify(salesData)
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'report.xlsx'; // Set the file extension to .xlsx for Excel
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Failed to generate Excel report');
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+        });
     </script>
     <!-- PDF of sales report -->
     <script>

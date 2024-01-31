@@ -5,6 +5,7 @@ const categorydb = require('../model/categorySchema')
 const usersdb = require('../model/userSchema')
 const pdf = require('pdfkit')
 const fs = require('fs')
+const exceljs = require('exceljs');
 const admDashC = {}
 
 // Function for doughnut 
@@ -435,6 +436,55 @@ admDashC.generateSalesPdf = async (req, res) => {
     console.log("An error occured while downloading pdf report", error.message);
   }
 }
+
+// generate excel report
+admDashC.generateSalesExcel = async (req, res) => {
+  try {
+      const salesData = req.body;
+
+      // Create a new Excel workbook
+      const workbook = new exceljs.Workbook();
+      const worksheet = workbook.addWorksheet('Sales Report');
+
+      // Define the columns in the Excel sheet
+      worksheet.columns = [
+          { header: 'Order ID', key: 'orderId', width: 15 },
+          { header: 'Total Amount (Rs)', key: 'totalAmount', width: 20 },
+          { header: 'Delivered Date', key: 'date', width: 15 }
+      ];
+
+      // Add data to the worksheet
+      salesData.forEach(entry => {
+          worksheet.addRow({
+              orderId: entry.orderId,
+              totalAmount: `Rs:${entry.totalAmount}`,
+              date: entry.date
+          });
+      });
+
+      // Set up totalOrders and totalAmount
+      let totalOrders = salesData.length;
+      let totalAmount = salesData.reduce((total, entry) => total + entry.totalAmount, 0);
+
+       // Add a row for totalOrders and totalAmount
+       worksheet.addRow({ orderId: 'Total Orders', totalAmount: totalOrders, date: '' });
+       worksheet.addRow({ orderId: 'Total Amount', totalAmount: `Rs:${totalAmount}`, date: '' });
+
+      // Return the Excel workbook
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename=sales-report.xlsx`);
+
+      // Write the workbook to the response
+      await workbook.xlsx.write(res);
+
+      // End the response
+      res.end();
+  } catch (error) {
+      console.log("An error occurred while downloading Excel report", error.message);
+  }
+};
+
+
 
 
 module.exports = admDashC

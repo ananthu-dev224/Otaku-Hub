@@ -127,6 +127,7 @@ router.get('/clear-history',verifyToken,checkBlockedFetch,loginC.clearHistory)
 router.get('/dashboard/filter-sales',adminAuth,admDashC.filterSales)
 router.post('/dashboard/filter-by-date',adminAuth,admDashC.filterByDate)
 router.post('/dashboard/generate-report',adminAuth,admDashC.generateSalesPdf)
+router.post('/dashboard/generate-excel-report',adminAuth,admDashC.generateSalesExcel)
 
 
 
