@@ -27,13 +27,27 @@ const uploadBanner = multer({
 // Admin Side
 const displayCoupons = async (req, res) => {
     try {
-        const coupons = await coupondb.find()
-        res.render('adminCoupons', { coupons })
+        const itemsPerPage = 10; 
+        const currentPage = parseInt(req.query.page) || 1;
+
+        const totalCoupons = await coupondb.countDocuments();
+        const totalPages = Math.ceil(totalCoupons / itemsPerPage);
+
+        const skip = (currentPage - 1) * itemsPerPage;
+
+        const coupons = await coupondb.find().skip(skip).limit(itemsPerPage);
+
+        res.render('adminCoupons', {
+            coupons,
+            totalPages,
+            currentPage
+        });
     } catch (error) {
-        console.log("An error occured while displaying all coupons", error.messsage);
-        res.render('error')
+        console.log("An error occurred while displaying coupons", error.message);
+        res.render('error');
     }
-}
+};
+
 
 
 // Add coupon page
