@@ -169,13 +169,16 @@ userPro.displaySearch = async (req, res) => {
 
       const cartCount = cart.products.length;
       const { name, category } = req.query;
-      console.log(name,category)
+
+      const categoryObject = await categoriesdb.findOne({ name: category });
+      const categoryId = categoryObject ? categoryObject._id : null;
+
 
       if (!name) {
          res.redirect('/products');
       }
 
-      const currentPage = parseInt(req.query.page) || 1; 
+      const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8; // Number of products per page
 
       const escapedText = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -186,7 +189,7 @@ userPro.displaySearch = async (req, res) => {
 
       // Check if the category value is present in the request query
       if (category) {
-         searchConditions.category = category; 
+         searchConditions.category = categoryId;
       }
 
       // Fetch products for the current page and specific search query
