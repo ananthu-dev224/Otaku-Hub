@@ -169,8 +169,10 @@ userPro.displaySearch = async (req, res) => {
 
       const cartCount = cart.products.length;
       const { name, category } = req.query;
-      // Set a default value for categorySort
+
       let categorySort = category !== undefined ? category : null;
+      console.log(categorySort);
+
 
       const categoryObject = await categoriesdb.findOne({ name: category });
       const categoryId = categoryObject ? categoryObject._id : null;
