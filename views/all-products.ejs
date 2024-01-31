@@ -343,18 +343,23 @@
 		</div>
 	</footer>
 	<script>
-		// JavaScript to handle category selection
-		function setCategory(event) {
-		event.preventDefault()
-        // Retrieve the selected category from the dropdown
-        var selectedCategoryElement = document.querySelector('.category-link.active');
-        var selectedCategory = selectedCategoryElement ? selectedCategoryElement.textContent.trim() : null;
+	function setCategory(event) {
+    event.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryNameFromURL = urlParams.get('name');
 
-        // Set the selected category to the hidden input
-        document.getElementById('selectedCategory').value = selectedCategory;
 
-		document.getElementById('searchForm').submit();
-    }
+    // Log the selected category for debugging
+    console.log('Selected Category:', categoryNameFromURL);
+
+    // Set the selected category to the hidden input
+    const hiddenInput = document.getElementById('selectedCategory');
+    hiddenInput.value = categoryNameFromURL ;
+
+    // Submit the form
+    document.getElementById('searchForm').submit();
+}
+
 	</script>
 	<!-- Add to whishlist Script -->
 
