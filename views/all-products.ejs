@@ -120,7 +120,7 @@
 		<div class="search_input" id="search_input_box" style="display: none;">
 			<div class="container">
 				<!-- Search Product -->
-				<form method="get" class="d-flex justify-content-between" action="/search-products">
+				<form method="get" class="d-flex justify-content-between" action="/search-products"  onsubmit="setCategory()">
 					<input name="name" type="text" class="form-control" id="search_input" placeholder="Search Here">
 					<button type="submit" class="btn"></button>
 					<input type="hidden" name="category" id="selectedCategory">
@@ -344,23 +344,14 @@
 	</footer>
 	<script>
 		// JavaScript to handle category selection
-		document.addEventListener('DOMContentLoaded', function () {
-			const categoryLinks = document.querySelectorAll('.category-link');
-	
-			categoryLinks.forEach(function (link) {
-				link.addEventListener('click', function (event) {
-					
-					// Get the category name from the data-category attribute
-					const categoryName = link.getAttribute('data-category');
+		function setCategory() {
+        // Retrieve the selected category from the dropdown
+        var selectedCategoryElement = document.querySelector('.category-link.active');
+        var selectedCategory = selectedCategoryElement ? selectedCategoryElement.textContent.trim() : null;
 
-					console.log('Selected Category:', categoryName);
-					
-					// Set the hidden input value
-					document.getElementById('selectedCategory').value = categoryName;
-	
-				});
-			});
-		});
+        // Set the selected category to the hidden input
+        document.getElementById('selectedCategory').value = selectedCategory;
+    }
 	</script>
 	<!-- Add to whishlist Script -->
 
