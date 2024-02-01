@@ -346,7 +346,7 @@
 	function setCategory(event) {
     event.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
-    const categoryNameFromURL = urlParams.get('name');
+    const categoryNameFromURL = urlParams.get('category');
 
     // Set the selected category to the hidden input
     const hiddenInput = document.getElementById('selectedCategory');
