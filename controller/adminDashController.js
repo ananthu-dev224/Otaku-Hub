@@ -28,7 +28,7 @@ async function chart() {
         ordersCount.shipped++
       } else if (order.orderStatus === 'Processing') {
         ordersCount.processing++
-      } else if (order.orderStatus === 'Delivered') {
+      } else if (order.orderStatus === 'Delivered' || order.orderStatus === 'Request declined') {
         ordersCount.delivered++
       } else if (order.orderStatus === 'Returned') {
         ordersCount.returned++
