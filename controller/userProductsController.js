@@ -185,7 +185,7 @@ userPro.displaySearch = async (req, res) => {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8; // Number of products per page
 
-      const escapedText = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const escapedText = name.charAt(0).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regexPattern = `^${escapedText}`;
       const regex = new RegExp(regexPattern, 'i');
 
