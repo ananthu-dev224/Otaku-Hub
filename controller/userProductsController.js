@@ -60,7 +60,7 @@ userPro.displayCat = async (req, res) => {
       }
 
       const cartCount = cart.products.length;
-      const name = req.query.name;
+      const name = req.query.category;
       const currentPage = parseInt(req.query.page) || 1; // Get the page from the query parameter, default to 1
       const perPage = 8; // Number of products per page
 
