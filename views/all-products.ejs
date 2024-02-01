@@ -126,6 +126,7 @@
 				<form method="get" class="d-flex justify-content-between" action="/search-products" id="searchForm"
 					onsubmit="setCategory(event)">
 					<input name="name" type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<input type="hidden" name="category" id="selectedCategory">
 					<button type="submit" class="btn"></button>
 					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
 				</form>
