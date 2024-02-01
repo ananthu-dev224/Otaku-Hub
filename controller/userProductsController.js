@@ -170,7 +170,7 @@ userPro.displaySearch = async (req, res) => {
       const cartCount = cart.products.length;
       const { name, category } = req.query;
 
-      let categorySort = (category !== null || category !== undefined ) ? category : null;
+      let categorySort = (category !== null || category !== undefined) ? category : null;
       console.log(categorySort);
 
 
@@ -186,7 +186,8 @@ userPro.displaySearch = async (req, res) => {
       const perPage = 8; // Number of products per page
 
       const escapedText = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regex = new RegExp(escapedText, 'i');
+      const regexPattern = `^${escapedText}`;
+      const regex = new RegExp(regexPattern, 'i');
 
       // Create a condition object for the query
       let searchConditions = { name: regex };

@@ -460,9 +460,6 @@
 			const urlParams = new URLSearchParams(window.location.search);
 			const categoryNameFromURL = urlParams.get('name');
 
-			// Set the selected category to the hidden input
-			const hiddenInput = document.getElementById('selectedCategory');
-			hiddenInput.value = categoryNameFromURL;
 
 			// Conditionally set the 'category' parameter in the URL
 			const searchForm = document.getElementById('searchForm');
