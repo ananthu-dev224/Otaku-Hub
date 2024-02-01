@@ -146,7 +146,7 @@ admDashC.displayadminDash = async (req, res) => {
     const orders = await ordersdb.aggregate([
       {
         $match: {
-          orderStatus: 'Delivered',
+          orderStatus: { $in: ['Delivered', 'Request declined'] },
         },
       },
       {
@@ -166,15 +166,16 @@ admDashC.displayadminDash = async (req, res) => {
       ordersGraph,
       ordersBarGraph
     ] = await Promise.all([
-      ordersdb.find({ orderStatus: 'Delivered' }).populate('products.productId'),
-      ordersdb.find({ orderStatus: 'Delivered' }).count(),
-      productsdb.find().count(),
-      categorydb.find().count(),
-      usersdb.find().count(),
+      ordersdb.find({ orderStatus: { $in: ['Delivered', 'Request declined'] } }).populate('products.productId'),
+      ordersdb.countDocuments({ orderStatus: { $in: ['Delivered', 'Request declined'] } }),
+      productsdb.countDocuments(),
+      categorydb.countDocuments(),
+      usersdb.countDocuments(),
       chart(),
       graph(),
       barGraph()
-    ]);
+  ]);
+  ;
     const labels = [...ordersGraph.labels] // months 
     const count = [...ordersGraph.count] // orders in each month
     const weeks = [...ordersBarGraph.labels] // weeks
@@ -201,9 +202,14 @@ admDashC.filterSales = async (req, res) => {
 
       // Finding data using aggregate
       const orders = await ordersdb.aggregate([
-        { $match: { orderStatus: 'Delivered' } },
-        { $sort: { deliveredDate: -1 } },
-      ]);
+        {
+            $match: { orderStatus: { $in: ['Delivered', 'Request declined'] } },
+        },
+        {
+            $sort: { deliveredDate: -1 },
+        },
+    ]);
+    
 
 
       res.json({ orders });
@@ -217,7 +223,7 @@ admDashC.filterSales = async (req, res) => {
       const orders = await ordersdb.aggregate([
         {
           $match: {
-            orderStatus: 'Delivered',
+            orderStatus: { $in: ['Delivered', 'Request declined'] },
             deliveredDate: {
               $gte: startOfDay,
               $lt: endOfDay
@@ -249,7 +255,7 @@ admDashC.filterSales = async (req, res) => {
       const orders = await ordersdb.aggregate([
         {
           $match: {
-            orderStatus: 'Delivered',
+            orderStatus: { $in: ['Delivered', 'Request declined'] },
             deliveredDate: {
               $gte: startofWeek,
               $lte: endofWeek
@@ -278,7 +284,7 @@ admDashC.filterSales = async (req, res) => {
       const orders = await ordersdb.aggregate([
         {
           $match: {
-            orderStatus: 'Delivered',
+            orderStatus: { $in: ['Delivered', 'Request declined'] },
             deliveredDate: {
               $gte: startofMonth,
               $lte: endofMonth
@@ -305,7 +311,7 @@ admDashC.filterSales = async (req, res) => {
       const orders = await ordersdb.aggregate([
         {
           $match: {
-            orderStatus: 'Delivered',
+            orderStatus: { $in: ['Delivered', 'Request declined'] },
             deliveredDate: {
               $gte: startOfYear,
               $lte: endOfYear
@@ -342,7 +348,7 @@ admDashC.filterByDate = async (req, res) => {
     const orders = await ordersdb.aggregate([
       {
         $match: {
-          orderStatus: 'Delivered',
+          orderStatus: { $in: ['Delivered', 'Request declined'] },
           deliveredDate: {
             $gte: startingDate,
             $lte: endingDate
