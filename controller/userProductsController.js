@@ -169,8 +169,10 @@ userPro.displaySearch = async (req, res) => {
 
       const cartCount = cart.products.length;
       const { name, category } = req.query;
+      console.log(name,category);
 
       let categorySort = (category !== null && category !== undefined) ? category : null;
+      console.log(categorySort);
 
 
       const categoryObject = await categoriesdb.findOne({ name: category });
@@ -190,6 +192,7 @@ userPro.displaySearch = async (req, res) => {
 
       // Check if the category value is present in the request query
       if (category) {
+         console.log("category is there");
          searchConditions.category = categoryId;
       }
 
