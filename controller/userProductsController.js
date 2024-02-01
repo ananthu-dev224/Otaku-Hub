@@ -171,7 +171,6 @@ userPro.displaySearch = async (req, res) => {
       const { name, category } = req.query;
 
       let categorySort = (category !== null && category !== undefined) ? category : null;
-      console.log(categorySort);
 
 
       const categoryObject = await categoriesdb.findOne({ name: category });
