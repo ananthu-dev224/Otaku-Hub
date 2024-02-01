@@ -176,7 +176,7 @@
 						<% categories.forEach(category => {%>
 							<% if(category.isPublished === true){%>
 							<li class="nav-item"><a class="nav-link filter-options category-link"
-									href="/category?name=<%=category.name%>" data-category="<%= category.name %>"><%= category.name%></a>
+									href="/category?category=<%=category.name%>" data-category="<%= category.name %>"><%= category.name%></a>
 							</li>
 							<%}%>
 							<%})%>
