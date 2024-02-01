@@ -164,8 +164,21 @@ const applyCoupon = async (req, res) => {
 // Banner Admin Side
 const displayBanners = async (req, res) => {
     try {
-        const banners = await bannerdb.find()
-        res.render('banners', { banners })
+        const itemsPerPage = 4; 
+        const currentPage = parseInt(req.query.page) || 1;
+
+        const totalBanners = await bannerdb.countDocuments();
+        const totalPages = Math.ceil(totalBanners / itemsPerPage);
+
+        const skip = (currentPage - 1) * itemsPerPage;
+
+        const banners = await bannerdb.find().skip(skip).limit(itemsPerPage);
+
+        res.render('banners', {
+            banners,
+            totalPages,
+            currentPage
+        });
     } catch (error) {
         console.log("An error occured while displaying banners in admin", error.message);
         res.render('error')

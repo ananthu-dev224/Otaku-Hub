@@ -155,7 +155,19 @@
                     </div>
                 </div>
                 <!-- Table ends here -->
-
+                <div class="pagination-area mt-30 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                            <a class="page-link" href="/banners?page=<%= i %>">
+                                                <%= i %>
+                                            </a>
+                                </li>
+                                <% } %>
+                        </ul>
+                    </nav>
+                </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
