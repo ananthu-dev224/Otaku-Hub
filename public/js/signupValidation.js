@@ -100,7 +100,7 @@ function signupValidation(){
         isValid = false; 
     }
     if(!validatePassword(password)){
-        document.getElementById('passwordError').textContent = 'Please provide a strong password'
+        document.getElementById('passwordError').textContent = 'include one special case (@,#,$..), a capital letter , a letter and a number'
         setTimeout(() => {
           document.getElementById('passwordError').textContent =''
         }, 5000);
