@@ -163,8 +163,7 @@ userCart.updateQuantity = async (req, res) => {
     const size = req.body.size
     const count = req.body.count;
     const currentValue = req.body.currentValue;
-    // console.log(size);
-    // console.log(currentValue,count);
+
 
     const cart = await cartdb.findOne({ userId: userId }).populate('products.productId'); //cart
     let productToUpdate
@@ -173,6 +172,7 @@ userCart.updateQuantity = async (req, res) => {
     } else {
       productToUpdate = cart.products.find(product => product.productId._id.toString() === productId.toString()); // product to update quantity
     }
+
 
 
     let stock;
@@ -184,20 +184,44 @@ userCart.updateQuantity = async (req, res) => {
     if (stock < currentValue) {
       res.json({ status: 'error', message: 'Out of Stock' });
     } else {
-      const cart = await cartdb.findOneAndUpdate(
-        {
-          userId: userId,
-          'products.productId': productId
-        },
-        {
-          $inc:
-            { 'products.$.quantity': count }
-        },
-        { new: true }
-      ).populate('products.productId');
+      let updatedCart
+      if (size) {
+         updatedCart = await cartdb.findOneAndUpdate(
+          {
+            userId: userId,
+            'products.productId': productId,
+            'products.size': size // Include size in the query
+          },
+          {
+            $inc: {
+              'products.$.quantity': count
+            }
+          },
+          { new: true }
+        ).populate('products.productId');
 
-      // Update total 
-      const updateProduct = cart.products.find(product => product.productId._id.equals(productId))
+      } else {
+         updatedCart = await cartdb.findOneAndUpdate(
+          {
+            userId: userId,
+            'products.productId': productId
+          },
+          {
+            $inc:
+              { 'products.$.quantity': count }
+          },
+          { new: true }
+        ).populate('products.productId');
+      }
+
+      // Update total
+      let updateProduct; 
+      if (size) {
+         updateProduct = cart.products.find(product => product.productId._id.equals(productId))
+      } else {
+         updateProduct = cart.products.find(product => product.productId._id.equals(productId) && product.size === size);
+      }
+
       let finalPrice
       if (updateProduct.productId.discount) {
         finalPrice = Math.floor(updateProduct.productId.price - (updateProduct.productId.price * updateProduct.productId.discount / 100))
@@ -205,7 +229,8 @@ userCart.updateQuantity = async (req, res) => {
         finalPrice = updateProduct.productId.price
       }
       updateProduct.total = finalPrice * updateProduct.quantity;
-      await cart.save()
+      await updatedCart.save()
+      console.log("cart updated as :",updatedCart);
       res.json({ status: 'success', message: 'Quantity Updated' });
     }
   } catch (error) {
@@ -213,6 +238,8 @@ userCart.updateQuantity = async (req, res) => {
     res.json({ status: 'error', message: 'An error occured while updating quantity' })
   }
 }
+
+
 
 
 

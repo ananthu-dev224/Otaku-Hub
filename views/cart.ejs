@@ -449,9 +449,10 @@
             productRows.forEach(function (row) {
                 const quantityInput = row.querySelector('input[name="qty"]');
                 const productPriceElement = row.querySelector('.productPrice');
-
+                  
                 if (quantityInput && productPriceElement) {
                     const quantity = parseInt(quantityInput.value);
+                    
                     const productPrice = parseInt(productPriceElement.textContent.replace(/\D/g, '')); // Remove non-numeric characters
 
                     if (!isNaN(quantity) && !isNaN(productPrice)) {
@@ -471,6 +472,7 @@
         // Function to increase the quantity of a product
         async function increaseQuantity(inputField, productId, value, size) {
             const currentValue = parseInt(inputField.value);
+            
             if (!isNaN(currentValue)) {
                 const response = await changeQuantity(productId, value, currentValue + 1, size); // Changing the quantity in db
                 if (response && response.status === 'success') {
@@ -484,6 +486,7 @@
         // Function to decrease the quantity of a product
         async function decreaseQuantity(inputField, productId, value, size) {
             const currentValue = parseInt(inputField.value);
+            
             if (!isNaN(currentValue) && currentValue > 1) {
                 const response = await changeQuantity(productId, value, currentValue - 1, size);
                 if (response && response.status === 'success') {
@@ -498,6 +501,7 @@
         function updateQuantity(inputField) {
             const container = inputField.closest('tr'); // Changed this line to get the closest table row
             const quantity = parseInt(inputField.value);
+            
             const productPrice = parseInt(container.querySelector('.productPrice').textContent.replace(/\D/g, '')); // Remove non-numeric characters
             const totalPriceElement = container.querySelector('.total-price');
 
@@ -518,18 +522,21 @@
         // Loop through each container
         productCountContainers.forEach(function (container) {
             const inputField = container.querySelector('input[name="qty"]');
+    
             const increaseButton = container.querySelector('.increase');
             const decreaseButton = container.querySelector('.reduced');
             const productId = inputField.dataset.productId;
             const productSize = inputField.dataset.productSize;
-            // console.log(productSize);
+           
 
             increaseButton.addEventListener('click', function () {
                 increaseQuantity(inputField, productId, 1, productSize);
+                
             });
 
             decreaseButton.addEventListener('click', function () {
                 decreaseQuantity(inputField, productId, -1, productSize);
+               
             });
         });
 

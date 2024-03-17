@@ -89,7 +89,6 @@ router.get('/remove-product-cart',verifyToken,checkBlockedFetch,userCartC.manage
 router.post('/update-quantity',verifyToken,checkBlockedFetch,userCartC.updateQuantity) //Increase or Decrease quantity
 
 
-
 //This route is only used to check the stock  in proceed to checkout and place order
 router.get('/checkstock',verifyToken,userCartC.manageStock)
 

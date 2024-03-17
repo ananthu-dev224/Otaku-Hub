@@ -35,7 +35,8 @@ const generatePaymentOrder = async (orderId,total) =>{
 }
 
 
-const verifyOnlinePayment = async(details)=>{   
+const verifyOnlinePayment = async(details)=>{  
+    console.log(details) 
     return new Promise((resolve,reject)=>{
        let hmac = crypto.createHmac('sha256',process.env.RAZORPAY_SECRET_KEY); //sha256 algorithm for secure hashing
        hmac.update(details.payment.razorpay_order_id+'|'+details.payment.razorpay_payment_id);
